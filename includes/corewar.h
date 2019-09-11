@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 10:30:28 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/11 12:30:43 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/11 14:34:41 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,17 +17,17 @@
 # include <sys/types.h>
 # include "op.h"
 
-# define FALSE		0
-# define TRUE		1
+# define FALSE			0
+# define TRUE			1
 
-# define FAILURE	0
-# define SUCCESS	1
+# define FAILURE		0
+# define SUCCESS		1
 
 typedef uint8_t			t_bool;
 
 typedef struct			s_arg_parsing
 {
-	bool				n_option[MAX_PLAYERS];
+	t_bool				n_option[MAX_PLAYERS];
 	int32_t				id[MAX_PLAYERS];
 	char				*av_file[MAX_PLAYERS];
 	uint8_t				i;

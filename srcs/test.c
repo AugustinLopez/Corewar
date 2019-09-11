@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 14:53:07 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/11 12:13:20 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/11 13:48:18 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int		init_process(t_vm *vm)
 	return (SUCCESS);
 }
 
-int	init_player(t_vm *vm, uint32_t index, char *name, char *comment)
+int	init_player(t_vm *vm, int32_t index, char *name, char *comment)
 {
 	uint8_t	i;
 
@@ -157,6 +157,21 @@ void	access_all_processes(t_vm *vm)
 	}
 }
 
+void	dump_memory(t_vm *vm, int x)
+{
+	size_t	i;
+
+	i = 0;
+	while (i < MEM_SIZE)
+	{
+		if (i % x == x - 1)
+			ft_printf("%02x\n", vm->ram[i].byte);
+		else
+			ft_printf("%02x ", vm->ram[i].byte);
+		++i;
+	}
+}
+
 int	main(void)
 {
 	t_vm	vm;
@@ -176,6 +191,7 @@ int	main(void)
 	}
 	access_all_players(&vm);
 	access_all_processes(&vm);
+	dump_memory(&vm, 64);
 	free_all_players(&vm);
 	free_all_processes(&vm);
 	ft_printf("Sizeof(vm) = %zu\n", sizeof(vm));
