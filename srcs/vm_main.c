@@ -6,11 +6,11 @@
 /*   By: bcarlier <bcarlier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/09 19:02:24 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/09/11 15:28:02 by bcarlier         ###   ########.fr       */
+/*   Updated: 2019/09/11 15:39:19 by bcarlier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libft/includes/libft.h"
+#include "../libft/libft.h"
 #include <stdlib.h>
 #include <unistd.h>
 
