@@ -6,7 +6,7 @@
 #    By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/09/09 14:31:41 by aulopez           #+#    #+#              #
-#    Updated: 2019/09/09 14:57:01 by bcarlier         ###   ########.fr        #
+#    Updated: 2019/09/11 16:52:12 by aulopez          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ CC=gcc $(FLAGS)
 # --- 1.Source/Header ----------------------------------------------------------
 
 SOURCE_ASM=asm_main
-SOURCE_VM=test
+SOURCE_VM=vm_main vm_parser
 HEADER_ASM=libft
 HEADER_VM=libft corewar op
 LIBFT=$(PATH_LIB)libft.a
@@ -42,7 +42,7 @@ HDR_VM=$(HEADER_VM:%=$(PATH_HDR)%.h)
 
 # --- 4.Rules ------------------------------------------------------------------
 
-all: $(LIBFT) $(NAME_ASM) $(NAME_VM)
+all: $(LIBFT) $(NAME_VM)
 
 $(NAME_ASM): $(OBJ_ASM) $(HDR_ASM)
 	-@printf " ===> Creating $(NAME_ASM)\n"
