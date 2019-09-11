@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 14:53:07 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/10 15:48:08 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/11 12:13:20 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,17 +105,17 @@ void	access_all_players(t_vm *vm)
 	{
 		ft_printf("%s%sPlayer %u:%s\n",
 			FT_UNDER, FT_BOLD, i + 1, FT_EOC);
-		ft_printf("\t%sID:\t\t%s %u\n",
+		ft_printf("\t%sID:%s\t\t %u\n",
 			FT_UNDER, FT_EOC, (vm->player[i]).id);
-		ft_printf("\t%sName:\t\t%s %s\n",
+		ft_printf("\t%sName:%s\t\t %s\n",
 			FT_UNDER, FT_EOC, (vm->player[i]).name);
-		ft_printf("\t%sComment:\t%s %s\n",
+		ft_printf("\t%sComment:%s\t %s\n",
 			FT_UNDER, FT_EOC, (vm->player[i]).comment);
-		ft_printf("\t%sLive now:\t%s %zu\n",
+		ft_printf("\t%sLive now:%s\t %zu\n",
 			FT_UNDER, FT_EOC, (vm->player[i]).live_since_check);
-		ft_printf("\t%sLive total:\t%s %zu\n",
+		ft_printf("\t%sLive total:%s\t %zu\n",
 			FT_UNDER, FT_EOC, (vm->player[i]).live_total);
-		ft_printf("\t%sAlive ?\t\t%s %s\n",
+		ft_printf("\t%sAlive ?%s\t\t %s\n",
 			FT_UNDER, FT_EOC, (vm->player[i]).still_alive ? "Yes" : "No");
 		++i;
 		ft_putchar('\n');
@@ -136,7 +136,7 @@ void	access_all_processes(t_vm *vm)
 		ft_printf("\t%sSpawned by:%s\t %u\n",
 			FT_UNDER, FT_EOC, tmp->player_id);
 		ft_printf("\t%sRegister:%s\n", FT_UNDER, FT_EOC);
-		while (i < REG_NUMBER - 1)
+		while (i < REG_NUMBER)
 		{
 			ft_printf("%s\t  R%-2u%s -> %u\n",
 				FT_BOLD, i + 1, FT_EOC, tmp->r[i]);
