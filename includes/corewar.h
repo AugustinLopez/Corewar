@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 10:30:28 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/11 17:11:41 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/12 12:52:03 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ typedef struct			s_player
 	size_t				live_total;
 	char				*name;
 	char				*comment;
-	int32_t				id;
+	int					id;
 	t_bool				still_alive;
 }						t_player;
 
@@ -122,4 +122,12 @@ typedef struct			s_vm
 
 int						parser(t_argument *arg);
 
+void	dump_memory(t_vm *vm, int x);
+void	access_all_processes(t_vm *vm);
+void	access_all_players(t_vm *vm);
+void	free_all_players(t_vm *vm);
+int		init_player(t_vm *vm, int index, char *name, char *comment);
+int		init_process(t_vm *vm);
+int		create_process(t_vm *vm, size_t pc, int player_id);
+void	free_all_processes(t_vm *vm);
 #endif
