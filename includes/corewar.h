@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 10:30:28 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/12 13:12:02 by bcarlier         ###   ########.fr       */
+/*   Updated: 2019/09/12 16:34:37 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,17 @@
 # define FAILURE		0
 # define SUCCESS		1
 
+# define ERR_NOT_A_COR	1
+# define ERR_TWO_DUMP	2
+# define ERR_NEGATIVE	3
+# define ERR_TOO_BIG	4
+# define ERR_NOT_A_NUM	5
+# define ERR_MISS_AV	6
+# define ERR_TOO_MANY	7
+# define ERR_INVALID	8
+# define ERR_DUPLICATE	9
+# define ERR_NO_SIGN	10
+
 typedef uint8_t			t_bool;
 
 typedef struct			t_argument
@@ -32,6 +43,7 @@ typedef struct			t_argument
 	size_t				dump_value;
 	int					ac;
 	int					i;
+	int					err;
 	int					value[MAX_PLAYERS];
 	t_bool				n_option[MAX_PLAYERS];
 	t_bool				dump_option;
@@ -47,8 +59,8 @@ typedef struct			t_argument
 typedef struct			s_instruction
 {
 	uint32_t			p[4];
-	uint8_t				id;
-	uint8_t				encoding;
+	uint8_t				op;
+	uint8_t				ocp;
 }						t_instruction;
 
 /*
