@@ -6,7 +6,7 @@
 /*   By: bcarlier <bcarlier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/09 19:02:24 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/09/11 18:17:47 by bcarlier         ###   ########.fr       */
+/*   Updated: 2019/09/12 13:15:28 by bcarlier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,14 +94,42 @@ int	get_argument_data(t_argument *arg, int argc, char **argv)
 	return (FAILURE);
 }
 
+int	put_data_in_vm(t_vm *vm, t_argument *arg)
+{
+	int		i;
+	size_t	pc;
+
+	ft_bzero(vm, sizeof(*vm));
+	i = 0;
+	vm->player_total = arg->nbr_player; // on renseignait pas l'info avant
+	while (i < arg->nbr_player)
+	{
+		if (read_cor(arg, vm, i) == FAILURE)
+			return (FAILURE);
+		pc = i * MEM_SIZE / vm->player_total;
+		vm->player[i].id = arg->value[i];
+		//ft_printf("%zu\n", vm->player[i].id);
+		if (create_process(vm, pc, vm->player[i].id) == FAILURE)
+			return (FAILURE);
+		vm->process->pc = pc;
+		vm->process->r[0] = (vm->player[i]).id;
+		ft_printf("%d %d\n", vm->process->r[0], (vm->player[i]).id);
+		i += 1;
+	}
+	return (SUCCESS);
+}
+
 int	main(int argc, char **argv)
 {
 	int			i;
 	t_argument	arg;
+	t_vm		vm;
 
 	if (argc == 1)
 		return (print_usage());
 	if (get_argument_data(&arg, argc, argv) == FAILURE)
+		return (-1);
+	if (put_data_in_vm(&vm, &arg) == FAILURE)
 		return (-1);
 	ft_printf("cycle_to_dump : |%zu|\n", arg.dump_value);
 	i = 0;
@@ -112,5 +140,10 @@ int	main(int argc, char **argv)
 		ft_printf("fichier  : |%s|\n\n", arg.file[i]);
 		i += 1;
 	}
+	dump_memory(&vm, 64);
+	access_all_players(&vm);
+	access_all_processes(&vm);
+	free_all_players(&vm);
+	free_all_processes(&vm);
 	return (0);
 }

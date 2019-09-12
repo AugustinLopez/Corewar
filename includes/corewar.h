@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 10:30:28 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/12 12:52:03 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/12 13:12:02 by bcarlier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,8 @@ typedef struct			s_process
 	size_t				pc;
 	uint32_t			process_id;
 	uint32_t			player_id;
+	int					r[REG_NUMBER];
 	uint16_t			cycle_to_wait;
-	uint16_t			r[REG_NUMBER];
 	t_bool				carry;
 	struct s_process	*next;
 	struct s_process	*prev;
@@ -130,4 +130,5 @@ int		init_player(t_vm *vm, int index, char *name, char *comment);
 int		init_process(t_vm *vm);
 int		create_process(t_vm *vm, size_t pc, int player_id);
 void	free_all_processes(t_vm *vm);
+int		read_cor(t_argument *arg, t_vm *vm, int p_nb);
 #endif

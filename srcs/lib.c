@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 14:53:07 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/12 12:52:13 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/12 13:15:00 by bcarlier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ int		create_process(t_vm *vm, size_t pc, int player_id)
 	tmp->next = vm->process;
 	if (vm->process)
 		vm->process->prev = tmp;
+	tmp->op.id = vm->ram[pc].byte;
 	vm->process = tmp;
 	return (SUCCESS);
 }
@@ -105,7 +106,7 @@ void	access_all_players(t_vm *vm)
 	{
 		ft_printf("%s%sPlayer %u:%s\n",
 			FT_UNDER, FT_BOLD, i + 1, FT_EOC);
-		ft_printf("\t%sID:%s\t\t %u\n",
+		ft_printf("\t%sID:%s\t\t %d\n",
 			FT_UNDER, FT_EOC, (vm->player[i]).id);
 		ft_printf("\t%sName:%s\t\t %s\n",
 			FT_UNDER, FT_EOC, (vm->player[i]).name);
@@ -133,12 +134,12 @@ void	access_all_processes(t_vm *vm)
 		ft_printf("%s%sProcess %u:%s\n",
 			FT_UNDER, FT_BOLD, tmp->process_id, FT_EOC);
 		i = 0;
-		ft_printf("\t%sSpawned by:%s\t %u\n",
+		ft_printf("\t%sSpawned by:%s\t %d\n",
 			FT_UNDER, FT_EOC, tmp->player_id);
 		ft_printf("\t%sRegister:%s\n", FT_UNDER, FT_EOC);
 		while (i < REG_NUMBER)
 		{
-			ft_printf("%s\t  R%-2u%s -> %u\n",
+			ft_printf("%s\t  R%-2u%s -> %d\n",
 				FT_BOLD, i + 1, FT_EOC, tmp->r[i]);
 			++i;
 		}
