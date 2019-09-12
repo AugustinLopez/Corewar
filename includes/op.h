@@ -6,7 +6,7 @@
 /*   By: zaz <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2013/10/04 11:33:27 by zaz               #+#    #+#             */
-/*   Updated: 2019/09/11 12:22:11 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/12 18:13:06 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,10 @@ typedef char			t_arg_type;
 # define PROG_NAME_LENGTH		(128)
 # define COMMENT_LENGTH			(2048)
 # define COREWAR_EXEC_MAGIC		0xea83f3
+# define STR_EXEC_MAGIC			"\0\xea\x83\xf3"
+# define MAGIC_LENGTH			4
+# define DECAL_COMMENT			8
+# define DECAL_PROG				4
 
 typedef struct			header_s
 {

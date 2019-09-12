@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 14:53:07 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/12 13:15:00 by bcarlier         ###   ########.fr       */
+/*   Updated: 2019/09/12 17:33:08 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int		create_process(t_vm *vm, size_t pc, int player_id)
 	tmp->next = vm->process;
 	if (vm->process)
 		vm->process->prev = tmp;
-	tmp->op.id = vm->ram[pc].byte;
+	tmp->op.op = vm->ram[pc].byte;
 	vm->process = tmp;
 	return (SUCCESS);
 }
@@ -87,7 +87,7 @@ void	free_all_players(t_vm *vm)
 	uint8_t	i;
 
 	i = 0;
-	while (i < vm->player_total)
+	while (i < MAX_PLAYERS)
 	{
 		if ((vm->player[i]).name)
 			free((vm->player[i]).name);
@@ -144,8 +144,8 @@ void	access_all_processes(t_vm *vm)
 			++i;
 		}
 		ft_printf("\t%sOperation%s:\t ", FT_UNDER, FT_EOC);
-		ft_printf("%02x %02x %02x %02x %02x %02x\n", tmp->op.id,
-			tmp->op.encoding, tmp->op.p[0], tmp->op.p[1], tmp->op.p[2], 
+		ft_printf("%02x %02x %02x %02x %02x %02x\n", tmp->op.op,
+			tmp->op.ocp, tmp->op.p[0], tmp->op.p[1], tmp->op.p[2], 
 			tmp->op.p[3]);
 		ft_printf("\t%sWait for:%s\t %zu\n",
 			FT_UNDER, FT_EOC, tmp->cycle_to_wait);

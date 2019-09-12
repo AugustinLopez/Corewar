@@ -6,20 +6,20 @@
 #    By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/09/09 14:31:41 by aulopez           #+#    #+#              #
-#    Updated: 2019/09/11 16:52:12 by aulopez          ###   ########.fr        #
+#    Updated: 2019/09/12 17:50:41 by aulopez          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME_ASM=asm
 NAME_VM=corewar
 COMPILER=gcc
-FLAGS=-Wall -Wextra -Werror
+FLAGS=-g3 -Wall -Wextra -Werror
 CC=gcc $(FLAGS)
 
 # --- 1.Source/Header ----------------------------------------------------------
 
 SOURCE_ASM=asm_main
-SOURCE_VM=vm_main vm_parser
+SOURCE_VM=vm_main vm_parser lib read_cor
 HEADER_ASM=libft
 HEADER_VM=libft corewar op
 LIBFT=$(PATH_LIB)libft.a

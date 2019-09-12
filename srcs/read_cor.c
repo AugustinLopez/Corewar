@@ -6,126 +6,92 @@
 /*   By: bcarlier <bcarlier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/11 15:40:40 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/09/12 13:03:19 by bcarlier         ###   ########.fr       */
+/*   Updated: 2019/09/12 18:47:41 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-//#include "../libft/includes/libft.h"
 #include "libft.h"
 #include "corewar.h"
-
-//for open, read, free
 #include <unistd.h>
 #include <fcntl.h>
 #include <stdlib.h>
 
-int		read_cor(t_argument *arg, t_vm *vm, int p_nb)
+int		vm_set_error(t_vm *vm, int err, char *strerr)
 {
-	char		buffer[2049];
-	size_t		i;
-	int			fd;
-	int			ret;
+	vm->err = err;
+	vm->strerr = strerr;
+	return (FAILURE);
+}
 
-	i = 0;
+int		read_player(t_argument *arg, t_vm *vm, int fd)
+{
+	char	buffer[PROG_NAME_LENGTH + MAGIC_LENGTH + 1];
+	int		i;
+
+	i = PROG_NAME_LENGTH + MAGIC_LENGTH;
 	ft_bzero(buffer, sizeof(buffer));
-	if ((fd = open(arg->file[p_nb], O_RDONLY)) < 0)
-		return (FAILURE);
-	ret = read(fd, buffer, 132);
-	if (ft_memcmp(buffer, "\0\xea\x83\xf3", 4) != 0)
-		return (FAILURE);
-	if(!(vm->player[p_nb].name = ft_strdup(buffer + 4))) // protect name, mem alloc
-	{
-		free(vm->player[p_nb].name);
-		return (FAILURE);
-	}
-	ft_bzero(buffer, sizeof(buffer));
-	if ((ret = lseek(fd, 8, SEEK_CUR)) < 0)
-		return (FAILURE);
-	if ((ret = read(fd, buffer, 2048)) < 0)
-		return (FAILURE);
-	if (!(vm->player[p_nb].comment = ft_strdup(buffer)))
-	{
-		free(vm->player[p_nb].comment);
-		return (FAILURE);
-	}
-	ft_bzero(buffer, sizeof(buffer));
-	if ((ret = lseek(fd, 4, SEEK_CUR)) < 0)
-		return (FAILURE);
-	if ((ret = read(fd, buffer, CHAMP_MAX_SIZE + 1)) < 0)
-		return (FAILURE);
-	if (ret == CHAMP_MAX_SIZE + 1)
-		return (FAILURE);
-	else
-	{
-		i = 0;
-		size_t	zu = p_nb * MEM_SIZE / vm->player_total;
-		while (i < ret)
-		{
-			if (zu % 16 == 16 - 1)
-				vm->ram[zu].byte = (unsigned char)buffer[i];
-			else
-				vm->ram[zu].byte =  (unsigned char)buffer[i];
-			++i;
-			++zu;
-		}
-	}
-	close(fd);
+	if (read(fd, buffer, i) != i)
+		return (vm_set_error(vm, ERR_NAME, arg->file[vm->player_total]));
+	if (ft_memcmp(buffer, STR_EXEC_MAGIC, MAGIC_LENGTH) != 0)
+		return (vm_set_error(vm, ERR_MAGIC, arg->file[vm->player_total]));
+	if (!(vm->player[vm->player_total].name = ft_strdup(buffer + MAGIC_LENGTH)))
+		return (vm_set_error(vm, ERR_MEMORY, arg->file[vm->player_total]));
 	return (SUCCESS);
 }
 
-/*int	main(int ac, char **av)
+int		read_comment(t_argument *arg, t_vm *vm, int fd)
 {
-	int i;
-	int j;
-	t_vm vm;
-	char	*name;
-	char	*comment;
-	char	buffer[2049];
-	size_t	pc;
-	int		fd;
+	char	buffer[COMMENT_LENGTH + 1];
+	int		i;
+
+	i = PROG_NAME_LENGTH + MAGIC_LENGTH + DECAL_COMMENT;
+	ft_bzero(buffer, sizeof(buffer));
+	if (lseek(fd, DECAL_COMMENT, SEEK_CUR) != i
+			|| read(fd, buffer, COMMENT_LENGTH) != COMMENT_LENGTH)
+		return (vm_set_error(vm, ERR_COMMENT, arg->file[vm->player_total]));
+	if (!(vm->player[vm->player_total].comment = ft_strdup(buffer)))
+		return (vm_set_error(vm, ERR_MEMORY, arg->file[vm->player_total]));
+	return (SUCCESS);
+}
+
+int		read_file(t_argument *arg, t_vm *vm, int fd)
+{
+	char	buffer[CHAMP_MAX_SIZE + 2];
+	size_t	j;
+	int		i;
 	int		ret;
 
-	pc = 0;
-	if (ac < 2)
-		return (FAILURE);
-	ft_bzero(&vm, sizeof(vm));
-	if ((fd = open(av[1], O_RDONLY)) < 0)
-		return (FAILURE);
+	i = PROG_NAME_LENGTH + COMMENT_LENGTH
+		+ MAGIC_LENGTH + DECAL_COMMENT + DECAL_PROG;
+	ft_bzero(buffer, sizeof(buffer));
+	if (lseek(fd, DECAL_PROG, SEEK_CUR) != i
+			|| (ret = read(fd, buffer, CHAMP_MAX_SIZE + 1)) < 0)
+		return (vm_set_error(vm, ERR_CODE, arg->file[vm->player_total]));
+	if (ret > CHAMP_MAX_SIZE)
+		return (vm_set_error(vm, ERR_TOO_BIG, arg->file[vm->player_total]));
 	i = 0;
-	ft_bzero(buffer, sizeof(buffer));
-	ret = read(fd, buffer, 132);
-	if (ft_memcmp(buffer, "\0\xea\x83\xf3", 4) != 0)
-		return (FAILURE);
-	if(!(name = ft_strdup(buffer + 4))) // protect name, mem alloc
-		return (FAILURE);
-	ft_bzero(buffer, sizeof(buffer));
-	if ((ret = lseek(fd, 8, SEEK_CUR)) < 0)
-		return (FAILURE);
-	if ((ret = read(fd, buffer, 2048)) < 0)
-		return (FAILURE);
-	if (!(comment = ft_strdup(buffer)))
-		return (FAILURE);
-	if ((ret = lseek(fd, 4, SEEK_CUR)) < 0)
-		return (FAILURE);
-	if ((ret = read(fd, buffer, CHAMP_MAX_SIZE + 1)) < 0)
-		return (FAILURE);
-	if (ret == CHAMP_MAX_SIZE + 1)
-		return (FAILURE);
-	else
+	j = vm->player_total * MEM_SIZE / arg->nbr_player;
+	while (i < ret)
 	{
-		i = 0;
-		while (i < ret)
-		{
-			if (i % 16 == 16 - 1)
-				vm.ram[pc + i].byte = (unsigned char)buffer[i];
-			else
-				vm.ram[pc + i].byte =  (unsigned char)buffer[i];
-			++i;
-		}
+		j %= MEM_SIZE;
+		vm->ram[j++].byte = (unsigned char)buffer[i++];
 	}
-	close(fd);
-	dump_memory(&vm, 64);
-	ft_printf("\n|%s|\n", name);
-	ft_printf("comment : |%s|\n", comment);
 	return (SUCCESS);
-}*/
+}
+
+int		read_cor(t_argument *arg, t_vm *vm)
+{
+	int			fd;
+
+	if ((fd = open(arg->file[vm->player_total], O_RDONLY)) < 0)
+		return (vm_set_error(vm, ERR_OPEN, arg->file[vm->player_total]));
+	else if (read_player(arg, vm, fd) == FAILURE)
+		return (FAILURE);
+	else if (read_comment(arg, vm, fd) == FAILURE)
+		return (FAILURE);
+	else if (read_file(arg, vm, fd) == FAILURE)
+		return (FAILURE);
+	if (close(fd))
+		(void)vm_set_error(vm, ERR_CLOSE, arg->file[vm->player_total]);
+	return (SUCCESS);
+}

@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 10:30:28 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/12 16:34:37 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/12 17:48:32 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,17 @@
 # define ERR_TOO_MANY	7
 # define ERR_INVALID	8
 # define ERR_DUPLICATE	9
-# define ERR_NO_SIGN	10
+
+# define ERR_OPEN		1
+# define ERR_CLOSE		2
+# define ERR_MAGIC		3
+# define ERR_MEMORY		4
+# define ERR_NAME		5
+# define ERR_COMMENT	6
+# define ERR_CODE		7
+# define ERR_MAX_SIZE	8
+# define ERR_READ		9
+# define ERR_LSEEK		10
 
 typedef uint8_t			t_bool;
 
@@ -78,13 +88,13 @@ typedef struct			s_process
 {
 	t_instruction		op;
 	size_t				pc;
+	struct s_process	*next;
+	struct s_process	*prev;
 	uint32_t			process_id;
 	uint32_t			player_id;
 	int					r[REG_NUMBER];
 	uint16_t			cycle_to_wait;
 	t_bool				carry;
-	struct s_process	*next;
-	struct s_process	*prev;
 }						t_process;
 
 /*
@@ -95,13 +105,14 @@ typedef struct			s_ram
 {
 	size_t				write_total;
 	size_t				cycle_last;
-	uint32_t			player_last;
+	int					player_last;
 	uint8_t				byte;
 }						t_ram;
 
 typedef struct			s_player
 {
 	size_t				live_since_check;
+	size_t				live_last_cycle;
 	size_t				live_total;
 	char				*name;
 	char				*comment;
@@ -119,6 +130,8 @@ typedef struct			s_player
 
 typedef struct			s_vm
 {
+	t_player			player[MAX_PLAYERS];
+	t_ram				ram[MEM_SIZE];
 	size_t				cycle_total;
 	size_t				cycle_since_check;
 	size_t				live_since_check;
@@ -126,9 +139,9 @@ typedef struct			s_vm
 	size_t				cycle_to_die;
 	size_t				process_total;
 	size_t				process_index;
-	t_player			player[MAX_PLAYERS];
-	t_ram				ram[MEM_SIZE];
 	t_process			*process;
+	char				*strerr;
+	int					err;
 	uint8_t				player_total;
 }						t_vm;
 
@@ -142,5 +155,6 @@ int		init_player(t_vm *vm, int index, char *name, char *comment);
 int		init_process(t_vm *vm);
 int		create_process(t_vm *vm, size_t pc, int player_id);
 void	free_all_processes(t_vm *vm);
-int		read_cor(t_argument *arg, t_vm *vm, int p_nb);
+int		read_cor(t_argument *arg, t_vm *vm);
+int		set_error(t_argument *arg, int err, int ac_err);
 #endif

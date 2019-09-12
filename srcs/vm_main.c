@@ -6,7 +6,7 @@
 /*   By: bcarlier <bcarlier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/09 19:02:24 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/09/12 13:15:28 by bcarlier         ###   ########.fr       */
+/*   Updated: 2019/09/12 17:47:05 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,10 @@ int	check_duplicate_id(t_argument *arg)
 			if (arg->value[i] == arg->value[j])
 			{
 				if (arg->n_option[j] == 1 && arg->n_option[i] == 1)
+				{
+					arg->err = ERR_DUPLICATE;
 					return (TRUE);
+				}
 				arg->value[arg->n_option[j] == 0 ? j : i] = id--;
 				i = arg->nbr_player;
 				break ;
@@ -72,56 +75,66 @@ int	get_argument_data(t_argument *arg, int argc, char **argv)
 	arg->dump_option = FALSE;
 	ft_memset(&(arg->n_option), FALSE, sizeof(arg->n_option));
 	if (parser(arg) == SUCCESS && check_duplicate_id(arg) == FALSE)
+	{
+		if (arg->nbr_player < 2)
+		{
+			ft_dprintf(STDERR_FILENO, "Error: Not enough players.\n");
+			return (FAILURE);
+		}
 		return (SUCCESS);
-	if (!ft_strcmp(arg->av[arg->i], "-n"))
-	{
-		ft_dprintf(STDERR_FILENO, "Error at %d: '-n", arg->i);
-		if (arg->i + 1 < argc)
-			ft_dprintf(STDERR_FILENO, " %s", arg->av[arg->i + 1]);
-		if (arg->i + 2 < argc)
-			ft_dprintf(STDERR_FILENO, " %s", arg->av[arg->i + 2]);
-		ft_dprintf(STDERR_FILENO, "'\n");
 	}
-	else if (!ft_strcmp(arg->av[arg->i], "-dump"))
-	{
-		ft_dprintf(STDERR_FILENO, "Error at %d: '-dump", arg->i);
-		if (arg->i + 1 < argc)
-			ft_dprintf(STDERR_FILENO, " %s", arg->av[arg->i + 1]);
-		ft_dprintf(STDERR_FILENO, "'\n");
-	}
-	else
-		ft_dprintf(STDERR_FILENO, "Error at %d: '%s'\n", arg->i, arg->av[arg->i]);
+	ft_dprintf(STDERR_FILENO,"Error: Argument %d", arg->i);
+	if (arg->i < arg->ac)
+		ft_dprintf(STDERR_FILENO, " '%s'", arg->av[arg->i]);
+	if (arg->err == ERR_NOT_A_COR)
+		ft_dprintf(STDERR_FILENO,": Expected a .cor file.\n");
+	else if (arg->err == ERR_TWO_DUMP)
+		ft_dprintf(STDERR_FILENO,": Cannot have more than one -dump.\n");
+	else if (arg->err == ERR_NEGATIVE)
+		ft_dprintf(STDERR_FILENO,": Expected a positive value.\n");
+	else if (arg->err == ERR_TOO_BIG)
+		ft_dprintf(STDERR_FILENO,": Number out of range.\n");
+	else if (arg->err == ERR_NOT_A_NUM)
+		ft_dprintf(STDERR_FILENO,": Expected a number.\n");
+	else if (arg->err == ERR_MISS_AV)
+		ft_dprintf(STDERR_FILENO,": Missing argument.\n");
+	else if (arg->err == ERR_TOO_MANY)
+		ft_dprintf(STDERR_FILENO,": Too many players.\n");
+	else if (arg->err == ERR_INVALID)
+		ft_dprintf(STDERR_FILENO,": Invalid argument.\n");
+	else if (arg->err == ERR_DUPLICATE)
+		ft_dprintf(STDERR_FILENO,": Players cannot share the same ID.\n");
 	return (FAILURE);
 }
 
 int	put_data_in_vm(t_vm *vm, t_argument *arg)
 {
-	int		i;
 	size_t	pc;
 
 	ft_bzero(vm, sizeof(*vm));
-	i = 0;
-	vm->player_total = arg->nbr_player; // on renseignait pas l'info avant
-	while (i < arg->nbr_player)
+	while (vm->player_total < arg->nbr_player)
 	{
-		if (read_cor(arg, vm, i) == FAILURE)
+		if (read_cor(arg, vm) == FAILURE)
+		{
+			ft_dprintf(STDERR_FILENO, "Error: invalid .cor file\n");
 			return (FAILURE);
-		pc = i * MEM_SIZE / vm->player_total;
-		vm->player[i].id = arg->value[i];
-		//ft_printf("%zu\n", vm->player[i].id);
-		if (create_process(vm, pc, vm->player[i].id) == FAILURE)
+		}
+		pc = vm->player_total * MEM_SIZE / arg->nbr_player;
+		vm->player[vm->player_total].id = arg->value[vm->player_total];
+		if (create_process(vm, pc, vm->player[vm->player_total].id) == FAILURE)
+		{
+			ft_dprintf(STDERR_FILENO, "Error: Not enough memory\n");
 			return (FAILURE);
+		}
 		vm->process->pc = pc;
-		vm->process->r[0] = (vm->player[i]).id;
-		ft_printf("%d %d\n", vm->process->r[0], (vm->player[i]).id);
-		i += 1;
+		vm->process->r[0] = (vm->player[vm->player_total]).id;
+		vm->player_total += 1;
 	}
 	return (SUCCESS);
 }
 
 int	main(int argc, char **argv)
 {
-	int			i;
 	t_argument	arg;
 	t_vm		vm;
 
@@ -130,8 +143,12 @@ int	main(int argc, char **argv)
 	if (get_argument_data(&arg, argc, argv) == FAILURE)
 		return (-1);
 	if (put_data_in_vm(&vm, &arg) == FAILURE)
+	{
+		free_all_players(&vm);
+		free_all_processes(&vm);
 		return (-1);
-	ft_printf("cycle_to_dump : |%zu|\n", arg.dump_value);
+	}
+	/*ft_printf("cycle_to_dump : |%zu|\n", arg.dump_value);
 	i = 0;
 	while (i < arg.nbr_player)
 	{
@@ -139,7 +156,7 @@ int	main(int argc, char **argv)
 		ft_printf("valeur n : |%d|\n", arg.value[i]);
 		ft_printf("fichier  : |%s|\n\n", arg.file[i]);
 		i += 1;
-	}
+	}*/
 	dump_memory(&vm, 64);
 	access_all_players(&vm);
 	access_all_processes(&vm);
