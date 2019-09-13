@@ -12,6 +12,7 @@
 
 #include <stdlib.h>
 #include <unistd.h>
+#include <stdio.h>
 #include "corewar.h"
 #include "libft.h"
 
@@ -24,17 +25,64 @@ int	print_usage(void)
 	return (-1);
 }
 
+void	arg_error_message(t_argument *arg)
+{
+	if (!arg->err && arg->nbr_player < 2)
+	{
+		ft_dprintf(STDERR_FILENO, "Error: Not enough players.\n");
+		return ;
+	}
+	ft_dprintf(STDERR_FILENO,"Error: Argument %d '%s':\n", arg->i,
+		arg->i < arg->ac ? arg->av[arg->i] : "");
+	if (arg->err == ERR_NOT_A_COR)
+		ft_dprintf(STDERR_FILENO,"Expected a .cor file.\n");
+	else if (arg->err == ERR_TWO_DUMP)
+		ft_dprintf(STDERR_FILENO,"Cannot have more than one -dump.\n");
+	else if (arg->err == ERR_NEGATIVE)
+		ft_dprintf(STDERR_FILENO,"Expected a positive value.\n");
+	else if (arg->err == ERR_TOO_BIG)
+		ft_dprintf(STDERR_FILENO,"Number out of range.\n");
+	else if (arg->err == ERR_NOT_A_NUM)
+		ft_dprintf(STDERR_FILENO,"Expected a number.\n");
+	else if (arg->err == ERR_MISS_AV)
+		ft_dprintf(STDERR_FILENO,"Missing argument.\n");
+	else if (arg->err == ERR_TOO_MANY)
+		ft_dprintf(STDERR_FILENO,"Too many players.\n");
+	else if (arg->err == ERR_INVALID)
+		ft_dprintf(STDERR_FILENO,"Invalid argument.\n");
+	else if (arg->err == ERR_DUPLICATE)
+		ft_dprintf(STDERR_FILENO,"Players cannot share the same ID.\n");
+}
+
+void	vm_error_message(t_vm *vm)
+{
+	ft_dprintf(STDERR_FILENO, "Error: file '%s':\n", vm->strerr);
+	if (vm->err == ERR_OPEN)
+		ft_dprintf(STDERR_FILENO, "Could not open file.\n");
+	else if (vm->err == ERR_CLOSE)
+		ft_dprintf(STDERR_FILENO, "Could not close file.\n");
+	else if (vm->err == ERR_NAME || vm->err == ERR_COMMENT
+			|| vm->err == ERR_CODE)
+		ft_dprintf(STDERR_FILENO, "File is either unreadable or too short\n");
+	else if (vm->err == ERR_MAGIC)
+		ft_dprintf(STDERR_FILENO, ".cor identifier missing\n");
+	else if (vm->err == ERR_MAX_SIZE)
+		ft_dprintf(STDERR_FILENO, "Code is too large\n");
+	else if (vm->err == ERR_MEMORY)
+		ft_dprintf(STDERR_FILENO, "Not enought memory\n");
+}
+
 int		set_no_n_option(t_argument *arg)
 {
 	int	i;
-	int	k;
+	int	j;
 
-	k = -1;
+	j = -1;
 	i = arg->nbr_player + 1;
 	while (--i > 0)
 		if (arg->n_option[i - 1] == 0)
-			arg->value[i - 1] = k--;
-	return (k);
+			arg->value[i - 1] = j--;
+	return (j);
 }
 
 int	check_duplicate_id(t_argument *arg)
@@ -45,6 +93,7 @@ int	check_duplicate_id(t_argument *arg)
 
 	id = set_no_n_option(arg);
 	i = arg->nbr_player;
+	arg->err = ERR_DUPLICATE;
 	while (--i > 0)
 	{
 		j = 0;
@@ -53,10 +102,7 @@ int	check_duplicate_id(t_argument *arg)
 			if (arg->value[i] == arg->value[j])
 			{
 				if (arg->n_option[j] == 1 && arg->n_option[i] == 1)
-				{
-					arg->err = ERR_DUPLICATE;
 					return (TRUE);
-				}
 				arg->value[arg->n_option[j] == 0 ? j : i] = id--;
 				i = arg->nbr_player;
 				break ;
@@ -64,6 +110,7 @@ int	check_duplicate_id(t_argument *arg)
 			j += 1;
 		}
 	}
+	arg->err = 0;
 	return (FALSE);
 }
 
@@ -74,37 +121,38 @@ int	get_argument_data(t_argument *arg, int argc, char **argv)
 	arg->av = argv;
 	arg->dump_option = FALSE;
 	ft_memset(&(arg->n_option), FALSE, sizeof(arg->n_option));
-	if (parser(arg) == SUCCESS && check_duplicate_id(arg) == FALSE)
-	{
-		if (arg->nbr_player < 2)
-		{
-			ft_dprintf(STDERR_FILENO, "Error: Not enough players.\n");
-			return (FAILURE);
-		}
+	if (argument_parser(arg) == SUCCESS
+			&& check_duplicate_id(arg) == FALSE
+			&& arg->nbr_player >= 2)
 		return (SUCCESS);
-	}
-	ft_dprintf(STDERR_FILENO,"Error: Argument %d", arg->i);
-	if (arg->i < arg->ac)
-		ft_dprintf(STDERR_FILENO, " '%s'", arg->av[arg->i]);
-	if (arg->err == ERR_NOT_A_COR)
-		ft_dprintf(STDERR_FILENO,": Expected a .cor file.\n");
-	else if (arg->err == ERR_TWO_DUMP)
-		ft_dprintf(STDERR_FILENO,": Cannot have more than one -dump.\n");
-	else if (arg->err == ERR_NEGATIVE)
-		ft_dprintf(STDERR_FILENO,": Expected a positive value.\n");
-	else if (arg->err == ERR_TOO_BIG)
-		ft_dprintf(STDERR_FILENO,": Number out of range.\n");
-	else if (arg->err == ERR_NOT_A_NUM)
-		ft_dprintf(STDERR_FILENO,": Expected a number.\n");
-	else if (arg->err == ERR_MISS_AV)
-		ft_dprintf(STDERR_FILENO,": Missing argument.\n");
-	else if (arg->err == ERR_TOO_MANY)
-		ft_dprintf(STDERR_FILENO,": Too many players.\n");
-	else if (arg->err == ERR_INVALID)
-		ft_dprintf(STDERR_FILENO,": Invalid argument.\n");
-	else if (arg->err == ERR_DUPLICATE)
-		ft_dprintf(STDERR_FILENO,": Players cannot share the same ID.\n");
+	arg_error_message(arg);
 	return (FAILURE);
+}
+
+void	vm_set_player_id(t_vm *vm, t_argument *arg)
+{
+	int		val;
+	size_t	j;
+
+	j = 0;
+	while (j < MAX_PLAYERS)
+	{
+		vm->player[j].id = arg->value[j];
+		j++;
+	}
+	j = 0;
+	val = 0;
+	while (j < MAX_PLAYERS)
+	{
+		if (val == vm->player[j++].id)
+		{
+			val++;
+			j = 0;
+		}
+	}
+	j = 0;
+	while (j < MEM_SIZE)
+		vm->ram[j++].player_last = val;
 }
 
 int	put_data_in_vm(t_vm *vm, t_argument *arg)
@@ -112,18 +160,21 @@ int	put_data_in_vm(t_vm *vm, t_argument *arg)
 	size_t	pc;
 
 	ft_bzero(vm, sizeof(*vm));
+	vm_set_player_id(vm, arg);
 	while (vm->player_total < arg->nbr_player)
 	{
+		vm->player[vm->player_total].id = arg->value[vm->player_total];
 		if (read_cor(arg, vm) == FAILURE)
 		{
-			ft_dprintf(STDERR_FILENO, "Error: invalid .cor file\n");
+			vm_error_message(vm);
 			return (FAILURE);
 		}
 		pc = vm->player_total * MEM_SIZE / arg->nbr_player;
-		vm->player[vm->player_total].id = arg->value[vm->player_total];
 		if (create_process(vm, pc, vm->player[vm->player_total].id) == FAILURE)
 		{
-			ft_dprintf(STDERR_FILENO, "Error: Not enough memory\n");
+			vm->err = ERR_MEMORY;
+			vm->strerr = arg->file[vm->player_total];
+			vm_error_message(vm);
 			return (FAILURE);
 		}
 		vm->process->pc = pc;

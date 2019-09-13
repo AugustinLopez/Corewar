@@ -44,6 +44,9 @@
 # define ERR_READ		9
 # define ERR_LSEEK		10
 
+# define FILE_EXT ".cor"
+# define EXT_LENGTH 4
+
 typedef uint8_t			t_bool;
 
 typedef struct			t_argument
@@ -106,6 +109,7 @@ typedef struct			s_ram
 	size_t				write_total;
 	size_t				cycle_last;
 	int					player_last;
+	t_bool				process;
 	uint8_t				byte;
 }						t_ram;
 
@@ -145,9 +149,9 @@ typedef struct			s_vm
 	uint8_t				player_total;
 }						t_vm;
 
-int						parser(t_argument *arg);
+int						argument_parser(t_argument *arg);
 
-void	dump_memory(t_vm *vm, int x);
+void	dump_memory(t_vm *vm, size_t x);
 void	access_all_processes(t_vm *vm);
 void	access_all_players(t_vm *vm);
 void	free_all_players(t_vm *vm);
@@ -156,5 +160,4 @@ int		init_process(t_vm *vm);
 int		create_process(t_vm *vm, size_t pc, int player_id);
 void	free_all_processes(t_vm *vm);
 int		read_cor(t_argument *arg, t_vm *vm);
-int		set_error(t_argument *arg, int err, int ac_err);
 #endif

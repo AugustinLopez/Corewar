@@ -68,12 +68,14 @@ int		read_file(t_argument *arg, t_vm *vm, int fd)
 			|| (ret = read(fd, buffer, CHAMP_MAX_SIZE + 1)) < 0)
 		return (vm_set_error(vm, ERR_CODE, arg->file[vm->player_total]));
 	if (ret > CHAMP_MAX_SIZE)
-		return (vm_set_error(vm, ERR_TOO_BIG, arg->file[vm->player_total]));
+		return (vm_set_error(vm, ERR_MAX_SIZE, arg->file[vm->player_total]));
 	i = 0;
 	j = vm->player_total * MEM_SIZE / arg->nbr_player;
+	vm->ram[j].process = TRUE;
 	while (i < ret)
 	{
 		j %= MEM_SIZE;
+		vm->ram[j].player_last = vm->player[vm->player_total].id;
 		vm->ram[j++].byte = (unsigned char)buffer[i++];
 	}
 	return (SUCCESS);

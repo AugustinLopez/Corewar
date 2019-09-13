@@ -13,6 +13,7 @@
 #include "corewar.h"
 #include "libft.h"
 #include <stdlib.h>
+#include <unistd.h>
 
 void	free_all_processes(t_vm *vm)
 {
@@ -158,43 +159,30 @@ void	access_all_processes(t_vm *vm)
 	}
 }
 
-void	dump_memory(t_vm *vm, int x)
+void	dump_memory(t_vm *vm, size_t x)
 {
 	size_t	i;
 
 	i = 0;
+	ft_printf("%d %d\n", vm->ram[i].player_last, vm->player[0].id);
 	while (i < MEM_SIZE)
 	{
+		ft_putstr(FT_BOLD);
+		if (vm->ram[i].process == TRUE)
+			ft_putstr(FT_REV);
+		if (vm->ram[i].player_last == vm->player[0].id)
+			ft_putstr(FT_LRED);
+		else if (vm->ram[i].player_last == vm->player[1].id)
+			ft_putstr(FT_LBLUE);
+		else if (vm->ram[i].player_last == vm->player[2].id)
+			ft_putstr(FT_LGREEN);
+		else if (vm->ram[i].player_last == vm->player[3].id)
+			ft_putstr(FT_LYELLOW);
+		ft_printf("%02x%s", vm->ram[i].byte, FT_EOC);
 		if (i % x == x - 1)
-			ft_printf("%02x\n", vm->ram[i].byte);
+			write(1, "\n", 1);
 		else
-			ft_printf("%02x ", vm->ram[i].byte);
+			write(1, " ", 1);
 		++i;
 	}
 }
-/*
-int	main(void)
-{
-	t_vm	vm;
-	char	*n1 = ft_strdup("test1");
-	char	*n2 = ft_strdup("test2");
-	char	*c1 = ft_strdup("Hello World");
-	char	*c2 = ft_strdup("");
-
-	ft_bzero(&vm, sizeof(vm));
-	if (init_player(&vm, 100, n1, c1) == SUCCESS)
-	{
-		if (init_player(&vm, 2, n2, c2) == SUCCESS)
-		{
-			if (init_process(&vm) == SUCCESS)
-				create_process(&vm, 15, vm.process->player_id);
-		}
-	}
-	access_all_players(&vm);
-	access_all_processes(&vm);
-	dump_memory(&vm, 64);
-	free_all_players(&vm);
-	free_all_processes(&vm);
-	ft_printf("Sizeof(vm) = %zu\n", sizeof(vm));
-	return (0);
-}*/

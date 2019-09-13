@@ -14,55 +14,50 @@ NAME_ASM=asm
 NAME_VM=corewar
 COMPILER=gcc
 FLAGS=-g3 -Wall -Wextra -Werror
-CC=gcc $(FLAGS)
+CC_OBJ=gcc $(FLAGS) -MMD -MP -c -I$(PATH_HDR) -L$(PATH_LIB)
+CC_EXE=gcc $(FLAGS) -I$(PATH_HDR) -L$(PATH_LIB)
 
 # --- 1.Source/Header ----------------------------------------------------------
 
 SOURCE_ASM=asm_main
 SOURCE_VM=vm_main vm_parser lib read_cor
-HEADER_ASM=libft
-HEADER_VM=libft corewar op
 LIBFT=$(PATH_LIB)libft.a
 
-# --- 2.Path -------------------------------------------------------------------
+# --- 2.Path/Object ------------------------------------------------------------
 
 PATH_HDR=./includes/
 PATH_LIB=./libft/
+PATH_OBJ=./.object/
+VPATH=srcs:
 
-PATH_ASM=./srcs/
-SRC_ASM=$(SOURCE_ASM:%=$(PATH_ASM)%.c)
-OBJ_ASM=$(SRC_ASM:%.c=%.o)
-HDR_ASM=$(HEADER_ASM:%=$(PATH_HDR)%.h)
-
-PATH_VM=./srcs/
-SRC_VM=$(SOURCE_VM:%=$(PATH_VM)%.c)
-OBJ_VM=$(SRC_VM:%.c=%.o)
-HDR_VM=$(HEADER_VM:%=$(PATH_HDR)%.h)
-
+OBJ_ASM=$(SOURCE_ASM:%=$(PATH_OBJ)%.o)
+OBJ_VM=$(SOURCE_VM:%=$(PATH_OBJ)%.o)
+OBJ=$(OBJ_VM) $(OBJ_ASM)
+DEPS=$(OBJ_VM:%.o=%.d)
 
 # --- 4.Rules ------------------------------------------------------------------
 
 all: $(LIBFT) $(NAME_VM)
 
-$(NAME_ASM): $(OBJ_ASM) $(HDR_ASM)
+$(NAME_ASM): $(OBJ_ASM)
 	-@printf " ===> Creating $(NAME_ASM)\n"
-	@$(CC) -o $(NAME_ASM) -I$(PATH_HDR) $(OBJ_ASM) -L$(PATH_LIB) -lft
+	@$(CC_EXE) -o $(NAME_ASM) $(OBJ_ASM) -lft
 
-$(NAME_VM): $(OBJ_VM) $(HDR_VM)
+$(NAME_VM): $(OBJ_VM)
 	-@printf " ===> Creating $(NAME_VM)\n"
-	@$(CC) -o $(NAME_VM) -I$(PATH_HDR) $(OBJ_VM) -L$(PATH_LIB) -lft
+	@$(CC_EXE) -o $(NAME_VM) $(OBJ_VM) -lft
 
 $(LIBFT):
 	-@printf " ===> Creating $(LIBFT)\n"
 	@make -C $(PATH_LIB)
 
-%.o:%.c $(HDR_ASM) $(HDR_VM)
-	-@printf " >O $(FLAGS) $@\n"
-	@$(CC) -I$(PATH_HDR) -c $< -o $@ 
+$(PATH_OBJ)%.o:%.c
+	-@printf " >O $(FLAGS) $*\n"
+	@$(CC_OBJ) $< -o $@ -lft
 
 clean:
 	-@printf " ===> Removing object file(s)\n"
-	@rm -f $(OBJ_ASM) $(OBJ_VM)
+	@rm -f $(OBJ) $(DEPS)
 	@make clean -C $(PATH_LIB) >> /dev/null
 
 fclean: clean
@@ -73,3 +68,5 @@ fclean: clean
 re: fclean all
 
 .PHONY: all clean fclean re
+
+-include $(DEPS)
