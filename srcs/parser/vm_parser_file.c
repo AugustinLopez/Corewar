@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   read_cor.c                                         :+:      :+:    :+:   */
+/*   vm_parser_file.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bcarlier <bcarlier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/11 15:40:40 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/09/12 18:47:41 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/16 11:54:38 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,8 @@
 #include "corewar.h"
 #include <unistd.h>
 #include <fcntl.h>
-#include <stdlib.h>
 
-int		vm_set_error(t_vm *vm, int err, char *strerr)
-{
-	vm->err = err;
-	vm->strerr = strerr;
-	return (FAILURE);
-}
-
-int		read_player(t_argument *arg, t_vm *vm, int fd)
+static inline int	read_player(t_argument *arg, t_vm *vm, int fd)
 {
 	char	buffer[PROG_NAME_LENGTH + MAGIC_LENGTH + 1];
 	int		i;
@@ -39,7 +31,7 @@ int		read_player(t_argument *arg, t_vm *vm, int fd)
 	return (SUCCESS);
 }
 
-int		read_comment(t_argument *arg, t_vm *vm, int fd)
+static inline int	read_comment(t_argument *arg, t_vm *vm, int fd)
 {
 	char	buffer[COMMENT_LENGTH + 1];
 	int		i;
@@ -54,7 +46,7 @@ int		read_comment(t_argument *arg, t_vm *vm, int fd)
 	return (SUCCESS);
 }
 
-int		read_file(t_argument *arg, t_vm *vm, int fd)
+static inline int	read_file(t_argument *arg, t_vm *vm, int fd)
 {
 	char	buffer[CHAMP_MAX_SIZE + 2];
 	size_t	j;
@@ -81,7 +73,7 @@ int		read_file(t_argument *arg, t_vm *vm, int fd)
 	return (SUCCESS);
 }
 
-int		read_cor(t_argument *arg, t_vm *vm)
+static inline int	read_cor(t_argument *arg, t_vm *vm)
 {
 	int			fd;
 
@@ -95,5 +87,30 @@ int		read_cor(t_argument *arg, t_vm *vm)
 		return (FAILURE);
 	if (close(fd))
 		(void)vm_set_error(vm, ERR_CLOSE, arg->file[vm->player_total]);
+	return (SUCCESS);
+}
+
+int					file_parser(t_vm *vm, t_argument *arg)
+{
+	size_t	pc;
+
+	ft_bzero(vm, sizeof(*vm));
+	vm_set_null_id(vm, arg);
+	while (vm->player_total < arg->nbr_player)
+	{
+		vm->player[vm->player_total].id = arg->value[vm->player_total];
+		if (read_cor(arg, vm) == FAILURE)
+			return (FAILURE);
+		pc = vm->player_total * MEM_SIZE / arg->nbr_player;
+		if (create_process(vm, pc, vm->player[vm->player_total].id) == FAILURE)
+		{
+			vm->err = ERR_MEMORY;
+			vm->strerr = arg->file[vm->player_total];
+			return (FAILURE);
+		}
+		vm->process->pc = pc;
+		vm->process->r[0] = (vm->player[vm->player_total]).id;
+		vm->player_total += 1;
+	}
 	return (SUCCESS);
 }

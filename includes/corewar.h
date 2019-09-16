@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 10:30:28 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/12 17:48:32 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/16 12:20:50 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@
 
 typedef uint8_t			t_bool;
 
-typedef struct			t_argument
+typedef struct			s_argument
 {
 	char				*file[MAX_PLAYERS];
 	char				**av;
@@ -149,15 +149,34 @@ typedef struct			s_vm
 	uint8_t				player_total;
 }						t_vm;
 
-int						argument_parser(t_argument *arg);
+int						parser(t_vm *vm, int argc, char **argv);
 
-void	dump_memory(t_vm *vm, size_t x);
-void	access_all_processes(t_vm *vm);
-void	access_all_players(t_vm *vm);
-void	free_all_players(t_vm *vm);
-int		init_player(t_vm *vm, int index, char *name, char *comment);
-int		init_process(t_vm *vm);
-int		create_process(t_vm *vm, size_t pc, int player_id);
-void	free_all_processes(t_vm *vm);
-int		read_cor(t_argument *arg, t_vm *vm);
+/*
+** ARGV_PARSER
+*/
+
+int						argv_parser(t_argument *arg, int argc, char **argv);
+int						handle_duplicate_id(t_argument *arg);
+int						arg_set_error(t_argument *arg, int err, int ac_err);
+int						arg_atoi(t_argument *arg, const char *src);
+size_t					arg_atozu(t_argument *arg, const char *src);
+
+/*
+** FILE_PARSER
+*/
+
+int						file_parser(t_vm *vm, t_argument *arg);
+int						vm_set_error(t_vm *vm, int err, char *strerr);
+void					vm_set_null_id(t_vm *vm, t_argument *arg);
+
+void					dump_memory(t_vm *vm, size_t x);
+void					access_all_processes(t_vm *vm);
+void					access_all_players(t_vm *vm);
+void					free_all_players(t_vm *vm);
+int						init_player(t_vm *vm, int index, char *name,
+						char *comment);
+int						init_process(t_vm *vm);
+int						create_process(t_vm *vm, size_t pc, int player_id);
+void					free_all_processes(t_vm *vm);
+int						read_cor(t_argument *arg, t_vm *vm);
 #endif

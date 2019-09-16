@@ -6,7 +6,7 @@
 #    By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/09/09 14:31:41 by aulopez           #+#    #+#              #
-#    Updated: 2019/09/12 17:50:41 by aulopez          ###   ########.fr        #
+#    Updated: 2019/09/16 11:46:59 by aulopez          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,13 +14,19 @@ NAME_ASM=asm
 NAME_VM=corewar
 COMPILER=gcc
 FLAGS=-g3 -Wall -Wextra -Werror
-CC_OBJ=gcc $(FLAGS) -MMD -MP -c -I$(PATH_HDR) -L$(PATH_LIB)
+CC_OBJ=gcc $(FLAGS) -MMD -MP -c -I$(PATH_HDR)
 CC_EXE=gcc $(FLAGS) -I$(PATH_HDR) -L$(PATH_LIB)
 
 # --- 1.Source/Header ----------------------------------------------------------
 
 SOURCE_ASM=asm_main
-SOURCE_VM=vm_main vm_parser lib read_cor
+SOURCE_VM=	vm_main \
+			vm_parser_main \
+			vm_parser_argv \
+			vm_parser_argv_2 \
+			vm_parser_file \
+			vm_parser_file_2 \
+			lib
 LIBFT=$(PATH_LIB)libft.a
 
 # --- 2.Path/Object ------------------------------------------------------------
@@ -28,7 +34,7 @@ LIBFT=$(PATH_LIB)libft.a
 PATH_HDR=./includes/
 PATH_LIB=./libft/
 PATH_OBJ=./.object/
-VPATH=srcs:
+VPATH=srcs:srcs/parser
 
 OBJ_ASM=$(SOURCE_ASM:%=$(PATH_OBJ)%.o)
 OBJ_VM=$(SOURCE_VM:%=$(PATH_OBJ)%.o)
@@ -53,7 +59,7 @@ $(LIBFT):
 
 $(PATH_OBJ)%.o:%.c
 	-@printf " >O $(FLAGS) $*\n"
-	@$(CC_OBJ) $< -o $@ -lft
+	@$(CC_OBJ) $< -o $@
 
 clean:
 	-@printf " ===> Removing object file(s)\n"

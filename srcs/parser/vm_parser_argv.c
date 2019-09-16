@@ -1,80 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vm_parser.c                                        :+:      :+:    :+:   */
+/*   vm_parser_argv.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bcarlier <bcarlier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/09 19:02:24 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/09/12 17:04:09 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/16 11:55:58 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include <unistd.h>
-#include <limits.h>
 #include "corewar.h"
 #include "libft.h"
 
-size_t	arg_atozu(t_argument *arg, const char *src)
-{
-	size_t	ui;
-
-	if (*src == '+')
-		++src;
-	if (!*src)
-		arg->err = ERR_NOT_A_NUM;
-	ui = 0;
-	while ('0' <= *src && *src <= '9' && ui < POW10_LOG_SIZE_MAX / 10)
-		ui = ui * 10 + *(src++) - '0';
-	if ('0' <= *src && *src <= '9')
-	{
-		if (ui > SIZE_MAX / 10
-			|| (ui == SIZE_MAX / 10 && (size_t)(*src - '0') > SIZE_MAX % 10))
-		{
-			arg->err = ERR_TOO_BIG;
-			return (-1);
-		}
-		ui = ui * 10 + *src++ - '0';
-	}
-	if ('0' <= *src && *src <= '9')
-		arg->err = ERR_TOO_BIG;
-	else if (*src)
-		arg->err = ERR_NOT_A_NUM;
-	return (ui);
-}
-
-int	arg_atoi(t_argument *arg, const char *src)
-{
-	uint8_t			minus;
-	unsigned long	ui;
-
-	ui = 0;
-	minus = (*src == '-') ? 1 : 0;
-	if (*src == '-' || *src == '+')
-		++src;
-	if (!*src)
-		arg->err = ERR_NOT_A_NUM;
-	while ('0' <= *src && *src <= '9' && ui < (unsigned)(INT_MAX) + minus)
-		ui = ui * 10 + *(src++) - '0';
-	if (ui > (unsigned)INT_MAX + minus
-			|| (ui == (unsigned)INT_MAX + minus && '0' <= *src && *src <= '9'))
-		arg->err = ERR_TOO_BIG;
-	else if (*src != '\0')
-		arg->err = ERR_NOT_A_NUM;
-	if (minus == 1)
-		return (-ui);
-	return (ui);
-}
-
-int	arg_set_error(t_argument *arg, int err, int ac_err)
-{
-	arg->err = err;
-	arg->i = ac_err;
-	return (FAILURE);
-}
-
-int	parse_cor(t_argument *arg, char *s, int *i)
+static inline int	parse_cor(t_argument *arg, char *s, int *i)
 {
 	if (s[EXT_LENGTH])
 		return (arg_set_error(arg, ERR_NOT_A_COR, *i));
@@ -90,7 +29,7 @@ int	parse_cor(t_argument *arg, char *s, int *i)
 ** 9223372036854775807
 */
 
-int	parse_dump(t_argument *arg, int *i)
+static inline int	parse_dump(t_argument *arg, int *i)
 {
 	if (arg->dump_option == TRUE)
 		return (arg_set_error(arg, ERR_TWO_DUMP, *i));
@@ -109,7 +48,7 @@ int	parse_dump(t_argument *arg, int *i)
 ** 2147483647
 */
 
-int	parse_n(t_argument *arg, int *i)
+static inline int	parse_n(t_argument *arg, int *i)
 {
 	char	*s;
 
@@ -130,11 +69,11 @@ int	parse_n(t_argument *arg, int *i)
 	return (SUCCESS);
 }
 
-int	argument_parser(t_argument *arg)
+static inline int	argv_parser_iterate(t_argument *arg)
 {
 	char	*s;
 	int		ret;
-	
+
 	arg->i = 0;
 	while (++(arg->i) < arg->ac)
 	{
@@ -150,4 +89,18 @@ int	argument_parser(t_argument *arg)
 			return (FAILURE);
 	}
 	return (SUCCESS);
+}
+
+int					argv_parser(t_argument *arg, int argc, char **argv)
+{
+	ft_bzero(arg, sizeof(*arg));
+	arg->ac = argc;
+	arg->av = argv;
+	arg->dump_option = FALSE;
+	ft_memset(&(arg->n_option), FALSE, sizeof(arg->n_option));
+	if (argv_parser_iterate(arg) == SUCCESS
+			&& handle_duplicate_id(arg) == FALSE
+			&& arg->nbr_player >= 2)
+		return (SUCCESS);
+	return (FAILURE);
 }
