@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 10:30:28 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/16 12:20:50 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/16 12:37:30 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,5 +178,4 @@ int						init_player(t_vm *vm, int index, char *name,
 int						init_process(t_vm *vm);
 int						create_process(t_vm *vm, size_t pc, int player_id);
 void					free_all_processes(t_vm *vm);
-int						read_cor(t_argument *arg, t_vm *vm);
 #endif

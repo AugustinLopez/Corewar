@@ -6,13 +6,14 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/16 11:28:10 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/16 11:55:41 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/16 12:36:55 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "corewar.h"
 #include "libft.h"
 #include <unistd.h>
+#include <errno.h>
 
 static inline void	print_usage(void)
 {
@@ -24,6 +25,7 @@ static inline void	print_usage(void)
 
 static inline void	arg_error_message(t_argument *arg)
 {
+	ft_dprintf(STDERR_FILENO, "Errno code: %d\n", errno);
 	if (!arg->err && arg->nbr_player < 2)
 	{
 		ft_dprintf(STDERR_FILENO, "Error: Not enough players.\n");
@@ -53,6 +55,7 @@ static inline void	arg_error_message(t_argument *arg)
 
 static inline void	vm_error_message(t_vm *vm)
 {
+	ft_dprintf(STDERR_FILENO, "Errno code: %d\n", errno);
 	ft_dprintf(STDERR_FILENO, "Error: file '%s':\n", vm->strerr);
 	if (vm->err == ERR_OPEN)
 		ft_dprintf(STDERR_FILENO, "Could not open file.\n");
@@ -66,7 +69,7 @@ static inline void	vm_error_message(t_vm *vm)
 	else if (vm->err == ERR_MAX_SIZE)
 		ft_dprintf(STDERR_FILENO, "Code is too large\n");
 	else if (vm->err == ERR_MEMORY)
-		ft_dprintf(STDERR_FILENO, "Not enought memory\n");
+		ft_dprintf(STDERR_FILENO, "Not enough memory\n");
 }
 
 int					parser(t_vm *vm, int argc, char **argv)

@@ -6,7 +6,7 @@
 /*   By: bcarlier <bcarlier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/11 15:40:40 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/09/16 11:54:38 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/16 12:35:09 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,8 +85,14 @@ static inline int	read_cor(t_argument *arg, t_vm *vm)
 		return (FAILURE);
 	else if (read_file(arg, vm, fd) == FAILURE)
 		return (FAILURE);
-	if (close(fd))
-		(void)vm_set_error(vm, ERR_CLOSE, arg->file[vm->player_total]);
+	if (close(fd) == -1)
+	{
+		vm_set_error(vm, ERR_CLOSE, arg->file[vm->player_total]);
+		ft_dprintf(STDERR_FILENO, "Warning: file '%s':\n", vm->strerr);
+		ft_dprintf(STDERR_FILENO, "Could not close file.\n");
+		vm->err = 0;
+		vm->strerr = NULL;
+	}
 	return (SUCCESS);
 }
 
