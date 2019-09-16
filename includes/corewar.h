@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 10:30:28 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/16 12:37:30 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/16 15:05:03 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@
 
 # define FAILURE		0
 # define SUCCESS		1
+
+# define CANT_PROCESS	-1
 
 # define ERR_NOT_A_COR	1
 # define ERR_TWO_DUMP	2
@@ -97,7 +99,7 @@ typedef struct			s_process
 	uint32_t			player_id;
 	int					r[REG_NUMBER];
 	uint16_t			cycle_to_wait;
-	t_bool				carry;
+	uint8_t				carry;
 }						t_process;
 
 /*
@@ -116,7 +118,7 @@ typedef struct			s_ram
 typedef struct			s_player
 {
 	size_t				live_since_check;
-	size_t				live_last_cycle;
+	size_t				live_last;
 	size_t				live_total;
 	char				*name;
 	char				*comment;
