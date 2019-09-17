@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 14:53:07 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/16 14:05:14 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/17 11:27:08 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ int		create_process(t_vm *vm, size_t pc, int player_id)
 	tmp->next = vm->process;
 	if (vm->process)
 		vm->process->prev = tmp;
-	tmp->op.op = vm->ram[pc].byte;
 	vm->process = tmp;
 	return (SUCCESS);
 }
@@ -159,15 +158,39 @@ void	access_all_processes(t_vm *vm)
 	}
 }
 
+int		load_from_ram(t_vm *vm, t_process *process, int nbr)
+{
+	int		ret;
+	short	ret2;
+	size_t	addr;
+
+	addr = process->pc;
+	if (nbr == 1)
+		return (vm->ram[process->pc].byte);
+	if (nbr == 2)
+	{
+		ret2 = vm->ram[addr].byte << 8;
+		addr = (addr + 1) % MEM_SIZE;
+		ret2 |= vm->ram[addr].byte;
+		return (ret2);
+	}
+	ret = vm->ram[addr].byte << 24;
+	addr = (addr + 1) % MEM_SIZE;
+	ret |= vm->ram[addr].byte << 16;
+	addr = (addr + 1) % MEM_SIZE;
+	ret |= vm->ram[addr].byte << 8;
+	addr = (addr + 1) % MEM_SIZE;
+	ret |= vm->ram[addr].byte;
+	return (ret);
+}
+
 void	dump_memory(t_vm *vm, size_t x)
 {
 	size_t	i;
 
 	i = 0;
-	ft_printf("%d %d\n", vm->ram[i].player_last, vm->player[0].id);
 	while (i < MEM_SIZE)
 	{
-		ft_putstr(FT_BOLD);
 		if (vm->ram[i].process == TRUE)
 			ft_putstr(FT_REV);
 		if (vm->ram[i].player_last == vm->player[0].id)

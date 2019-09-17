@@ -6,41 +6,22 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/16 13:51:34 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/16 16:05:27 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/17 11:38:44 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "corewar.h"
 
-t_bool	second_is_register(t_vm *vm, t_process *process)
+int		failure_condition(t_process *process, t_bool r_to_r)
 {
-	if (((process->ocp >> 4) & 0x3) == REG_CODE)
-		return (TRUE);
-	return (FALSE);
-}
-
-void	modify_pc(t_process *process, t_bool *reg_to_reg)
-{
-	if (reg_to_reg == TRUE)
-		process->pc = (process->pc + 5) % MEM_SIZE;
-	else
-		process->pc = (process->pc + 7) % MEM_SIZE;
-}
-
-int		failure_condition(t_process *process)
-{
+	process->carry = 0;
 	if (process->op->p[0] > REG_NUMBER || process->op->p[0] <= 0)
-	{
+		return (FAILURE);
+	if (r_to_r && (process->op->p[1] > REG_NUMBER || process->op->p[1] <= 0))
 		process->carry = 0;
 		return (FAILURE);
-	}
-	if (reg_to_reg
-			&& (process->op->p[1] > REG_NUMBER || process->op->p[1] <= 0))
-	{
-		process->carry = 0;
-		return (FAILURE);
-	}
+	process->carry = 1;
 	return (SUCCESS);
 }
 
@@ -64,7 +45,6 @@ void	load_data(t_vm *vm, t_process *process, t_bool reg_to_reg, size_t addr)
 			mask >>= 2;
 			decal -= 2;
 		}
-		process->carry = 1;
 }
 
 int		op_st(t_vm *vm, t_process *process)
@@ -72,9 +52,10 @@ int		op_st(t_vm *vm, t_process *process)
 	t_bool	reg_to_reg;
 	size_t	addr;
 
-	reg_to_reg = second_is_register(vm, process);
+	reg_to_reg = (((process->ocp >> 4) & 0x3) == REG_CODE) ? TRUE : FALSE;
 	addr = (process->pc + (process->op->[1] % IDX_MOD)) % MEM_SIZE;
-	modify_pc(process, reg_to_reg);
+	process->pc = (reg_to_reg == TRUE)
+		? (process->pc + 5) % MEM_SIZE : (process->pc + 7) % MEM_SIZE;
 	if (failure_condition(process, reg_to_reg) == FAILURE)
 		return (FAILURE);
 	load_data(vm, process, reg_to_reg, addr);

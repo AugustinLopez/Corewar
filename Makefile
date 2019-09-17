@@ -6,7 +6,7 @@
 #    By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/09/09 14:31:41 by aulopez           #+#    #+#              #
-#    Updated: 2019/09/16 11:46:59 by aulopez          ###   ########.fr        #
+#    Updated: 2019/09/17 11:30:22 by aulopez          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,6 +26,7 @@ SOURCE_VM=	vm_main \
 			vm_parser_argv_2 \
 			vm_parser_file \
 			vm_parser_file_2 \
+			op_live \
 			lib
 LIBFT=$(PATH_LIB)libft.a
 
@@ -34,7 +35,7 @@ LIBFT=$(PATH_LIB)libft.a
 PATH_HDR=./includes/
 PATH_LIB=./libft/
 PATH_OBJ=./.object/
-VPATH=srcs:srcs/parser
+VPATH=srcs:srcs/parser:srcs/op
 
 OBJ_ASM=$(SOURCE_ASM:%=$(PATH_OBJ)%.o)
 OBJ_VM=$(SOURCE_VM:%=$(PATH_OBJ)%.o)

@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 10:30:28 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/16 15:05:03 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/17 11:31:33 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ typedef struct			s_argument
 
 typedef struct			s_instruction
 {
-	uint32_t			p[4];
+	int					p[4];
 	uint8_t				op;
 	uint8_t				ocp;
 }						t_instruction;
@@ -167,6 +167,13 @@ size_t					arg_atozu(t_argument *arg, const char *src);
 ** FILE_PARSER
 */
 
+/*
+** OP
+*/
+
+int						op_live_load(t_vm *vm, t_process *process);
+int						op_live_proceed(t_vm *vm, t_process *process);
+
 int						file_parser(t_vm *vm, t_argument *arg);
 int						vm_set_error(t_vm *vm, int err, char *strerr);
 void					vm_set_null_id(t_vm *vm, t_argument *arg);
@@ -180,4 +187,5 @@ int						init_player(t_vm *vm, int index, char *name,
 int						init_process(t_vm *vm);
 int						create_process(t_vm *vm, size_t pc, int player_id);
 void					free_all_processes(t_vm *vm);
+int						load_from_ram(t_vm *vm, t_process *process, int nbr);
 #endif

@@ -6,12 +6,13 @@
 /*   By: bcarlier <bcarlier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/09 19:02:24 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/09/16 13:53:23 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/17 11:52:29 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "corewar.h"
 #include "libft.h"
+#include <stdlib.h>
 
 /*const t_op				g_op_table[17] = {
 	{"live", 1, {T_DIR}, 1, 10, "alive", 0, 0},
@@ -39,13 +40,71 @@
 	{0, 0, {0}, 0, 0, 0, 0, 0}
 };
 */
+
+int	load_new_process(t_vm *vm, t_process *proc)
+{
+	vm->ram[proc->pc].process = FALSE;
+	proc->pc = (proc->pc + 1) % MEM_SIZE;
+	proc->op.op = vm->ram[proc->pc].byte;
+	if (proc->op.op == 1)
+		return (op_live_load(vm, proc));
+	return (FAILURE);
+}
+
+
+int	analyze_process(t_vm *vm, t_process *proc)
+{
+	if (proc->cycle_to_wait)
+	{
+		--(proc->cycle_to_wait);
+		return (SUCCESS);
+	}
+	if (proc->op.op == 0)
+		return (load_new_process(vm, proc));
+	if (proc->op.op == 1)
+		return (op_live_proceed(vm, proc));
+	else
+		return (load_new_process(vm, proc));
+}
+
+int	proceed_cycle(t_vm *vm)
+{
+	t_process *proc;
+
+	proc = vm->process;
+	while (proc)
+	{
+		(void)analyze_process(vm, proc);
+		proc = proc->next;
+	}
+	proc = vm->process;
+	while (proc)
+	{
+		vm->ram[proc->pc].process = TRUE;
+		proc = proc->next;
+	}
+	return (0);
+}
+
 int	main(int argc, char **argv)
 {
 	t_vm		vm;
+	char		*buff;
 
 	if (parser(&vm, argc, argv) == FAILURE)
 		return (-1);
 	dump_memory(&vm, 64);
+	while (ft_gnl(1, &buff, 0) > 0)
+	{
+		ft_printf("%sCycle %zu%s:\n", FT_UNDER, ++vm.cycle_total, FT_EOC);
+		(void)proceed_cycle(&vm);
+		dump_memory(&vm, 64);
+		free(buff);
+		buff = 0;
+	}
+	free(buff);
+	buff = 0;
+	//dump_memory(&vm, 64);
 	access_all_players(&vm);
 	access_all_processes(&vm);
 	free_all_players(&vm);
