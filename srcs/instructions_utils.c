@@ -6,7 +6,7 @@
 /*   By: bcarlier <bcarlier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/12 17:53:57 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/09/12 18:47:49 by bcarlier         ###   ########.fr       */
+/*   Updated: 2019/09/17 17:35:51 by bcarlier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -210,7 +210,7 @@ int		mask_in_byte(uint8_t op, uint8_t byte)
 	return (-1);
 }
 
-uint8_t	encode_op_to_ocp(uint8_t op, uint8_t next_byte)
+uint8_t	get_ocp(uint8_t op, uint8_t next_byte)
 {
 	int sum;
 	int jump_size;
@@ -231,29 +231,6 @@ uint8_t	encode_op_to_ocp(uint8_t op, uint8_t next_byte)
 			return (-1);
 		jump_size += mask_in_byte(op, sum >> ((i + 1) * 2));
 	}
-	/*
-	else if (op == 2 || op == 3 || op == 13) //2 ARG == 2 (mask pc+1)
-	{
-		if ((sum = (next_byte & 0xC0) >> 6) == 0)
-			return (-1);
-		jump_size = mask_in_byte(op, sum);
-		if ((sum = (next_byte & 0x30) >> 4) == 0)
-			return (-1);
-		jump_size += mask_in_byte(op, sum);
-	}
-	else //3 ARG == 3 (mask pc+1)
-	{
-		if ((sum = (next_byte & 0xC0) >> 6) == 0)
-			return (-1);
-		jump_size = mask_in_byte(op, sum);
-		if ((sum = (next_byte & 0x30) >> 4) == 0)
-			return (-1);
-		jump_size += mask_in_byte(op, sum);
-		if ((sum = (next_byte & 0xC) >> 2) == 0)
-			return (-1);
-		jump_size += mask_in_byte(op, sum);
-	}
-	*/
 	return (jump_size);
 }
 
@@ -268,7 +245,7 @@ int main(int ac, char **av)
 	{
 		j = ft_atoi(av[2]);
 		i = ft_atoi(av[1]);
-		ocp = encode_op_to_ocp(i, j);
+		ocp = get_ocp(i, j);
 		ft_printf("binaire du mask %08b\n", j);
 		ft_printf("DIR_CODE = 2\n");
 		ft_printf("IND_CODE = 3\n");

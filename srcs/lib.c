@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 14:53:07 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/17 11:27:08 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/17 17:35:56 by bcarlier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -208,4 +208,30 @@ void	dump_memory(t_vm *vm, size_t x)
 			write(1, " ", 1);
 		++i;
 	}
+}
+
+int		load_op(t_vm *vm, t_process *process, int nbr, size_t pc)
+{
+	int		ret;
+	short	ret2;
+	size_t	addr;
+
+	addr = pc;
+	if (nbr == 1)
+		return (vm->ram[pc].byte);
+	if (nbr == 2)
+	{
+		ret2 = vm->ram[addr].byte << 8;
+		addr = (addr + 1) % MEM_SIZE;
+		ret2 |= vm->ram[addr].byte;
+		return (ret2);
+	}
+	ret = vm->ram[addr].byte << 24;
+	addr = (addr + 1) % MEM_SIZE;
+	ret |= vm->ram[addr].byte << 16;
+	addr = (addr + 1) % MEM_SIZE;
+	ret |= vm->ram[addr].byte << 8;
+	addr = (addr + 1) % MEM_SIZE;
+	ret |= vm->ram[addr].byte;
+	return (ret);
 }
