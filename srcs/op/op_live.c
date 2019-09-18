@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/16 13:51:34 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/17 11:33:16 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/18 13:04:43 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@
 int		op_live_load(t_vm *vm, t_process *process)
 {
 	process->cycle_to_wait = 10 - 1;
-	process->op.p[0] = load_from_ram(vm, process, 4);
+	process->op.p[0] = load_from_ram(vm, process->pc, 4);
+	process->pc = (process->pc + 4) % MEM_SIZE;
 	return (SUCCESS);
 }
 

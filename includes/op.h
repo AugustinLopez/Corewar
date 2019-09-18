@@ -6,7 +6,7 @@
 /*   By: zaz <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2013/10/04 11:33:27 by zaz               #+#    #+#             */
-/*   Updated: 2019/09/16 14:29:32 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/18 12:54:06 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,21 +77,11 @@ typedef struct			s_header
 # define DECAL_COMMENT			8
 # define DECAL_PROG				4
 
+# define OFF_DIR_2				2
+# define OFF_DIR_4				4
+# define OFF_IND				2
+# define OFF_REG				1
+
 # define OP_LIVE				1
 # define OP_LD					2
-
-/*typedef struct				s_op
-{
-	char					*name;
-	unsigned int			ac;
-	unsigned int			argv[4];
-	unsigned int			id;
-	unsigned int			cycle;
-	char					*comment;
-	unsigned char			ocp;
-	unsigned char			direct_is_2;
-}							t_op;
-
-extern const t_op			g_op_table[17];
-*/
 #endif
