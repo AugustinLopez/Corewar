@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 10:30:28 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/18 14:26:19 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/18 15:13:21 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ typedef struct			s_argument
 typedef struct			s_instruction
 {
 	int					p[3];
+	int					ind[3];
 	uint8_t				op;
 	uint8_t				ocp;
 }						t_instruction;

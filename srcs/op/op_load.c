@@ -6,14 +6,14 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/18 13:10:27 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/18 14:13:26 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/18 15:24:39 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "corewar.h"
 
-static int insert_offset(t_process *proc, int nb_arg, int direct)
+static int insert_offset(t_vm *vm, t_process *proc, int nb_arg, int direct)
 {
 	int		i;
 	uint8_t	temp;
@@ -49,13 +49,19 @@ void	op_load_two(t_vm *vm, t_process *proc, uint16_t cycle)
 {
 	int	ret;
 	int	temp;
+	int	temp2;
 
 	proc->cycle_to_wait = cycle - 1;
 	proc->op.ocp = vm->ram[(proc->pc + 1) % MEM_SIZE].byte;
 	ret = insert_offset(proc, 2, 4);
 	temp = proc->op.p[0];
+	temp2 = proc->op.p[1];
 	proc->op.p[0] = load_from_ram(vm, proc->pc + 2, proc->op.p[0]);
 	proc->op.p[1] = load_from_ram(vm, proc->pc + 2 + temp, proc->op.p[1]);
+	if (temp == 2)
+		proc->op.ind[0] = load_from_ram(vm, proc->pc + proc->op.p[0], 4);
+	if (temp2 == 2)
+		proc->op.ind[1] = load_from_ram(vm, proc->pc + proc->op.p[1], 4);
 	proc->next_pc = (proc->pc + 2 + ret) % MEM_SIZE;
 }
 
@@ -64,15 +70,23 @@ void	op_load_three(t_vm *vm, t_process *proc, uint16_t cycle, uint8_t direct)
 	int	ret;
 	int	temp;
 	int	temp2;
+	int	temp3;
 
 	proc->cycle_to_wait = cycle - 1;
 	proc->op.ocp = vm->ram[(proc->pc + 1) % MEM_SIZE].byte;
 	ret = insert_offset(proc, 3, direct);
 	temp = proc->op.p[0];
-	temp2 = temp + proc->op.p[1];
+	temp2 = proc->op.p[1];
+	temp3 = proc->op.p[2];
 	proc->op.p[0] = load_from_ram(vm, proc->pc + 2, proc->op.p[0]);
 	proc->op.p[1] = load_from_ram(vm, proc->pc + 2 + temp, proc->op.p[1]);
-	proc->op.p[2] = load_from_ram(vm, proc->pc + 2 + temp2, proc->op.p[2]);
+	proc->op.p[2] = load_from_ram(vm, proc->pc + 2 + temp2 + temp, proc->op.p[2]);
+	if (temp == 2)
+		proc->op.ind[0] = load_from_ram(vm, proc->pc + proc->op.p[0], direct);
+	if (temp2 == 2)
+		proc->op.ind[2] = load_from_ram(vm, proc->pc + proc->op.p[2], direct);
+	if (temp3 == 2)
+		proc->op.ind[3] = load_from_ram(vm, proc->pc + proc->op.p[3], direct);
 	proc->next_pc = (proc->pc + 2 + ret) % MEM_SIZE;
 }
 
