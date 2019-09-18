@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 14:53:07 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/17 17:35:56 by bcarlier         ###   ########.fr       */
+/*   Updated: 2019/09/18 13:05:33 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,9 +144,8 @@ void	access_all_processes(t_vm *vm)
 			++i;
 		}
 		ft_printf("\t%sOperation%s:\t ", FT_UNDER, FT_EOC);
-		ft_printf("%02x %02x %02x %02x %02x %02x\n", tmp->op.op,
-			tmp->op.ocp, tmp->op.p[0], tmp->op.p[1], tmp->op.p[2], 
-			tmp->op.p[3]);
+		ft_printf("%02x %02x %02x %02x %02xx\n", tmp->op.op,
+			tmp->op.ocp, tmp->op.p[0], tmp->op.p[1], tmp->op.p[2]);
 		ft_printf("\t%sWait for:%s\t %zu\n",
 			FT_UNDER, FT_EOC, tmp->cycle_to_wait);
 		ft_printf("\t%sPC:%s\t\t %zu\n",
@@ -158,29 +157,27 @@ void	access_all_processes(t_vm *vm)
 	}
 }
 
-int		load_from_ram(t_vm *vm, t_process *process, int nbr)
+int		load_from_ram(t_vm *vm, size_t pc, int nbr)
 {
 	int		ret;
 	short	ret2;
-	size_t	addr;
 
-	addr = process->pc;
 	if (nbr == 1)
-		return (vm->ram[process->pc].byte);
+		return (vm->ram[pc].byte);
 	if (nbr == 2)
 	{
-		ret2 = vm->ram[addr].byte << 8;
-		addr = (addr + 1) % MEM_SIZE;
-		ret2 |= vm->ram[addr].byte;
+		ret2 = vm->ram[pc].byte << 8;
+		pc = (pc + 1) % MEM_SIZE;
+		ret2 |= vm->ram[pc].byte;
 		return (ret2);
 	}
-	ret = vm->ram[addr].byte << 24;
-	addr = (addr + 1) % MEM_SIZE;
-	ret |= vm->ram[addr].byte << 16;
-	addr = (addr + 1) % MEM_SIZE;
-	ret |= vm->ram[addr].byte << 8;
-	addr = (addr + 1) % MEM_SIZE;
-	ret |= vm->ram[addr].byte;
+	ret = vm->ram[pc].byte << 24;
+	pc = (pc + 1) % MEM_SIZE;
+	ret |= vm->ram[pc].byte << 16;
+	pc = (pc + 1) % MEM_SIZE;
+	ret |= vm->ram[pc].byte << 8;
+	pc = (pc + 1) % MEM_SIZE;
+	ret |= vm->ram[pc].byte;
 	return (ret);
 }
 
@@ -216,6 +213,7 @@ int		load_op(t_vm *vm, t_process *process, int nbr, size_t pc)
 	short	ret2;
 	size_t	addr;
 
+	(void)process;
 	addr = pc;
 	if (nbr == 1)
 		return (vm->ram[pc].byte);

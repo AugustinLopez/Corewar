@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 10:30:28 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/18 11:11:24 by bcarlier         ###   ########.fr       */
+/*   Updated: 2019/09/18 13:03:41 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,5 +189,5 @@ int						init_player(t_vm *vm, int index, char *name,
 int						init_process(t_vm *vm);
 int						create_process(t_vm *vm, size_t pc, int player_id);
 void					free_all_processes(t_vm *vm);
-int						load_from_ram(t_vm *vm, t_process *process, int nbr);
+int						load_from_ram(t_vm *vm, size_t pc, int nbr);
 #endif
