@@ -6,7 +6,7 @@
 #    By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/09/09 14:31:41 by aulopez           #+#    #+#              #
-#    Updated: 2019/09/17 11:30:22 by aulopez          ###   ########.fr        #
+#    Updated: 2019/09/18 14:26:31 by aulopez          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,6 +27,8 @@ SOURCE_VM=	vm_main \
 			vm_parser_file \
 			vm_parser_file_2 \
 			op_live \
+			op_load \
+			op_zjmp \
 			lib
 LIBFT=$(PATH_LIB)libft.a
 

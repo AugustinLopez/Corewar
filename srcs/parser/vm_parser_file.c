@@ -6,7 +6,7 @@
 /*   By: bcarlier <bcarlier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/11 15:40:40 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/09/16 12:35:09 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/18 14:06:05 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,7 @@ int					file_parser(t_vm *vm, t_argument *arg)
 			return (FAILURE);
 		}
 		vm->process->pc = pc;
+		vm->process->next_pc = pc;
 		vm->process->r[0] = (vm->player[vm->player_total]).id;
 		vm->player_total += 1;
 	}

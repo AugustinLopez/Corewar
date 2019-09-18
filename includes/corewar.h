@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 10:30:28 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/18 13:03:41 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/18 14:26:19 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,6 @@ typedef struct			s_argument
 typedef struct			s_instruction
 {
 	int					p[3];
-	int					offset;
 	uint8_t				op;
 	uint8_t				ocp;
 }						t_instruction;
@@ -94,6 +93,7 @@ typedef struct			s_process
 {
 	t_instruction		op;
 	size_t				pc;
+	size_t				next_pc;
 	struct s_process	*next;
 	struct s_process	*prev;
 	uint32_t			process_id;
@@ -169,23 +169,28 @@ size_t					arg_atozu(t_argument *arg, const char *src);
 ** FILE_PARSER
 */
 
+int						file_parser(t_vm *vm, t_argument *arg);
+int						vm_set_error(t_vm *vm, int err, char *strerr);
+void					vm_set_null_id(t_vm *vm, t_argument *arg);
+
 /*
 ** OP
 */
 
-int						op_live_load(t_vm *vm, t_process *process);
-int						op_live_proceed(t_vm *vm, t_process *process);
+void					load_process(t_vm *vm, t_process *proc);
+int						op_zjmp(t_process *proc);
+int						op_live(t_vm *vm, t_process *process);
 
-int						file_parser(t_vm *vm, t_argument *arg);
-int						vm_set_error(t_vm *vm, int err, char *strerr);
-void					vm_set_null_id(t_vm *vm, t_argument *arg);
+/*
+** OTHER
+*/
 
 void					dump_memory(t_vm *vm, size_t x);
 void					access_all_processes(t_vm *vm);
 void					access_all_players(t_vm *vm);
 void					free_all_players(t_vm *vm);
 int						init_player(t_vm *vm, int index, char *name,
-						char *comment);
+						char *comment); //?
 int						init_process(t_vm *vm);
 int						create_process(t_vm *vm, size_t pc, int player_id);
 void					free_all_processes(t_vm *vm);
