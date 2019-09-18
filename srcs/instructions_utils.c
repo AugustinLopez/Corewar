@@ -6,7 +6,7 @@
 /*   By: bcarlier <bcarlier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/12 17:53:57 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/09/17 17:35:51 by bcarlier         ###   ########.fr       */
+/*   Updated: 2019/09/18 12:50:09 by bcarlier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -208,6 +208,50 @@ int		mask_in_byte(uint8_t op, uint8_t byte)
 	else if (byte == 3)
 		return (2);
 	return (-1);
+}
+
+static int insert_offset(uint8_t ocp, t_process *proc, int nb_arg, int direct)
+{
+	int		i;
+	uint8_t	temp;
+	int		sum;
+
+	i = 0;
+	sum = 0;
+	while (i < nbr_arg)
+	{
+		temp = (ocp >> ((3 - i) * 2)) & 0x3;
+		if (temp == REG_CODE)
+			proc->op.p[i] = 1;
+		else if (temp == DIR_CODE)
+			proc->op.p[i] = direct;
+		else if (temp == IND_CODE)
+			proc->op.p[i] = 2;
+		else
+			proc->op.p[i] = 0;
+		sum += proc->op.p[i];
+		++i;
+	}
+	return (sum);
+}
+
+int	get_offset(uint8_t op, uint8_t ocp, t_process *proc)
+{
+	if (op == 0 || op > 16)
+		return (1);
+	if (op == 1)
+		return (5);
+	if (op == 9 || op == 12 || op == 15)
+		return (3);
+	if (op == 16)
+		return (2);
+	if (op == 2 || op == 3 || op == 13) //2 ARG, DIR == 4
+		return (insert_offset(ocp, proc, 2, 4));
+	if (4 <= op && op <= 8) //3 arg, dir == 4
+		return (insert_offset(ocp, proc, 3, 4));
+	if (op == 10 || op == 11 || op == 14) //3arg, dir == 2
+		return (insert_offset(ocp, proc, 3, 2));
+	return (0);
 }
 
 uint8_t	get_ocp(uint8_t op, uint8_t next_byte)

@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 10:30:28 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/17 11:31:33 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/18 11:11:24 by bcarlier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,8 @@ typedef struct			s_argument
 
 typedef struct			s_instruction
 {
-	int					p[4];
+	int					p[3];
+	int					offset;
 	uint8_t				op;
 	uint8_t				ocp;
 }						t_instruction;
@@ -100,6 +101,7 @@ typedef struct			s_process
 	int					r[REG_NUMBER];
 	uint16_t			cycle_to_wait;
 	uint8_t				carry;
+	t_bool				valid_ocp;
 }						t_process;
 
 /*

@@ -6,7 +6,7 @@
 /*   By: bcarlier <bcarlier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/17 12:11:12 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/09/17 17:35:30 by bcarlier         ###   ########.fr       */
+/*   Updated: 2019/09/18 12:50:06 by bcarlier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,19 +24,17 @@ int	op_ld_lld_load(t_vm *vm, t_process *proc)
 
 	proc->cycle_to_wait = proc->op == 13 ? 10 - 1: 5 - 1;
 	m = (proc->pc + 1) % MEM_SIZE;
-	proc->op.ocp = get_ocp(proc->op.op, vm->ram[m].byte);
-	if (proc->op.ocp == 3 && vm->ram[m].byte == 0xD0)
+	proc->op.offset = get_offset(proc->op.op, vm->ram[m].byte, proc);
+	if (vm->ram[m].byte == 0xD0 || vm->ram[m].byte == 0x90)
 	{
-		proc->op.p[0] == load_op(vm, proc, 2, (m + 1) % MEM_SIZE);
-		proc->op.p[1] == load_op(vm, proc, 1, (m + 3) % MEM_SIZE);
+		m += proc->op.p[0];
+		proc->op.p[0] == load_op(vm, proc, proc->op.p[0], m % MEM_SIZE);
+		m += proc->op.p[1];
+		proc->op.p[1] == load_op(vm, proc, proc->op.p[1], m % MEM_SIZE);
+		proc->valid_ocp = TRUE;
 		return (SUCCESS);
 	}
-	else if (proc->op.ocp == 5 && vm->ram[m].byte == 0x90)
-	{
-		proc->op.p[0] == load_op(vm, proc, 4, (m + 1) % MEM_SIZE);
-		proc->op.p[1] == load_op(vm, proc, 1, (m + 5) % MEM_SIZE);
-		return (SUCCESS);
-	}
+	proc->valid_ocp = FALSE;
 	return (FAILURE);
 }
 
