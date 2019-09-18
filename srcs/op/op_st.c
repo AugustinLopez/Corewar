@@ -3,62 +3,62 @@
 /*                                                        :::      ::::::::   */
 /*   op_st.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bcarlier <bcarlier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/16 13:51:34 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/17 11:38:44 by aulopez          ###   ########.fr       */
+/*   Created: 2019/09/18 16:37:25 by bcarlier          #+#    #+#             */
+/*   Updated: 2019/09/18 17:36:37 by bcarlier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "corewar.h"
 
-int		failure_condition(t_process *process, t_bool r_to_r)
+void	write_in_ram(t_vm *vm, t_process *proc, int number)
 {
-	process->carry = 0;
-	if (process->op->p[0] > REG_NUMBER || process->op->p[0] <= 0)
-		return (FAILURE);
-	if (r_to_r && (process->op->p[1] > REG_NUMBER || process->op->p[1] <= 0))
-		process->carry = 0;
-		return (FAILURE);
-	process->carry = 1;
-	return (SUCCESS);
+	char a;
+	char b;
+	char c;
+	char d;
+	int	addr;
+
+	addr = proc->pc + proc->op.p[1] % IDX_MOD;
+	a = (number >> 24) & 0xff;
+	b = (number >> 16) & 0xff;
+	c = (number >> 8) & 0xff;
+	d = (number >> 0) & 0xff;
+	vm->ram[(addr + 0) % MEM_SIZE].byte = a;
+	vm->ram[(addr + 0) % MEM_SIZE].write_total++;
+	vm->ram[(addr + 0) % MEM_SIZE].cycle_last = vm->cycle_total;
+	vm->ram[(addr + 0) % MEM_SIZE].player_last = proc->player_id;
+	vm->ram[(addr + 1) % MEM_SIZE].byte = b;
+	vm->ram[(addr + 1) % MEM_SIZE].write_total++;
+	vm->ram[(addr + 1) % MEM_SIZE].cycle_last = vm->cycle_total;
+	vm->ram[(addr + 1) % MEM_SIZE].player_last = proc->player_id;
+	vm->ram[(addr + 2) % MEM_SIZE].byte = c;
+	vm->ram[(addr + 2) % MEM_SIZE].write_total++;
+	vm->ram[(addr + 2) % MEM_SIZE].cycle_last = vm->cycle_total;
+	vm->ram[(addr + 2) % MEM_SIZE].player_last = proc->player_id;
+	vm->ram[(addr + 3) % MEM_SIZE].byte = d;
+	vm->ram[(addr + 3) % MEM_SIZE].write_total++;
+	vm->ram[(addr + 3) % MEM_SIZE].cycle_last = vm->cycle_total;
+	vm->ram[(addr + 3) % MEM_SIZE].player_last = proc->player_id;
 }
 
-void	load_data(t_vm *vm, t_process *process, t_bool reg_to_reg, size_t addr)
+int		op_st(t_vm *vm, t_process *proc)
 {
-	int		mask;
-	int		decal;
-	int		i;
-
-	if (reg_to_reg)
-		process->r[process->op->p[1] - 1] = process->r[process->op->p[0] - 1];
-	else
+	if ((proc->op.ocp & 0xf0) == 0x70 || (proc->op.ocp & 0xf0) == 0x50)
 	{
-		i = 0;
-		mask = 0xC0;
-		decal = 6;
-		while (i++ < REG_SIZE)
+		if (!(0 < proc->op.p[0] && proc->op.p[0] <= REG_NUMBER))
+			return (0);
+		if ((proc->op.ocp & 0xf0) == 0x50)
 		{
-			vm->ram[addr]->byte = (process->r[reg] & mask) >> decal;
-			addr = (addr + 1) % MEM_SIZE;
-			mask >>= 2;
-			decal -= 2;
+			if (!(0 < proc->op.p[1] && proc->op.p[1] <= REG_NUMBER))
+				return (0);
+			proc->r[proc->op.p[1] - 1] = proc->r[proc->op.p[0] - 1];
 		}
-}
-
-int		op_st(t_vm *vm, t_process *process)
-{
-	t_bool	reg_to_reg;
-	size_t	addr;
-
-	reg_to_reg = (((process->ocp >> 4) & 0x3) == REG_CODE) ? TRUE : FALSE;
-	addr = (process->pc + (process->op->[1] % IDX_MOD)) % MEM_SIZE;
-	process->pc = (reg_to_reg == TRUE)
-		? (process->pc + 5) % MEM_SIZE : (process->pc + 7) % MEM_SIZE;
-	if (failure_condition(process, reg_to_reg) == FAILURE)
-		return (FAILURE);
-	load_data(vm, process, reg_to_reg, addr);
-	process->op->op = 0;
-	return (SUCCESS);
+		else
+			write_in_ram(vm, proc, proc->r[proc->op.p[0] - 1]);
+		//proc->carry = proc->r[proc->op.p[0] - 1] == 0 ? 1 : 0;
+	}
+	return (0);
 }

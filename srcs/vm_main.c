@@ -6,7 +6,7 @@
 /*   By: bcarlier <bcarlier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/09 19:02:24 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/09/18 14:28:42 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/18 17:39:49 by bcarlier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,12 @@ int	analyze_process(t_vm *vm, t_process *proc)
 		op_zjmp(proc);
 	else if (proc->op.op == 1)
 		op_live(vm, proc);
+	else if (proc->op.op == 2 || proc->op.op == 13)
+		op_ld_lld(vm, proc);
+	else if (proc->op.op == 3)
+		op_st(vm, proc);
+	else if (proc->op.op == 12 || proc->op.op == 15)
+		op_fork_lfork(vm, proc);
 	vm->ram[proc->pc].process = FALSE;
 	vm->ram[proc->next_pc].process = TRUE;
 	proc->pc = proc->next_pc;
@@ -89,7 +95,9 @@ int	main(int argc, char **argv)
 	while (ft_gnl(1, &buff, 0) > 0)
 	{
 		ft_printf("%sCycle %zu%s:\n", FT_UNDER, ++vm.cycle_total, FT_EOC);
-		(void)proceed_cycle(&vm);
+		//int i = 0;
+		//while (i++ < 100)
+			(void)proceed_cycle(&vm);
 		dump_memory(&vm, 64);
 		free(buff);
 		buff = 0;

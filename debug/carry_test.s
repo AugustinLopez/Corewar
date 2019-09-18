@@ -5,7 +5,7 @@
 # not 0: carry == 0
 begin:
 ld %0, r2
-ld %1, r13
+lld -2053, r13
 zjmp %53
 
 wall:

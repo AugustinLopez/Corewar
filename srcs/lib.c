@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 14:53:07 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/18 13:23:40 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/18 16:22:31 by bcarlier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ int		create_process(t_vm *vm, size_t pc, int player_id)
 		return (FAILURE);
 	++vm->process_total;
 	ft_bzero(tmp, sizeof(*tmp));
-	tmp->pc = pc;
+	tmp->pc = pc % MEM_SIZE;
+	tmp->next_pc = tmp->pc;
 	tmp->player_id = player_id;
 	tmp->process_id = ++vm->process_index;
 	tmp->next = vm->process;
