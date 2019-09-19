@@ -1,19 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   op_and_or_xor.c                                    :+:      :+:    :+:   */
+/*   op_binary.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bcarlier <bcarlier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/19 12:27:17 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/09/19 13:40:18 by bcarlier         ###   ########.fr       */
+/*   Updated: 2019/09/19 15:00:23 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "corewar.h"
 
-int	op_binary(t_vm *vm, t_process *proc)
+int	op_binary(t_process *proc)
 {
 	int	tp1;
 	int	tp2;
@@ -27,7 +27,7 @@ int	op_binary(t_vm *vm, t_process *proc)
 				|| ((proc->op.ocp & 0xFC) == 0xE4)
 				|| ((proc->op.ocp & 0xFC) == 0xF4)))
 		return (FAILURE);
-	if (0 < proc->op.p[2] && proc->op.p[2] <= REG_NUMBER)
+	if (!(0 < proc->op.p[2] && proc->op.p[2] <= REG_NUMBER))
 		return (FAILURE);
 	if ((proc->op.ocp & 0xC0) == 0x40)
 	{
@@ -46,11 +46,11 @@ int	op_binary(t_vm *vm, t_process *proc)
 	else
 		tp2 = ((proc->op.ocp & 0x30) == 0x20) ? proc->op.p[1] : proc->op.ind[1];
 	if (proc->op.op == 6)
-		proc->r[proc->op.p[2] - 1] = tmp & tmp2;
+		proc->r[proc->op.p[2] - 1] = tp1 & tp2;
 	else if (proc->op.op == 7)
-		proc->r[proc->op.p[2] - 1] = tmp | tmp2;
+		proc->r[proc->op.p[2] - 1] = tp1 | tp2;
 	else
-		proc->r[proc->op.p[2] - 1] = tmp ^ tmp2;
+		proc->r[proc->op.p[2] - 1] = tp1 ^ tp2;
 	proc->carry = proc->r[proc->op.p[2] - 1] == 0 ? 1 : 0;
 	return (SUCCESS);
 }

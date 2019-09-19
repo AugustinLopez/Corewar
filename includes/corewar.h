@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 10:30:28 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/19 11:42:07 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/19 15:18:23 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,6 +185,9 @@ int						op_live(t_vm *vm, t_process *proc);
 int						op_ld_lld(t_vm *vm, t_process *proc);
 int						op_fork_lfork(t_vm *vm, t_process *proc);
 int						op_st(t_vm *vm, t_process *proc);
+int						op_arithmetic(t_process *proc);
+int						op_binary(t_process *proc);
+int						op_ldi_lldi(t_vm *vm, t_process *proc);
 
 /*
 ** PLAYER

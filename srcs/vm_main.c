@@ -6,7 +6,7 @@
 /*   By: bcarlier <bcarlier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/09 19:02:24 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/09/19 11:47:48 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/19 15:18:00 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,12 @@ int	analyze_process(t_vm *vm, t_process *proc)
 		op_st(vm, proc);
 	else if (proc->op.op == 12 || proc->op.op == 15)
 		op_fork_lfork(vm, proc);
+	else if (proc->op.op == 4 || proc->op.op == 5)
+		op_arithmetic(proc);
+	else if (6 <= proc->op.op && proc->op.op <= 8)
+		op_binary(proc);
+	else if (proc->op.op == 10 || proc->op.op == 14)
+		op_ldi_lldi(vm, proc);
 	vm->ram[proc->pc].process = FALSE;
 	vm->ram[proc->next_pc].process = TRUE;
 	proc->pc = proc->next_pc;

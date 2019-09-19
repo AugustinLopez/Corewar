@@ -6,7 +6,7 @@
 /*   By: bcarlier <bcarlier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/11 15:40:40 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/09/18 14:06:05 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/19 14:00:31 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ static inline int	read_comment(t_argument *arg, t_vm *vm, int fd)
 		return (vm_set_error(vm, ERR_COMMENT, arg->file[vm->player_total]));
 	if (!(vm->player[vm->player_total].comment = ft_strdup(buffer)))
 		return (vm_set_error(vm, ERR_MEMORY, arg->file[vm->player_total]));
+	vm->player[vm->player_total].still_alive = TRUE;
 	return (SUCCESS);
 }
 

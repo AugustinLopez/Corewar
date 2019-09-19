@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 14:53:07 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/19 11:37:16 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/19 14:00:43 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,22 +38,6 @@ void	print_all_players(t_vm *vm)
 		++i;
 		ft_putchar('\n');
 	}
-}
-
-int		init_player(t_vm *vm, int index, char *name, char *comment)
-{
-	uint8_t	i;
-
-	i = 0;
-	while (i < vm->player_total)
-		if ((vm->player[i++]).id == index)
-			return (FAILURE);
-	++(vm->player_total);
-	(vm->player[i]).id = index;
-	(vm->player[i]).name = name;
-	(vm->player[i]).comment = comment;
-	(vm->player[i]).still_alive = TRUE;
-	return (SUCCESS);
 }
 
 void	free_all_players(t_vm *vm)

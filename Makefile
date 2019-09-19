@@ -6,7 +6,7 @@
 #    By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/09/09 14:31:41 by aulopez           #+#    #+#              #
-#    Updated: 2019/09/19 11:33:51 by aulopez          ###   ########.fr        #
+#    Updated: 2019/09/19 15:18:34 by aulopez          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,7 +33,10 @@ SOURCE_VM=	vm_main \
 			op_load \
 			op_zjmp \
 			op_ld   \
+			op_ldi  \
 			op_fork \
+			op_arithmetic \
+			op_binary \
 			op_st
 LIBFT=$(PATH_LIB)libft.a
 

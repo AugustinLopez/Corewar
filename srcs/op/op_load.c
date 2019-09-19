@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/18 13:10:27 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/19 12:07:16 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/19 15:58:48 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ void		load_process(t_vm *vm, t_process *proc)
 		op_load_three(vm, proc, 25, OP_DIRECT_2 | OP_RESTRICT);
 	else if (proc->op.op == 12)
 		op_load_one(vm, proc, 800, 2);
-	else if (proc->op.op == 13)
+	else if (proc->op.op == 13) //here
 		op_load_two(vm, proc, 10, 0);
 	else if (proc->op.op == 14)
 		op_load_three(vm, proc, 50, OP_DIRECT_2);
