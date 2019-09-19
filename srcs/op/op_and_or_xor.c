@@ -6,7 +6,7 @@
 /*   By: bcarlier <bcarlier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/19 12:27:17 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/09/19 12:37:33 by bcarlier         ###   ########.fr       */
+/*   Updated: 2019/09/19 13:40:18 by bcarlier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,12 @@ int	op_binary(t_vm *vm, t_process *proc)
 	}
 	else
 		tp2 = ((proc->op.ocp & 0x30) == 0x20) ? proc->op.p[1] : proc->op.ind[1];
-	proc->r[proc->op.p[2] - 1] = tmp & tmp2;
+	if (proc->op.op == 6)
+		proc->r[proc->op.p[2] - 1] = tmp & tmp2;
+	else if (proc->op.op == 7)
+		proc->r[proc->op.p[2] - 1] = tmp | tmp2;
+	else
+		proc->r[proc->op.p[2] - 1] = tmp ^ tmp2;
 	proc->carry = proc->r[proc->op.p[2] - 1] == 0 ? 1 : 0;
 	return (SUCCESS);
 }
