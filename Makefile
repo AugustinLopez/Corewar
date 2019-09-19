@@ -6,7 +6,7 @@
 #    By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/09/09 14:31:41 by aulopez           #+#    #+#              #
-#    Updated: 2019/09/19 15:18:34 by aulopez          ###   ########.fr        #
+#    Updated: 2019/09/19 17:16:55 by bcarlier         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,22 +21,24 @@ CC_EXE=gcc $(FLAGS) -I$(PATH_HDR) -L$(PATH_LIB)
 
 SOURCE_ASM=asm_main
 SOURCE_VM=	vm_main \
-			vm_parser_main   \
-			vm_parser_argv   \
-			vm_parser_argv_2 \
-			vm_parser_file   \
-			vm_parser_file_2 \
-			vm_ram           \
-			vm_process       \
-			vm_player        \
-			op_live \
-			op_load \
-			op_zjmp \
-			op_ld   \
-			op_ldi  \
-			op_fork \
-			op_arithmetic \
-			op_binary \
+			vm_parser_main		\
+			vm_parser_argv		\
+			vm_parser_argv_2	\
+			vm_parser_file		\
+			vm_parser_file_2	\
+			vm_ram				\
+			vm_process			\
+			vm_player			\
+			op_live				\
+			op_load				\
+			op_zjmp				\
+			op_ld				\
+			op_ldi				\
+			op_fork				\
+			op_arithmetic		\
+			op_binary			\
+			op_sti				\
+			op_aff				\
 			op_st
 LIBFT=$(PATH_LIB)libft.a
 
