@@ -6,22 +6,20 @@
 /*   By: bcarlier <bcarlier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/18 16:37:25 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/09/18 17:36:37 by bcarlier         ###   ########.fr       */
+/*   Updated: 2019/09/19 11:48:43 by bcarlier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "corewar.h"
 
-void	write_in_ram(t_vm *vm, t_process *proc, int number)
+void	write_in_ram(t_vm *vm, int addr, int number)
 {
 	char a;
 	char b;
 	char c;
 	char d;
-	int	addr;
 
-	addr = proc->pc + proc->op.p[1] % IDX_MOD;
 	a = (number >> 24) & 0xff;
 	b = (number >> 16) & 0xff;
 	c = (number >> 8) & 0xff;
@@ -57,7 +55,7 @@ int		op_st(t_vm *vm, t_process *proc)
 			proc->r[proc->op.p[1] - 1] = proc->r[proc->op.p[0] - 1];
 		}
 		else
-			write_in_ram(vm, proc, proc->r[proc->op.p[0] - 1]);
+			write_in_ram(vm, proc->pc + proc->op.p[1] % IDX_MOD, proc->r[proc->op.p[0] - 1]);
 		//proc->carry = proc->r[proc->op.p[0] - 1] == 0 ? 1 : 0;
 	}
 	return (0);
