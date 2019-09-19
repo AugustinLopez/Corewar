@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/16 11:28:10 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/16 12:36:55 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/19 11:07:42 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ static inline void	print_usage(void)
 
 static inline void	arg_error_message(t_argument *arg)
 {
-	ft_dprintf(STDERR_FILENO, "Errno code: %d\n", errno);
 	if (!arg->err && arg->nbr_player < 2)
 	{
 		ft_dprintf(STDERR_FILENO, "Error: Not enough players.\n");
@@ -55,7 +54,6 @@ static inline void	arg_error_message(t_argument *arg)
 
 static inline void	vm_error_message(t_vm *vm)
 {
-	ft_dprintf(STDERR_FILENO, "Errno code: %d\n", errno);
 	ft_dprintf(STDERR_FILENO, "Error: file '%s':\n", vm->strerr);
 	if (vm->err == ERR_OPEN)
 		ft_dprintf(STDERR_FILENO, "Could not open file.\n");
@@ -76,22 +74,25 @@ int					parser(t_vm *vm, int argc, char **argv)
 {
 	t_argument	arg;
 
+	vm->err = 0;
 	if (argc == 1)
-	{
 		print_usage();
-		return (FAILURE);
-	}
-	if (argv_parser(&arg, argc, argv) == FAILURE)
+	else if (argv_parser(&arg, argc, argv) == FAILURE)
 	{
+		vm->err = errno;
 		arg_error_message(&arg);
-		return (FAILURE);
 	}
-	if (file_parser(vm, &arg) == FAILURE)
+	else if (file_parser(vm, &arg) == FAILURE)
 	{
+		arg.err = errno;
 		vm_error_message(vm);
+		vm->err = arg.err;
 		free_all_players(vm);
 		free_all_processes(vm);
-		return (FAILURE);
 	}
-	return (SUCCESS);
+	else
+		return (SUCCESS);
+	if (vm->err)
+		ft_dprintf(STDERR_FILENO, "\n(Errno: %d)\n", vm->err);
+	return (FAILURE);
 }
