@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 10:30:28 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/18 16:53:48 by bcarlier         ###   ########.fr       */
+/*   Updated: 2019/09/19 11:42:07 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,6 @@
 
 # define FAILURE		0
 # define SUCCESS		1
-
-# define CANT_PROCESS	-1
 
 # define ERR_NOT_A_COR	1
 # define ERR_TWO_DUMP	2
@@ -48,6 +46,9 @@
 
 # define FILE_EXT ".cor"
 # define EXT_LENGTH 4
+
+# define OP_DIRECT_2 1
+# define OP_RESTRICT 2
 
 typedef uint8_t			t_bool;
 
@@ -186,17 +187,26 @@ int						op_fork_lfork(t_vm *vm, t_process *proc);
 int						op_st(t_vm *vm, t_process *proc);
 
 /*
-** OTHER
+** PLAYER
+*/
+
+int						init_player(t_vm *vm, int index, char *name,
+						char *comment);
+void					free_all_players(t_vm *vm);
+void					print_all_players(t_vm *vm);
+
+/*
+** PROCESS
+*/
+
+int						create_process(t_vm *vm, size_t pc, int player_id);
+void					free_all_processes(t_vm *vm);
+void					print_all_processes(t_vm *vm);
+
+/*
+** RAM
 */
 
 void					dump_memory(t_vm *vm, size_t x);
-void					access_all_processes(t_vm *vm);
-void					access_all_players(t_vm *vm);
-void					free_all_players(t_vm *vm);
-int						init_player(t_vm *vm, int index, char *name,
-						char *comment); //?
-int						init_process(t_vm *vm);
-int						create_process(t_vm *vm, size_t pc, int player_id);
-void					free_all_processes(t_vm *vm);
 int						load_from_ram(t_vm *vm, size_t pc, int nbr);
 #endif
