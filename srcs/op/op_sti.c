@@ -6,7 +6,7 @@
 /*   By: bcarlier <bcarlier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/19 11:03:27 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/09/20 12:41:55 by bcarlier         ###   ########.fr       */
+/*   Updated: 2019/09/20 15:49:20 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,9 @@ int		op_sti(t_vm *vm, t_process *proc)
 	}
 	else
 		tmp2 = proc->op.p[2];
-	addr = (tmp + tmp2) % IDX_MOD;
-	write_in_ram(vm, proc, proc->pc + addr, proc->r[proc->op.p[0] - 1]);
+	addr = proc->pc + (tmp + tmp2) % IDX_MOD;
+	if (addr < 0)
+		addr = MEM_SIZE + addr % MEM_SIZE;
+	write_in_ram(vm, proc, addr, proc->r[proc->op.p[0] - 1]);
 	return (SUCCESS);
 }

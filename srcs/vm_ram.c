@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 14:53:07 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/20 14:56:35 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/20 15:46:41 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,8 +94,8 @@ int		load_from_ram(t_vm *vm, size_t pc, int nbr)
 {
 	int		ret;
 	short	ret2;
-i
-	pc = pc < 0 ? MEM_SIZE + pc % MEM_SIZE: pc %MEMS_SIZE;
+
+	pc = pc < 0 ? MEM_SIZE + pc % MEM_SIZE: pc % MEM_SIZE;
 	if (nbr == 1)
 		return (vm->ram[pc].byte);
 	if (nbr == 2)
