@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/18 13:10:27 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/20 13:22:23 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/20 13:24:21 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,7 @@ void		load_process(t_vm *vm, t_process *proc)
 	else if (proc->op.op == 15)
 		op_load_one(vm, proc, 1000, 2);
 	else if (proc->op.op == 16)
-		op_load_one(vm, proc, 2, OFF_REG);
+		op_load_one(vm, proc, 2, OFF_REG + 1);
 	else
 		proc->next_pc = (proc->pc + 1) % MEM_SIZE;
 }
