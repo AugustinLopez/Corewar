@@ -43,7 +43,7 @@ int		op_ldi_lldi(t_vm *vm, t_process *proc)
 	}
 	else
 		tmp2 = proc->op.p[1];
-	addr = proc->op.op == 10 ? pc + (tmp + tmp2) % IDX_MOD : pc + (tmp + tmp2);
+	addr = proc->op.op == 10 ? proc->pc + (tmp + tmp2) % IDX_MOD : proc->pc + (tmp + tmp2);
 	if (addr < 0)
 		addr = MEM_SIZE + addr % MEM_SIZE;
 	proc->r[proc->op.p[2] - 1] = load_from_ram(vm, addr, 4);

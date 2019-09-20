@@ -5,7 +5,7 @@
 # not 0: carry == 0
 begin:
 ld %0, r2
-lfork %1024
+lfork %-71
 zjmp %53
 
 wall:

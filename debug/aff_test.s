@@ -19,7 +19,14 @@ ld 0, r2
 aff r2
 zjmp %100
 
-test_3:
+test_2:
+# Should not jump cause carry value is 0, aff don't modify carry
+ld -556, r2
+st r2, -557
+aff r2
+zjmp %100
+
+test_4:
 # Should jump cause carry value is 1, add modify carry to 1
 add r6, r6, r6
 zjmp %1000

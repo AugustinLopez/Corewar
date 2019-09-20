@@ -1,12 +1,13 @@
-.name "Test 3 - Fork"
+.name "Test 1 - Carry"
 .comment ""
 
 # ld %0: carry == 1 (if register is valid)
 # not 0: carry == 0
 begin:
-ld %0, r2
-fork %-4103
-zjmp %53
+lld -4090, r2
+st r2, 100
+fork %-18
+st r1, 95
 
 wall:
 live %0
