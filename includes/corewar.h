@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 10:30:28 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/19 17:19:28 by bcarlier         ###   ########.fr       */
+/*   Updated: 2019/09/20 11:28:04 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -216,4 +216,6 @@ void					print_all_processes(t_vm *vm);
 
 void					dump_memory(t_vm *vm, size_t x);
 int						load_from_ram(t_vm *vm, size_t pc, int nbr);
+void					write_in_ram(t_vm *vm, t_process *proc, int addr,
+						int number);
 #endif

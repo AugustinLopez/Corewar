@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 14:53:07 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/19 14:11:46 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/20 11:27:09 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,26 @@ void	dump_memory(t_vm *vm, size_t x)
 		++i;
 	}
 	print_player_info(vm);
+}
+
+void	write_in_ram(t_vm *vm, t_process *proc, int addr, int number)
+{
+	vm->ram[(addr + 0) % MEM_SIZE].byte = (number >> 24) & 0xff;
+	vm->ram[(addr + 0) % MEM_SIZE].write_total++;
+	vm->ram[(addr + 0) % MEM_SIZE].cycle_last = vm->cycle_total;
+	vm->ram[(addr + 0) % MEM_SIZE].player_last = proc->player_id;
+	vm->ram[(addr + 1) % MEM_SIZE].byte = (number >> 16) & 0xff;
+	vm->ram[(addr + 1) % MEM_SIZE].write_total++;
+	vm->ram[(addr + 1) % MEM_SIZE].cycle_last = vm->cycle_total;
+	vm->ram[(addr + 1) % MEM_SIZE].player_last = proc->player_id;
+	vm->ram[(addr + 2) % MEM_SIZE].byte = (number >> 8) & 0xff;;
+	vm->ram[(addr + 2) % MEM_SIZE].write_total++;
+	vm->ram[(addr + 2) % MEM_SIZE].cycle_last = vm->cycle_total;
+	vm->ram[(addr + 2) % MEM_SIZE].player_last = proc->player_id;
+	vm->ram[(addr + 3) % MEM_SIZE].byte = number & 0xff;
+	vm->ram[(addr + 3) % MEM_SIZE].write_total++;
+	vm->ram[(addr + 3) % MEM_SIZE].cycle_last = vm->cycle_total;
+	vm->ram[(addr + 3) % MEM_SIZE].player_last = proc->player_id;
 }
 
 int		load_from_ram(t_vm *vm, size_t pc, int nbr)
