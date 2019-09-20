@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/18 13:10:27 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/20 13:28:29 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/20 14:06:33 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,10 @@ void		op_load_one(t_vm *vm, t_process *proc, uint16_t cycle, uint8_t size)
 		proc->next_pc = (proc->pc + 2 + ret) % MEM_SIZE;
 	}
 	else
+	{
 		proc->op.p[0] = load_from_ram(vm, proc->pc + 1, size);
-	proc->next_pc = (proc->pc + 1 + size) % MEM_SIZE;
+		proc->next_pc = (proc->pc + 1 + size) % MEM_SIZE;
+	}
 }
 
 void		op_load_two(t_vm *vm, t_process *proc, uint16_t cycle, uint8_t flag)

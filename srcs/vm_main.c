@@ -6,7 +6,7 @@
 /*   By: bcarlier <bcarlier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/09 19:02:24 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/09/20 11:40:07 by bcarlier         ###   ########.fr       */
+/*   Updated: 2019/09/20 13:38:57 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	analyze_process(t_vm *vm, t_process *proc)
 	else if (proc->op.op == 1)
 		op_live(vm, proc);
 	else if (proc->op.op == 2 || proc->op.op == 13)
-		op_ld_lld(vm, proc);
+		op_ld_lld(proc);
 	else if (proc->op.op == 3)
 		op_st(vm, proc);
 	else if (proc->op.op == 12 || proc->op.op == 15)

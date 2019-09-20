@@ -6,14 +6,14 @@
 /*   By: bcarlier <bcarlier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/18 14:41:33 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/09/19 16:07:53 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/20 13:38:43 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "corewar.h"
 
-int		op_ld_lld(t_vm *vm, t_process *proc)
+int		op_ld_lld(t_process *proc)
 {
 	int tmp;
 
@@ -24,9 +24,7 @@ int		op_ld_lld(t_vm *vm, t_process *proc)
 	{
 		if (proc->op.op == 13 && (proc->op.ocp & 0xf0) == 0xd0)
 			proc->r[proc->op.p[1] - 1] = tmp >> 16;
-		else if ((proc->op.ocp & 0xf0) == 0xD0)
-			proc->r[proc->op.p[1] - 1] = load_from_ram(vm, proc->pc + tmp, 4);
-		else if ((proc->op.ocp & 0xf0) == 0x90)
+		else
 			proc->r[proc->op.p[1] - 1] = tmp;
 	}
 	proc->carry = tmp == 0 ? 1 : 0;

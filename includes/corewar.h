@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 10:30:28 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/20 13:24:04 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/20 13:40:18 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,12 +179,10 @@ void					vm_set_null_id(t_vm *vm, t_argument *arg);
 ** OP
 */
 
-void					write_in_ram(t_vm *vm, t_process *proc, int addr
-		, int numberb);
 void					load_process(t_vm *vm, t_process *proc);
 int						op_zjmp(t_process *proc);
 int						op_live(t_vm *vm, t_process *proc);
-int						op_ld_lld(t_vm *vm, t_process *proc);
+int						op_ld_lld(t_process *proc);
 int						op_fork_lfork(t_vm *vm, t_process *proc);
 int						op_st(t_vm *vm, t_process *proc);
 int						op_arithmetic(t_process *proc);
