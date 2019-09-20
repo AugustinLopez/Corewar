@@ -71,26 +71,26 @@ int	proceed_cycle(t_vm *vm)
 int	main(int argc, char **argv)
 {
 	t_vm		vm;
-	char		*buff;
+	//char		*buff;
 
 	if (parser(&vm, argc, argv) == FAILURE)
 		return (-1);
-	dump_memory(&vm, 64);
-	while (ft_gnl(1, &buff, 0) > 0)
-	{
+	//dump_memory(&vm, 64);
+	//while (ft_gnl(1, &buff, 0) > 0)
+	//{
 		ft_printf("%sCycle %zu%s:\n", FT_UNDER, ++vm.cycle_total, FT_EOC);
-		//int i = 0;
-		//while (i++ < 100)
-		(void)proceed_cycle(&vm);
+		int i = 0;
+		while (i++ < 500)
+			(void)proceed_cycle(&vm);
 		dump_memory(&vm, 64);
-		free(buff);
+		/*free(buff);
 		buff = 0;
 	}
 	free(buff);
 	buff = 0;
 	//dump_memory(&vm, 64);
 	print_all_players(&vm);
-	print_all_processes(&vm);
+	print_all_processes(&vm);*/
 	free_all_players(&vm);
 	free_all_processes(&vm);
 	return (0);

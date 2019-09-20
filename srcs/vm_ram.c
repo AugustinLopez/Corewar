@@ -45,7 +45,9 @@ void	dump_memory(t_vm *vm, size_t x)
 	i = 0;
 	while (i < MEM_SIZE)
 	{
-		if (vm->ram[i].process == TRUE)
+		if (i % x == 0)
+			ft_printf("0x%.4x : ", i);
+		/*if (vm->ram[i].process == TRUE)
 			ft_putstr(FT_REV);
 		if (vm->ram[i].cycle_last > 0
 			&& vm->ram[i].cycle_last + 10 > vm->cycle_total)
@@ -57,15 +59,16 @@ void	dump_memory(t_vm *vm, size_t x)
 		else if (vm->ram[i].player_last == vm->player[2].id)
 			ft_putstr(FT_LGREEN);
 		else if (vm->ram[i].player_last == vm->player[3].id)
-			ft_putstr(FT_LYELLOW);
-		ft_printf("%02x%s", vm->ram[i].byte, FT_EOC);
-		if (i % x == x - 1)
-			write(1, "\n", 1);
+			ft_putstr(FT_LYELLOW);*/
+		//ft_printf("%02x%s", vm->ram[i].byte, FT_EOC);
+		ft_printf("%02x", vm->ram[i].byte);
+	;	if (i % x == x - 1)
+			write(1, " \n", 2);
 		else
 			write(1, " ", 1);
 		++i;
 	}
-	print_player_info(vm);
+	//print_player_info(vm);
 }
 
 void	write_in_ram(t_vm *vm, t_process *proc, int addr, int number)
