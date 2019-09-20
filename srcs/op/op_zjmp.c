@@ -6,7 +6,7 @@
 /*   By: bcarlier <bcarlier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/18 09:41:09 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/09/18 16:00:39 by bcarlier         ###   ########.fr       */
+/*   Updated: 2019/09/20 14:59:53 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,9 @@ int	op_zjmp(t_process *proc)
 {
 	int16_t	addr;
 
-	//debug
-	//proc->carry = 1;
-	//end debug
 	addr = (proc->carry == 1) ? proc->op.p[0] % IDX_MOD : 3;
 	proc->next_pc = (proc->pc + addr) % MEM_SIZE;
+	if (proc->next_pc < 0)
+		proc->next_pc = MEM_SIZE - proc->next_pc;
 	return (SUCCESS);
 }

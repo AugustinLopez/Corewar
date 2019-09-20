@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 14:53:07 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/20 11:27:09 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/20 14:56:35 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,8 @@ void	dump_memory(t_vm *vm, size_t x)
 
 void	write_in_ram(t_vm *vm, t_process *proc, int addr, int number)
 {
+	if (addr < 0)
+		addr = MEM_SIZE + addr % MEM_SIZE;
 	vm->ram[(addr + 0) % MEM_SIZE].byte = (number >> 24) & 0xff;
 	vm->ram[(addr + 0) % MEM_SIZE].write_total++;
 	vm->ram[(addr + 0) % MEM_SIZE].cycle_last = vm->cycle_total;
@@ -92,8 +94,8 @@ int		load_from_ram(t_vm *vm, size_t pc, int nbr)
 {
 	int		ret;
 	short	ret2;
-
-	pc %= MEM_SIZE;
+i
+	pc = pc < 0 ? MEM_SIZE + pc % MEM_SIZE: pc %MEMS_SIZE;
 	if (nbr == 1)
 		return (vm->ram[pc].byte);
 	if (nbr == 2)
