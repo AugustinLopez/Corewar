@@ -6,7 +6,7 @@
 /*   By: bcarlier <bcarlier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/19 12:18:35 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/09/19 14:57:48 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/20 11:44:55 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,10 @@
 
 int	op_arithmetic(t_process *proc)
 {
-	if (!((proc->op.ocp & 0xFC) == 0x54))
-		return (FAILURE);
-	if (!(0 < proc->op.p[0] && proc->op.p[0] <= REG_NUMBER))
-		return (FAILURE);
-	if (!(0 < proc->op.p[1] && proc->op.p[1] <= REG_NUMBER))
-		return (FAILURE);
-	if (!(0 < proc->op.p[2] && proc->op.p[2] <= REG_NUMBER))
+	if (!((proc->op.ocp & 0xFC) == 0x54)
+	 || !(0 < proc->op.p[0] && proc->op.p[0] <= REG_NUMBER)
+	 || !(0 < proc->op.p[1] && proc->op.p[1] <= REG_NUMBER)
+	 || !(0 < proc->op.p[2] && proc->op.p[2] <= REG_NUMBER))
 		return (FAILURE);
 	if (proc->op.op == 4)
 		proc->r[proc->op.p[2] - 1] = proc->r[proc->op.p[1] - 1]

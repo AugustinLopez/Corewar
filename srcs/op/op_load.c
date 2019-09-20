@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/18 13:10:27 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/19 15:58:48 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/20 13:22:23 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,13 @@ static int	insert_offset(t_process *proc, int nb_arg, int direct)
 void		op_load_one(t_vm *vm, t_process *proc, uint16_t cycle, uint8_t size)
 {
 	proc->cycle_to_wait = cycle - 1;
-	if (proc->op.op == 16) //verifier
+	if (proc->op.op == 16)
+	{
+		proc->op.ocp = vm->ram[(proc->pc + 1) % MEM_SIZE].byte;
+		ret = insert_offset(proc, 1, 4);
 		proc->op.p[0] = load_from_ram(vm, proc->pc + 2, size);
+		proc->next_pc = (proc->pc + 2 + ret) % MEM_SIZE;
+	}
 	else
 		proc->op.p[0] = load_from_ram(vm, proc->pc + 1, size);
 	proc->next_pc = (proc->pc + 1 + size) % MEM_SIZE;

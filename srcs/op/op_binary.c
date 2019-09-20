@@ -6,26 +6,21 @@
 /*   By: bcarlier <bcarlier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/19 12:27:17 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/09/19 15:00:23 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/20 13:16:58 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "corewar.h"
+#include <string.h>
 
 int	op_binary(t_process *proc)
 {
 	int	tp1;
 	int	tp2;
 
-	if (!(((proc->op.ocp & 0xFC) == 0x54) || ((proc->op.ocp & 0xFC) == 0x64)
-				|| ((proc->op.ocp & 0xFC) == 0x74)
-				|| ((proc->op.ocp & 0xFC) == 0x94)
-				|| ((proc->op.ocp & 0xFC) == 0xA4)
-				|| ((proc->op.ocp & 0xFC) == 0xB4)
-				|| ((proc->op.ocp & 0xFC) == 0xD4)
-				|| ((proc->op.ocp & 0xFC) == 0xE4)
-				|| ((proc->op.ocp & 0xFC) == 0xF4)))
+	tp1 = proc->op.ocp & 0xFC;
+	if (!(ft_strchr("\x54\x64\x74\x94\xA4\xb4\xD4\xE4\xF4", tp1)))
 		return (FAILURE);
 	if (!(0 < proc->op.p[2] && proc->op.p[2] <= REG_NUMBER))
 		return (FAILURE);
