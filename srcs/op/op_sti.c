@@ -6,7 +6,7 @@
 /*   By: bcarlier <bcarlier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/19 11:03:27 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/09/19 12:09:31 by bcarlier         ###   ########.fr       */
+/*   Updated: 2019/09/20 12:41:55 by bcarlier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int		op_sti(t_vm *vm, t_process *proc)
 	int	tmp;
 	int	tmp2;
 	int	addr;
-
+	
 	if (!(((proc->op.ocp & 0xFC) == 0x54) || ((proc->op.ocp & 0xFC) == 0x64)
 				|| ((proc->op.ocp & 0xFC) == 0x74)
 				|| ((proc->op.ocp & 0xFC) == 0x58)
@@ -31,7 +31,7 @@ int		op_sti(t_vm *vm, t_process *proc)
 	{
 		if (!(0 < proc->op.p[1] && proc->op.p[1] <= REG_NUMBER))
 			return (FAILURE);
-		tmp = proc->r[proc->op.p[1] - 1];
+		tmp = proc->r[(proc->op.p[1] - 1)];
 	}
 	else
 		tmp = ((proc->op.ocp & 0x30) == 0x20) ? proc->op.p[1] : proc->op.ind[1];
@@ -44,6 +44,6 @@ int		op_sti(t_vm *vm, t_process *proc)
 	else
 		tmp2 = proc->op.p[2];
 	addr = (tmp + tmp2) % IDX_MOD;
-	write_in_ram(vm, proc, addr, proc->r[proc->op.p[0] - 1]);
+	write_in_ram(vm, proc, proc->pc + addr, proc->r[proc->op.p[0] - 1]);
 	return (SUCCESS);
 }
