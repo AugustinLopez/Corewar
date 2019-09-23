@@ -6,7 +6,7 @@
 /*   By: bcarlier <bcarlier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/09 19:02:24 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/09/23 12:00:07 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/23 15:04:21 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,41 @@ int	proceed_cycle(t_vm *vm)
 		vm->ram[proc->pc].process = TRUE;
 		proc = proc->next;
 	}
-	return (0);
+	++(vm->cycle_total);
+	//++(vm->cycle_since_check);
+	if (vm->cycle_to_die == 0)
+		return (0);
+	if (++vm->cycle_since_check >= vm->cycle_to_die)
+	{
+		ft_printf("%-5d: ", vm->cycle_to_die);
+	    ft_printf("%zu VS %zu\n", vm->live_since_check, vm->max_check);
+		proc = vm->process;
+		while (proc)
+		{
+			if (proc->alive == FALSE)
+				proc = free_process(vm, proc);
+			else
+			{
+				proc->alive = FALSE;
+				proc = proc->next;
+			}
+		}
+		if (vm->process == NULL)
+			return (0);
+		if (vm->live_since_check >= NBR_LIVE || vm->max_check > MAX_CHECKS - 1)
+		{
+			if (vm->cycle_to_die <= CYCLE_DELTA)
+				vm->cycle_to_die = 0;
+			else
+			vm->cycle_to_die -= CYCLE_DELTA;
+			vm->max_check = 1;
+		}
+		else
+			vm->max_check++;
+		vm->cycle_since_check = 0;
+		vm->live_since_check = 0;
+	}
+	return (1);
 }
 
 int	introduction(t_vm *vm)
@@ -93,43 +127,81 @@ int	introduction(t_vm *vm)
 	return (SUCCESS);
 }
 
+int	winner(t_vm *vm)
+{
+	int	i;
+
+	i = 0;
+	while (i < vm->player_total)
+	{
+		if (vm->player[i].id == vm->last_player_alive)
+			break ;
+		++i;
+	}
+	ft_printf("Contestant %d, \"%s\", has won !\n", i + 1, vm->player[i].name);
+	return (0);
+}
+
 int	corewar(t_vm *vm)
 {
 	size_t	cycle;
 
 	introduction(vm);
-	if (vm->cycle_to_dump == 0) //infinite, play to end
-		return (1);
-	cycle = 0;
-	while (cycle++ <= vm->cycle_to_dump)
-		proceed_cycle(vm);
-	dump_memory(vm, 64);
+	if (vm->cycle_to_dump == 0)
+	{
+		while (proceed_cycle(vm) == 1)
+			continue ;
+		ft_printf("%zu\n", vm->cycle_total);
+	}
+	else
+	{
+		cycle = 0;
+		while (cycle++ <= vm->cycle_to_dump)
+			if (proceed_cycle(vm) == 0)
+				break ;
+	}
+	winner(vm);
 	return (SUCCESS);
 }
+
 
 int	main(int argc, char **argv)
 {
 	t_vm		vm;
 	char		*buff;
+	size_t		i = 0;
 
+	(void)i;
 	(void)buff;
 	if (parser(&vm, argc, argv) == FAILURE)
 		return (-1);
 	corewar(&vm);
-	/*dump_memory(&vm, 64);
+	/*introduction(&vm);
+	dump_memory(&vm, 64);
 	while (ft_gnl(1, &buff, 0) > 0)
 	{
+		i = 0;
 		ft_printf("%sCycle %zu%s:\n", FT_UNDER, vm.cycle_total, FT_EOC);
-		(void)proceed_cycle(&vm);
+		while (i++ < 50)
+		{
+			if (proceed_cycle(&vm) == 0)
+			{
+				i = 100;
+				break ;
+			}
+		}
 		dump_memory(&vm, 64);
 		free(buff);
 		buff = 0;
+		if (i == 100)
+			break ;
 	}
 	free(buff);
 	buff = 0;
-	dump_memory(&vm, 64);
-	print_all_players(&vm);
-	print_all_processes(&vm);*/
+	winner(&vm);
+	//dump_memory(&vm, 64);
+	//print_all_players(&vm);
+	//print_all_processes(&vm);*/
 	free_all_players(&vm);
 	free_all_processes(&vm);
 	return (0);

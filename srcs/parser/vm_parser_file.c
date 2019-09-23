@@ -6,7 +6,7 @@
 /*   By: bcarlier <bcarlier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/11 15:40:40 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/09/23 11:49:05 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/23 13:20:41 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,7 @@ int					file_parser(t_vm *vm, t_argument *arg)
 	vm_set_null_id(vm, arg);
 	if (arg->dump_option == TRUE)
 		vm->cycle_to_dump = arg->dump_value;
+	vm->cycle_to_die = CYCLE_TO_DIE;
 	while (vm->player_total < arg->nbr_player)
 	{
 		vm->player[vm->player_total].id = arg->value[vm->player_total];
@@ -119,7 +120,7 @@ int					file_parser(t_vm *vm, t_argument *arg)
 			return (FAILURE);
 		}
 		vm->process->pc = pc;
-		vm->process->alive = TRUE;
+		vm->process->alive = FALSE;
 		vm->process->next_pc = pc;
 		vm->process->r[0] = (vm->player[vm->player_total]).id;
 		vm->player_total += 1;

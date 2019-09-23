@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 10:30:28 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/23 11:49:28 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/23 13:34:21 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,6 +146,7 @@ typedef struct			s_vm
 	size_t				cycle_total;
 	size_t				cycle_since_check;
 	size_t				live_since_check;
+	size_t				max_check;
 	size_t				cycle_to_dump;
 	size_t				cycle_to_die;
 	size_t				process_total;
@@ -153,6 +154,7 @@ typedef struct			s_vm
 	t_process			*process;
 	char				*strerr;
 	int					err;
+	int					last_player_alive;
 	uint8_t				player_total;
 }						t_vm;
 
@@ -208,7 +210,7 @@ void					print_all_players(t_vm *vm);
 int						create_process(t_vm *vm, size_t pc, int player_id);
 void					free_all_processes(t_vm *vm);
 void					print_all_processes(t_vm *vm);
-
+t_process				*free_process(t_vm *vm, t_process *process);
 /*
 ** RAM
 */

@@ -6,7 +6,7 @@
 /*   By: bcarlier <bcarlier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/18 16:09:01 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/09/20 15:12:10 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/23 14:55:17 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,11 @@ int		op_fork_lfork(t_vm *vm, t_process *proc)
 		return (FAILURE);
 	}
 	vm->process->carry = proc->carry;
+	if (proc->alive == TRUE)
+	{
+		vm->process->alive = TRUE;
+		++(vm->live_since_check);
+	}
 	ft_memcpy(vm->process->r, proc->r, sizeof(proc->r));
 	return (SUCCESS);
 }

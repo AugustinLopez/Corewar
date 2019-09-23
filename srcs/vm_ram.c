@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 14:53:07 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/23 11:45:29 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/23 13:47:41 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,12 @@ void	print_player_info(t_vm *vm)
 	{
 		ft_printf("%s%sPlayer %u%s - ",
 			FT_UNDER, FT_BOLD, i + 1, FT_EOC);
-		ft_printf("%sID:%s %d - ",
+		ft_printf("%sID:%s %d - \n",
 			FT_UNDER, FT_EOC, (vm->player[i]).id);
 		ft_printf("%sName:%s %s- \n",
 			FT_UNDER, FT_EOC, (vm->player[i]).name);
+		ft_printf("\t%sLive last:%s\t %zu\n",
+			FT_UNDER, FT_EOC, (vm->player[i]).live_last);
 		//ft_printf("\t%sLive now:%s\t %zu\n",
 		//	FT_UNDER, FT_EOC, (vm->player[i]).live_since_check);
 		ft_printf("\t%sLive total:%s\t %zu\n",
@@ -47,7 +49,7 @@ void	dump_memory(t_vm *vm, size_t x)
 	{
 		if (i % x == 0)
 			ft_printf("0x%.4x : ", i);
-/*		if (vm->ram[i].process == TRUE)
+		if (vm->ram[i].process == TRUE)
 			ft_putstr(FT_REV);
 		if (vm->ram[i].cycle_last > 0
 			&& vm->ram[i].cycle_last + 10 > vm->cycle_total)
@@ -61,14 +63,14 @@ void	dump_memory(t_vm *vm, size_t x)
 		else if (vm->ram[i].player_last == vm->player[3].id)
 			ft_putstr(FT_LYELLOW);
 		ft_printf("%02x%s", vm->ram[i].byte, FT_EOC);
-*/		ft_printf("%02x", vm->ram[i].byte);
+//		ft_printf("%02x", vm->ram[i].byte);
 		if (i % x == x - 1)
 			write(1, " \n", 2);
 		else
 			write(1, " ", 1);
 		++i;
 	}
-	//print_player_info(vm);
+	print_player_info(vm);
 }
 
 void	write_in_ram(t_vm *vm, t_process *proc, int addr, int number)

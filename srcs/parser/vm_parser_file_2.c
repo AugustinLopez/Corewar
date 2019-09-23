@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/16 11:43:54 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/16 11:50:00 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/23 13:35:44 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,4 +49,5 @@ void	vm_set_null_id(t_vm *vm, t_argument *arg)
 	j = 0;
 	while (j < MEM_SIZE)
 		vm->ram[j++].player_last = val;
+	vm->last_player_alive = vm->player[vm->player_total - 1].id;
 }

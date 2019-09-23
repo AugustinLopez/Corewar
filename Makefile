@@ -6,14 +6,14 @@
 #    By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/09/09 14:31:41 by aulopez           #+#    #+#              #
-#    Updated: 2019/09/19 17:16:55 by bcarlier         ###   ########.fr        #
+#    Updated: 2019/09/23 14:31:59 by aulopez          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME_ASM=asm
 NAME_VM=corewar
 COMPILER=gcc
-FLAGS=-g3 -Wall -Wextra -Werror
+FLAGS=-g3 -O3 -fno-builtin -Wall -Wextra -Werror
 CC_OBJ=gcc $(FLAGS) -MMD -MP -c -I$(PATH_HDR)
 CC_EXE=gcc $(FLAGS) -I$(PATH_HDR) -L$(PATH_LIB)
 
