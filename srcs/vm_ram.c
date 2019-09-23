@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 14:53:07 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/20 15:46:41 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/23 11:15:28 by bcarlier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	dump_memory(t_vm *vm, size_t x)
 	{
 		if (i % x == 0)
 			ft_printf("0x%.4x : ", i);
-		/*if (vm->ram[i].process == TRUE)
+/*		if (vm->ram[i].process == TRUE)
 			ft_putstr(FT_REV);
 		if (vm->ram[i].cycle_last > 0
 			&& vm->ram[i].cycle_last + 10 > vm->cycle_total)
@@ -59,10 +59,10 @@ void	dump_memory(t_vm *vm, size_t x)
 		else if (vm->ram[i].player_last == vm->player[2].id)
 			ft_putstr(FT_LGREEN);
 		else if (vm->ram[i].player_last == vm->player[3].id)
-			ft_putstr(FT_LYELLOW);*/
-		//ft_printf("%02x%s", vm->ram[i].byte, FT_EOC);
-		ft_printf("%02x", vm->ram[i].byte);
-	;	if (i % x == x - 1)
+			ft_putstr(FT_LYELLOW);
+		ft_printf("%02x%s", vm->ram[i].byte, FT_EOC);
+*/		ft_printf("%02x", vm->ram[i].byte);
+		if (i % x == x - 1)
 			write(1, " \n", 2);
 		else
 			write(1, " ", 1);
@@ -98,7 +98,7 @@ int		load_from_ram(t_vm *vm, size_t pc, int nbr)
 	int		ret;
 	short	ret2;
 
-	pc = pc < 0 ? MEM_SIZE + pc % MEM_SIZE: pc % MEM_SIZE;
+	pc %= MEM_SIZE;
 	if (nbr == 1)
 		return (vm->ram[pc].byte);
 	if (nbr == 2)

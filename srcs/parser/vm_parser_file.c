@@ -6,7 +6,7 @@
 /*   By: bcarlier <bcarlier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/11 15:40:40 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/09/19 14:00:31 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/23 11:20:06 by bcarlier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,8 @@ int					file_parser(t_vm *vm, t_argument *arg)
 
 	ft_bzero(vm, sizeof(*vm));
 	vm_set_null_id(vm, arg);
+	if (arg->dump_option == TRUE)
+		vm->cycle_to_dump = arg->dump_value;
 	while (vm->player_total < arg->nbr_player)
 	{
 		vm->player[vm->player_total].id = arg->value[vm->player_total];

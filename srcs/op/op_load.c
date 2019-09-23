@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/18 13:10:27 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/20 14:06:33 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/23 10:55:08 by bcarlier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,73 +41,98 @@ static int	insert_offset(t_process *proc, int nb_arg, int direct)
 void		op_load_one(t_vm *vm, t_process *proc, uint16_t cycle, uint8_t size)
 {
 	int	ret;
+	int	addr;
 
 	proc->cycle_to_wait = cycle - 1;
 	if (proc->op.op == 16)
 	{
 		proc->op.ocp = vm->ram[(proc->pc + 1) % MEM_SIZE].byte;
 		ret = insert_offset(proc, 1, 4);
-		proc->op.p[0] = load_from_ram(vm, proc->pc + 2, size);
-		proc->next_pc = (proc->pc + 2 + ret) % MEM_SIZE;
+		addr = (proc->pc + 2) % MEM_SIZE;
+		proc->op.p[0] = load_from_ram(vm, addr, size);
+		proc->next_pc = (addr + ret) % MEM_SIZE;
 	}
 	else
 	{
-		proc->op.p[0] = load_from_ram(vm, proc->pc + 1, size);
-		proc->next_pc = (proc->pc + 1 + size) % MEM_SIZE;
+		addr = (proc->pc + 1) % MEM_SIZE;
+		proc->op.p[0] = load_from_ram(vm, addr, size);
+		proc->next_pc = (addr + size) % MEM_SIZE;
 	}
 }
 
 void		op_load_two(t_vm *vm, t_process *proc, uint16_t cycle, uint8_t flag)
 {
 	int	ret;
-	int	direct;
+	int	i;
 	int	tmp[2];
+	int	addr;
 
-	direct = (flag & OP_DIRECT_2) ? 2 : 4;
+	i = (flag & OP_DIRECT_2) ? 2 : 4;
 	proc->cycle_to_wait = cycle - 1;
 	proc->op.ocp = vm->ram[(proc->pc + 1) % MEM_SIZE].byte;
-	ret = insert_offset(proc, 2, direct);
+	ret = insert_offset(proc, 2, i);
 	ft_memcpy(tmp, proc->op.p, sizeof(tmp));
-	proc->op.p[0] = load_from_ram(vm, proc->pc + 2, proc->op.p[0]);
-	proc->op.p[1] = load_from_ram(vm, proc->pc + 2 + tmp[0], proc->op.p[1]);
-	if (tmp[0] == 2)
-		proc->op.ind[0] = (flag & OP_RESTRICT)
-			? load_from_ram(vm, proc->pc + proc->op.p[0] % IDX_MOD, 4)
-			: load_from_ram(vm, proc->pc + proc->op.p[0], 4);
-	if (tmp[1] == 2)
-		proc->op.ind[1] = (flag & OP_RESTRICT)
-			? load_from_ram(vm, proc->pc + proc->op.p[1] % IDX_MOD, 4)
-			: load_from_ram(vm, proc->pc + proc->op.p[1], 4);
-	proc->next_pc = (proc->pc + 2 + ret) % MEM_SIZE;
+	addr = (proc->pc + 2) % MEM_SIZE;
+	proc->op.p[0] = load_from_ram(vm, addr, proc->op.p[0]);
+	if ((addr = (addr + tmp[0]) % MEM_SIZE) < 0)
+		addr = MEM_SIZE + (addr % MEM_SIZE);
+	proc->op.p[1] = load_from_ram(vm, addr, proc->op.p[1]);
+	i = 0;
+	while (i < 2)
+	{
+		if (tmp[i] == 2)
+		{
+			addr = (flag & OP_RESTRICT)
+				? (proc->pc + proc->op.p[i] % IDX_MOD) % MEM_SIZE
+				: (proc->pc + proc->op.p[i]) % MEM_SIZE;
+			if (addr < 0)
+				addr = MEM_SIZE + (addr % MEM_SIZE);
+			proc->op.ind[i] = load_from_ram(vm, addr, 4);
+			}
+		++i;
+	}
+	if ((addr = (proc->pc + 2 + ret) % MEM_SIZE) < 0)
+		addr = MEM_SIZE + (addr % MEM_SIZE);
+	proc->next_pc = addr;
 }
 
 void		op_load_three(t_vm *vm, t_process *pr, uint16_t cycle, uint8_t flag)
 {
 	int	ret;
-	int	direct;
+	int	i;
 	int	tmp[3];
+	int	addr;
 
-	direct = (flag & OP_DIRECT_2) ? 2 : 4;
+	i = (flag & OP_DIRECT_2) ? 2 : 4;
 	pr->cycle_to_wait = cycle - 1;
 	pr->op.ocp = vm->ram[(pr->pc + 1) % MEM_SIZE].byte;
-	ret = insert_offset(pr, 3, direct);
+	ret = insert_offset(pr, 3, i);
 	ft_memcpy(tmp, pr->op.p, sizeof(tmp));
-	pr->op.p[0] = load_from_ram(vm, pr->pc + 2, pr->op.p[0]);
+	addr = (pr->pc + 2) % MEM_SIZE;
+	pr->op.p[0] = load_from_ram(vm, addr, pr->op.p[0]);
+	if ((addr = (addr + tmp[0]) % MEM_SIZE) < 0)
+		addr = MEM_SIZE + (addr % MEM_SIZE);
 	pr->op.p[1] = load_from_ram(vm, pr->pc + 2 + tmp[0], pr->op.p[1]);
+	if ((addr = (addr + tmp[1]) % MEM_SIZE) < 0)
+		addr = MEM_SIZE + (addr % MEM_SIZE);
 	pr->op.p[2] = load_from_ram(vm, pr->pc + 2 + tmp[1] + tmp[0], pr->op.p[2]);
-	if (tmp[0] == 2)
-		pr->op.ind[0] = (flag & OP_RESTRICT)
-			? load_from_ram(vm, pr->pc + pr->op.p[0] % IDX_MOD, 4)
-			: load_from_ram(vm, pr->pc + pr->op.p[0], 4);
-	if (tmp[1] == 2)
-		pr->op.ind[1] = (flag & OP_RESTRICT)
-			? load_from_ram(vm, pr->pc + pr->op.p[1] % IDX_MOD, 4)
-			: load_from_ram(vm, pr->pc + pr->op.p[1], 4);
-	if (tmp[2] == 2)
-		pr->op.ind[2] = (flag & OP_RESTRICT)
-			? load_from_ram(vm, pr->pc + pr->op.p[2] % IDX_MOD, 4)
-			: load_from_ram(vm, pr->pc + pr->op.p[2], 4);
-	pr->next_pc = (pr->pc + 2 + ret) % MEM_SIZE;
+	i = 0;
+	while (i < 3)
+	{
+		if (tmp[i] == 2)
+		{
+			addr = (flag & OP_RESTRICT)
+				? (pr->pc + pr->op.p[i] % IDX_MOD) % MEM_SIZE
+				: (pr->pc + pr->op.p[i]) % MEM_SIZE;
+			if (addr < 0)
+				addr = MEM_SIZE + (addr % MEM_SIZE);
+			pr->op.ind[i] = load_from_ram(vm, addr, 4);
+			}
+		++i;
+	}
+	if ((addr = (pr->pc + 2 + ret) % MEM_SIZE) < 0)
+		addr = MEM_SIZE + (addr % MEM_SIZE);
+	pr->next_pc = addr;
 }
 
 void		load_process(t_vm *vm, t_process *proc)

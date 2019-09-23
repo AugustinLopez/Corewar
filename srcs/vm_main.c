@@ -6,7 +6,7 @@
 /*   By: bcarlier <bcarlier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/09 19:02:24 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/09/20 13:38:57 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/23 11:25:05 by bcarlier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,25 +71,28 @@ int	proceed_cycle(t_vm *vm)
 int	main(int argc, char **argv)
 {
 	t_vm		vm;
-	//char		*buff;
+	char		*buff;
+	size_t		i = 0;
 
 	if (parser(&vm, argc, argv) == FAILURE)
 		return (-1);
 	//dump_memory(&vm, 64);
+	(void)buff;
 	//while (ft_gnl(1, &buff, 0) > 0)
-	//{
-		ft_printf("%sCycle %zu%s:\n", FT_UNDER, ++vm.cycle_total, FT_EOC);
-		int i = 0;
-		while (i++ < 500)
+	while (i++ <= vm.cycle_to_dump)
+	{
+		//ft_printf("%sCycle %zu%s:\n", FT_UNDER, vm.cycle_total, FT_EOC);
+		//size_t i = 0;
+		//while (i++ < 50)
 			(void)proceed_cycle(&vm);
-		dump_memory(&vm, 64);
-		/*free(buff);
-		buff = 0;
+		//dump_memory(&vm, 64);
+		//free(buff);
+		//buff = 0;
 	}
-	free(buff);
-	buff = 0;
-	//dump_memory(&vm, 64);
-	print_all_players(&vm);
+	//free(buff);
+	//buff = 0;
+	dump_memory(&vm, 64);
+	/*print_all_players(&vm);
 	print_all_processes(&vm);*/
 	free_all_players(&vm);
 	free_all_processes(&vm);
