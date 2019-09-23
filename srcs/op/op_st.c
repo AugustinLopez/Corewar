@@ -6,7 +6,7 @@
 /*   By: bcarlier <bcarlier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/18 16:37:25 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/09/20 15:48:41 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/23 18:19:09 by bcarlier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ int		op_st(t_vm *vm, t_process *proc)
 		}
 		else
 		{
+			addr = (proc->pc + 3) % MEM_SIZE;
+			proc->op.p[1] = load_from_ram(vm, addr, 2);
 			addr = proc->pc + proc->op.p[1] % IDX_MOD;
 			if (addr < 0)
 				addr = MEM_SIZE + addr % MEM_SIZE;

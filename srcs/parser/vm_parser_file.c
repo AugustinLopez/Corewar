@@ -6,7 +6,7 @@
 /*   By: bcarlier <bcarlier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/11 15:40:40 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/09/23 13:20:41 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/23 16:15:38 by bcarlier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,14 @@ static inline int	read_comment(t_argument *arg, t_vm *vm, int fd)
 	char	buffer[COMMENT_LENGTH + 1];
 	int		i;
 
-	i = PROG_NAME_LENGTH + MAGIC_LENGTH + DECAL_COMMENT;
+	i = PROG_NAME_LENGTH + MAGIC_LENGTH + DECAL_WEIGHT;
+	ft_bzero(buffer, WEIGHT_LENGTH + 1);
+	if (lseek(fd, DECAL_WEIGHT, SEEK_CUR) != i
+			|| read(fd, buffer, WEIGHT_LENGTH) != WEIGHT_LENGTH)
+		return (vm_set_error(vm, ERR_WEIGHT, arg->file[vm->player_total]));
+	vm->player[vm->player_total].weight = ((buffer[0] << 8) & 0xff00) | (buffer[1] & 0xff);
 	ft_bzero(buffer, sizeof(buffer));
-	if (lseek(fd, DECAL_COMMENT, SEEK_CUR) != i
-			|| read(fd, buffer, COMMENT_LENGTH) != COMMENT_LENGTH)
+	if (read(fd, buffer, COMMENT_LENGTH) != COMMENT_LENGTH)
 		return (vm_set_error(vm, ERR_COMMENT, arg->file[vm->player_total]));
 	if (!(vm->player[vm->player_total].comment = ft_strdup(buffer)))
 		return (vm_set_error(vm, ERR_MEMORY, arg->file[vm->player_total]));
@@ -54,16 +58,17 @@ static inline int	read_file(t_argument *arg, t_vm *vm, int fd)
 	int		i;
 	int		ret;
 
-	i = PROG_NAME_LENGTH + COMMENT_LENGTH
-		+ MAGIC_LENGTH + DECAL_COMMENT + DECAL_PROG;
+	i = PROG_NAME_LENGTH + COMMENT_LENGTH + DECAL_WEIGHT + WEIGHT_LENGTH
+		+ MAGIC_LENGTH + DECAL_PROG;
 	ft_bzero(buffer, sizeof(buffer));
 	if (lseek(fd, DECAL_PROG, SEEK_CUR) != i
 			|| (ret = read(fd, buffer, CHAMP_MAX_SIZE + 1)) < 0)
 		return (vm_set_error(vm, ERR_CODE, arg->file[vm->player_total]));
 	if (ret > CHAMP_MAX_SIZE)
 		return (vm_set_error(vm, ERR_MAX_SIZE, arg->file[vm->player_total]));
-	i = 0;
-	vm->player[vm->player_total].weight = ret;
+	else if (ret != vm->player[vm->player_total].weight)
+		return (vm_set_error(vm, ERR_HEADER, arg->file[vm->player_total]));
+		i = 0;
 	j = vm->player_total * MEM_SIZE / arg->nbr_player;
 	vm->ram[j].process = TRUE;
 	while (i < ret)

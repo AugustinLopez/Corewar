@@ -6,7 +6,7 @@
 /*   By: bcarlier <bcarlier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/18 16:09:01 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/09/23 14:55:17 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/23 17:58:25 by bcarlier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,10 @@ int		op_fork_lfork(t_vm *vm, t_process *proc)
 {
 	int	addr;
 
+	proc->op.p[0] = load_from_ram(vm, (proc->pc + 1) % MEM_SIZE, 2);
 	addr = proc->op.op == 12
-		? proc->pc + proc->op.p[0] % IDX_MOD
-		: proc->pc + proc->op.p[0];
+		? (proc->pc + proc->op.p[0] % IDX_MOD) % MEM_SIZE
+		: (proc->pc + proc->op.p[0]) % MEM_SIZE;
 	if (addr < 0)
 		addr = MEM_SIZE + addr % MEM_SIZE;
 	if (create_process(vm, addr, proc->player_id) == FAILURE)
@@ -35,5 +36,6 @@ int		op_fork_lfork(t_vm *vm, t_process *proc)
 		++(vm->live_since_check);
 	}
 	ft_memcpy(vm->process->r, proc->r, sizeof(proc->r));
+	analyze_process(vm, vm->process);
 	return (SUCCESS);
 }

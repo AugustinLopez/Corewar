@@ -6,7 +6,7 @@
 /*   By: bcarlier <bcarlier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/09 19:02:24 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/09/23 15:04:21 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/23 18:22:17 by bcarlier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,6 +160,7 @@ int	corewar(t_vm *vm)
 			if (proceed_cycle(vm) == 0)
 				break ;
 	}
+	dump_memory(vm, 64);
 	winner(vm);
 	return (SUCCESS);
 }
@@ -175,13 +176,14 @@ int	main(int argc, char **argv)
 	(void)buff;
 	if (parser(&vm, argc, argv) == FAILURE)
 		return (-1);
-	corewar(&vm);
-	/*introduction(&vm);
-	dump_memory(&vm, 64);
+	//corewar(&vm);
+	introduction(&vm);
+	i = 0;
+	while (i++ < 4400)
+		proceed_cycle(&vm);
 	while (ft_gnl(1, &buff, 0) > 0)
 	{
 		i = 0;
-		ft_printf("%sCycle %zu%s:\n", FT_UNDER, vm.cycle_total, FT_EOC);
 		while (i++ < 50)
 		{
 			if (proceed_cycle(&vm) == 0)
@@ -190,6 +192,7 @@ int	main(int argc, char **argv)
 				break ;
 			}
 		}
+			ft_printf("%sCycle %zu%s:\n", FT_UNDER, vm.cycle_total, FT_EOC);
 		dump_memory(&vm, 64);
 		free(buff);
 		buff = 0;

@@ -6,7 +6,7 @@
 /*   By: bcarlier <bcarlier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/19 12:27:17 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/09/20 13:16:58 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/23 17:00:01 by bcarlier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	op_binary(t_process *proc)
 	{
 		if (!(0 < proc->op.p[1] && proc->op.p[1] <= REG_NUMBER))
 			return (FAILURE);
-		tp2= proc->r[proc->op.p[0] - 1];
+		tp2= proc->r[proc->op.p[1] - 1];
 	}
 	else
 		tp2 = ((proc->op.ocp & 0x30) == 0x20) ? proc->op.p[1] : proc->op.ind[1];

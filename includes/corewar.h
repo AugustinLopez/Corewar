@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 10:30:28 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/23 13:34:21 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/23 17:58:53 by bcarlier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@
 # define ERR_MAX_SIZE	8
 # define ERR_READ		9
 # define ERR_LSEEK		10
+# define ERR_WEIGHT		11
+# define ERR_HEADER		12
 
 # define FILE_EXT ".cor"
 # define EXT_LENGTH 4
@@ -193,6 +195,7 @@ int						op_binary(t_process *proc);
 int						op_ldi_lldi(t_vm *vm, t_process *proc);
 int						op_aff(t_process *proc);
 int						op_sti(t_vm *vm, t_process *proc);
+int						analyze_process(t_vm *vm, t_process *proc);
 
 /*
 ** PLAYER

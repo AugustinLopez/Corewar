@@ -6,7 +6,7 @@
 /*   By: zaz <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2013/10/04 11:33:27 by zaz               #+#    #+#             */
-/*   Updated: 2019/09/18 12:54:06 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/23 15:57:45 by bcarlier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,9 +74,9 @@ typedef struct			s_header
 
 # define STR_EXEC_MAGIC			"\0\xea\x83\xf3"
 # define MAGIC_LENGTH			4
-# define DECAL_COMMENT			8
+# define DECAL_WEIGHT			6
 # define DECAL_PROG				4
-
+# define WEIGHT_LENGTH			2
 # define OFF_DIR_2				2
 # define OFF_DIR_4				4
 # define OFF_IND				2

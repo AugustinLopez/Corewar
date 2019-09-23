@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/16 11:28:10 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/19 11:07:42 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/23 15:45:44 by bcarlier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static inline void	vm_error_message(t_vm *vm)
 	else if (vm->err == ERR_CLOSE)
 		ft_dprintf(STDERR_FILENO, "Could not close file.\n");
 	else if (vm->err == ERR_NAME || vm->err == ERR_COMMENT
-			|| vm->err == ERR_CODE)
+			|| vm->err == ERR_CODE || vm->err == ERR_WEIGHT)
 		ft_dprintf(STDERR_FILENO, "File is either unreadable or too short\n");
 	else if (vm->err == ERR_MAGIC)
 		ft_dprintf(STDERR_FILENO, ".cor identifier missing\n");
@@ -68,6 +68,9 @@ static inline void	vm_error_message(t_vm *vm)
 		ft_dprintf(STDERR_FILENO, "Code is too large\n");
 	else if (vm->err == ERR_MEMORY)
 		ft_dprintf(STDERR_FILENO, "Not enough memory\n");
+	else if (vm->err == ERR_HEADER)
+		ft_dprintf(STDERR_FILENO, "Program and header weights don't match\n");
+	ft_dprintf(STDERR_FILENO, "%d\n",  vm->err);
 }
 
 int					parser(t_vm *vm, int argc, char **argv)

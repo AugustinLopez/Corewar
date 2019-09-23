@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 14:53:07 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/23 13:47:41 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/23 17:25:58 by bcarlier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ void	dump_memory(t_vm *vm, size_t x)
 		++i;
 	}
 	print_player_info(vm);
+	//print_all_processes(vm);
 }
 
 void	write_in_ram(t_vm *vm, t_process *proc, int addr, int number)
