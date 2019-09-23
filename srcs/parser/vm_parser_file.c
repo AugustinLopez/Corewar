@@ -6,7 +6,7 @@
 /*   By: bcarlier <bcarlier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/11 15:40:40 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/09/23 11:20:06 by bcarlier         ###   ########.fr       */
+/*   Updated: 2019/09/23 11:49:05 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ static inline int	read_file(t_argument *arg, t_vm *vm, int fd)
 	if (ret > CHAMP_MAX_SIZE)
 		return (vm_set_error(vm, ERR_MAX_SIZE, arg->file[vm->player_total]));
 	i = 0;
+	vm->player[vm->player_total].weight = ret;
 	j = vm->player_total * MEM_SIZE / arg->nbr_player;
 	vm->ram[j].process = TRUE;
 	while (i < ret)
@@ -118,6 +119,7 @@ int					file_parser(t_vm *vm, t_argument *arg)
 			return (FAILURE);
 		}
 		vm->process->pc = pc;
+		vm->process->alive = TRUE;
 		vm->process->next_pc = pc;
 		vm->process->r[0] = (vm->player[vm->player_total]).id;
 		vm->player_total += 1;

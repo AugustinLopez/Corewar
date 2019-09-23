@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/16 13:51:34 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/19 13:55:20 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/23 11:46:17 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,12 @@ int		op_live(t_vm *vm, t_process *process)
 		if (vm->player[i].id == process->op.p[0])
 		{
 			if (vm->player[i].still_alive == FALSE)
-			{
-				ft_printf("%d\n", i);
 				return (FAILURE);
-			}
 			++(vm->player[i].live_since_check);
 			++(vm->player[i].live_total);
 			(vm->player[i].live_last) = vm->cycle_total;
 			++vm->live_since_check;
+			process->alive = TRUE;
 			return (SUCCESS);
 		}
 		++i;

@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 10:30:28 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/23 10:37:15 by bcarlier         ###   ########.fr       */
+/*   Updated: 2019/09/23 11:49:28 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ typedef struct			s_process
 	int					r[REG_NUMBER];
 	uint16_t			cycle_to_wait;
 	uint8_t				carry;
-	t_bool				valid_ocp;
+	t_bool				alive;
 }						t_process;
 
 /*
@@ -127,6 +127,7 @@ typedef struct			s_player
 	char				*name;
 	char				*comment;
 	int					id;
+	int					weight;
 	t_bool				still_alive;
 }						t_player;
 

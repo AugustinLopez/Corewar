@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 14:53:07 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/19 11:50:17 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/23 11:37:55 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,29 @@ void		free_all_processes(t_vm *vm)
 		vm->process = tmp;
 		tmp = tmp->next;
 		free(vm->process);
+	}
+}
+
+t_process		*free_process(t_vm *vm, t_process *proc)
+{
+	t_process *tmp;
+
+	if (vm->process == proc)
+	{
+		vm->process = vm->process->next;
+		vm->process->prev = NULL;
+		free(proc);
+		return (vm->process);
+	}
+	else
+	{
+		tmp = proc->next;
+		if (proc->prev)
+			proc->prev->next = proc->next;
+		if (proc->next)
+			proc->next->prev = proc->prev;
+		free(proc);
+		return (tmp);
 	}
 }
 

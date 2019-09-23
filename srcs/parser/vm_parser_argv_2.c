@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/16 11:39:53 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/16 11:53:48 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/23 12:03:50 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,8 +78,8 @@ static inline int		set_id_for_no_n_option(t_argument *arg)
 	int	j;
 
 	j = -1;
-	i = arg->nbr_player + 1;
-	while (--i > 0)
+	i = 0;
+	while (i++ < arg->nbr_player)
 		if (arg->n_option[i - 1] == 0)
 			arg->value[i - 1] = j--;
 	return (j);

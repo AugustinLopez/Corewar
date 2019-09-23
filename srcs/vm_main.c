@@ -6,7 +6,7 @@
 /*   By: bcarlier <bcarlier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/09 19:02:24 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/09/23 11:25:05 by bcarlier         ###   ########.fr       */
+/*   Updated: 2019/09/23 12:00:07 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,31 +68,67 @@ int	proceed_cycle(t_vm *vm)
 	return (0);
 }
 
+int	introduction(t_vm *vm)
+{
+	int	i;
+
+	ft_printf("Introducing contestants...\n");
+	i = 0;
+	while (i++ < vm->player_total)
+	{
+		ft_printf("* Player %d, ", i);
+		if (vm->player[i - 1].weight < 2)
+			ft_printf("weighing %d byte, ", vm->player[i - 1].weight);
+		else
+			ft_printf("weighing %d bytes, ", vm->player[i - 1].weight);
+		if ((vm->player[i - 1].name)[0])
+			ft_printf("\"%s\" ", vm->player[i - 1].name);
+		else
+			ft_printf("\"\" ");
+		if ((vm->player[i - 1].comment)[0])
+			ft_printf("(\"%s\") !\n", vm->player[i - 1].comment);
+		else
+			ft_printf("(\"\") !\n");
+	}
+	return (SUCCESS);
+}
+
+int	corewar(t_vm *vm)
+{
+	size_t	cycle;
+
+	introduction(vm);
+	if (vm->cycle_to_dump == 0) //infinite, play to end
+		return (1);
+	cycle = 0;
+	while (cycle++ <= vm->cycle_to_dump)
+		proceed_cycle(vm);
+	dump_memory(vm, 64);
+	return (SUCCESS);
+}
+
 int	main(int argc, char **argv)
 {
 	t_vm		vm;
 	char		*buff;
-	size_t		i = 0;
 
+	(void)buff;
 	if (parser(&vm, argc, argv) == FAILURE)
 		return (-1);
-	//dump_memory(&vm, 64);
-	(void)buff;
-	//while (ft_gnl(1, &buff, 0) > 0)
-	while (i++ <= vm.cycle_to_dump)
+	corewar(&vm);
+	/*dump_memory(&vm, 64);
+	while (ft_gnl(1, &buff, 0) > 0)
 	{
-		//ft_printf("%sCycle %zu%s:\n", FT_UNDER, vm.cycle_total, FT_EOC);
-		//size_t i = 0;
-		//while (i++ < 50)
-			(void)proceed_cycle(&vm);
-		//dump_memory(&vm, 64);
-		//free(buff);
-		//buff = 0;
+		ft_printf("%sCycle %zu%s:\n", FT_UNDER, vm.cycle_total, FT_EOC);
+		(void)proceed_cycle(&vm);
+		dump_memory(&vm, 64);
+		free(buff);
+		buff = 0;
 	}
-	//free(buff);
-	//buff = 0;
+	free(buff);
+	buff = 0;
 	dump_memory(&vm, 64);
-	/*print_all_players(&vm);
+	print_all_players(&vm);
 	print_all_processes(&vm);*/
 	free_all_players(&vm);
 	free_all_processes(&vm);
