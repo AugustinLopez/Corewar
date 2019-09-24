@@ -49,8 +49,9 @@
 # define FILE_EXT ".cor"
 # define EXT_LENGTH 4
 
-# define OP_DIRECT_2 1
-# define OP_RESTRICT 2
+# define OP_DIR 1
+# define OP_IDX 2
+# define OP_IND 4
 
 typedef uint8_t			t_bool;
 
@@ -184,16 +185,18 @@ void					vm_set_null_id(t_vm *vm, t_argument *arg);
 ** OP
 */
 
+//int						load_offset(t_process *proc, int nbr_arg, int direct);
+t_bool					load_from_ocp(t_vm *vm, t_process *proc, int nbr_arg, uint8_t flag);
 void					load_process(t_vm *vm, t_process *proc);
-int						op_zjmp(t_process *proc);
+int						op_zjmp(t_vm *vm, t_process *proc);
 int						op_live(t_vm *vm, t_process *proc);
-int						op_ld_lld(t_process *proc);
+int						op_ld_lld(t_vm *vm, t_process *proc);
 int						op_fork_lfork(t_vm *vm, t_process *proc);
 int						op_st(t_vm *vm, t_process *proc);
-int						op_arithmetic(t_process *proc);
-int						op_binary(t_process *proc);
+int						op_arithmetic(t_vm *vm, t_process *proc);
+int						op_binary(t_vm *vm, t_process *proc);
 int						op_ldi_lldi(t_vm *vm, t_process *proc);
-int						op_aff(t_process *proc);
+int						op_aff(t_vm *vm, t_process *proc);
 int						op_sti(t_vm *vm, t_process *proc);
 int						analyze_process(t_vm *vm, t_process *proc);
 
@@ -211,6 +214,7 @@ void					print_all_players(t_vm *vm);
 */
 
 int						create_process(t_vm *vm, size_t pc, int player_id);
+int						create_process_bis(t_vm *vm, size_t pc, int player_id, t_process *proc);
 void					free_all_processes(t_vm *vm);
 void					print_all_processes(t_vm *vm);
 t_process				*free_process(t_vm *vm, t_process *process);

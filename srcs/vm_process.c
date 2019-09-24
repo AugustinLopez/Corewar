@@ -110,3 +110,23 @@ int			create_process(t_vm *vm, size_t pc, int player_id)
 	vm->process = tmp;
 	return (SUCCESS);
 }
+
+int			create_process_bis(t_vm *vm, size_t pc, int player_id, t_process *proc)
+{
+	t_process *tmp;
+
+	if (!(tmp = (t_process *)malloc(sizeof(*tmp))))
+		return (FAILURE);
+	++vm->process_total;
+	ft_bzero(tmp, sizeof(*tmp));
+	tmp->pc = pc % MEM_SIZE;
+	tmp->next_pc = tmp->pc;
+	tmp->player_id = player_id;
+	tmp->process_id = ++vm->process_index;
+	tmp->next = proc->next;
+	if (tmp->next)
+		tmp->next->prev = tmp;
+	tmp->prev = proc;
+	proc->next = tmp;
+	return (SUCCESS);
+}

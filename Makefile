@@ -13,7 +13,7 @@
 NAME_ASM=asm
 NAME_VM=corewar
 COMPILER=gcc
-FLAGS=-g3 -O3 -fno-builtin -Wall -Wextra -Werror
+FLAGS=-g3 -O3 -fno-builtin -Wall -Wextra
 CC_OBJ=gcc $(FLAGS) -MMD -MP -c -I$(PATH_HDR)
 CC_EXE=gcc $(FLAGS) -I$(PATH_HDR) -L$(PATH_LIB)
 
@@ -30,7 +30,6 @@ SOURCE_VM=	vm_main \
 			vm_process			\
 			vm_player			\
 			op_live				\
-			op_load				\
 			op_zjmp				\
 			op_ld				\
 			op_ldi				\

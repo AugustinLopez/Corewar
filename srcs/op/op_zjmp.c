@@ -13,13 +13,13 @@
 #include "corewar.h"
 #include "libft.h"
 
-int	op_zjmp(t_process *proc)
+int	op_zjmp(t_vm *vm, t_process *proc)
 {
 	int	addr;
 
-	addr = (proc->carry == 1)
-		? (proc->pc + proc->op.p[0] % IDX_MOD) % MEM_SIZE
-		: (proc->pc + 3) % MEM_SIZE;
+	proc->op.p[0] = load_from_ram(vm, (proc->pc + 1) % MEM_SIZE, 2);
+	addr = (proc->carry == 0) ? (proc->pc + 3) % MEM_SIZE
+		: (proc->pc + proc->op.p[0] % IDX_MOD) % MEM_SIZE;
 	if (addr < 0)
 		addr = MEM_SIZE + (addr % MEM_SIZE);
 	proc->next_pc = addr;

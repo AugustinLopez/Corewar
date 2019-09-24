@@ -18,10 +18,10 @@ int		op_fork_lfork(t_vm *vm, t_process *proc)
 {
 	int	addr;
 
+	proc->next_pc = (proc->pc + 3) % MEM_SIZE;
 	proc->op.p[0] = load_from_ram(vm, (proc->pc + 1) % MEM_SIZE, 2);
-	addr = proc->op.op == 12
-		? (proc->pc + proc->op.p[0] % IDX_MOD) % MEM_SIZE
-		: (proc->pc + proc->op.p[0]) % MEM_SIZE;
+	addr = proc->op.op == 15 ? (proc->pc + proc->op.p[0]) % MEM_SIZE
+		: (proc->pc + proc->op.p[0] % IDX_MOD) % MEM_SIZE;
 	if (addr < 0)
 		addr = MEM_SIZE + addr % MEM_SIZE;
 	if (create_process(vm, addr, proc->player_id) == FAILURE)

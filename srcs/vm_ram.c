@@ -43,6 +43,7 @@ void	print_player_info(t_vm *vm)
 void	dump_memory(t_vm *vm, size_t x)
 {
 	size_t	i;
+	t_process	*proc;
 
 	i = 0;
 	while (i < MEM_SIZE)
@@ -118,5 +119,63 @@ int		load_from_ram(t_vm *vm, size_t pc, int nbr)
 	ret |= vm->ram[pc].byte << 8;
 	pc = (pc + 1) % MEM_SIZE;
 	ret |= vm->ram[pc].byte;
+	return (ret);
+}
+
+int		load_ind(t_vm *vm, t_process *proc, int addr, uint8_t flag)
+{
+	int	ret;
+
+	if (flag & OP_IDX)
+		addr = (proc->pc + addr % IDX_MOD) % MEM_SIZE;
+	else
+		addr = (proc->pc + addr) % MEM_SIZE;
+	if (addr < 0)
+		addr = MEM_SIZE + addr % MEM_SIZE;
+	ret = load_from_ram(vm, addr, (flag & OP_IND) ? 2 : 4);
+	return (ret);
+}
+
+int		load_offset(t_vm *vm, t_process *proc, int i, uint8_t flag)
+{
+	int	ocp;
+	int	tmp;
+
+	ocp = ((proc->op.ocp) >> ((4 - i) * 2)) & 0x3;
+	if (ocp == REG_CODE)
+		proc->op.p[i - 1] = 1;
+	else if (ocp == DIR_CODE)
+		proc->op.p[i - 1] = (flag & OP_DIR) ? 2 : 4;
+	else if (ocp == IND_CODE)
+		proc->op.p[i - 1] = 2;
+	else
+		proc->op.p[i - 1] = 0;
+	tmp = proc->op.p[i - 1];
+	proc->op.p[i - 1] = load_from_ram(vm, (proc->next_pc + 1) % MEM_SIZE
+			, proc->op.p[i - 1]);
+	proc->next_pc = (proc->next_pc + tmp) % MEM_SIZE;
+	return (ocp);
+}
+
+t_bool	load_from_ocp(t_vm *vm, t_process *proc, int nbr_arg, uint8_t flag)
+{
+	int		i;
+	int		ocp;
+	t_bool	ret;
+
+	ret = TRUE;
+	i = 0;
+	proc->op.ocp = load_from_ram(vm, (proc->pc + 1) % MEM_SIZE, 1);
+	proc->next_pc = proc->pc + 1;
+	while (i++ < nbr_arg)
+	{
+		ocp = load_offset(vm, proc, i, flag);
+		if (ocp == 0 || (ocp == REG_CODE
+				&& !(0 < proc->op.p[i - 1] && proc->op.p[i - 1] <= REG_NUMBER)))
+			ret = FALSE;
+		if (ocp == IND_CODE)
+			proc->op.ind[i - 1] = load_ind(vm, proc, proc->op.p[i - 1], flag);
+	}
+	proc->next_pc = (proc->next_pc + 1) % MEM_SIZE;
 	return (ret);
 }

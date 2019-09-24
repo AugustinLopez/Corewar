@@ -13,12 +13,10 @@
 #include "libft.h"
 #include "corewar.h"
 
-int	op_arithmetic(t_process *proc)
+int	op_arithmetic(t_vm *vm, t_process *proc)
 {
-	if (!((proc->op.ocp & 0xFC) == 0x54)
-	 || !(0 < proc->op.p[0] && proc->op.p[0] <= REG_NUMBER)
-	 || !(0 < proc->op.p[1] && proc->op.p[1] <= REG_NUMBER)
-	 || !(0 < proc->op.p[2] && proc->op.p[2] <= REG_NUMBER))
+	if (load_from_ocp(vm, proc, 3, OP_IDX) == FAILURE
+			|| !((proc->op.ocp & 0xFC) == 0x54))
 		return (FAILURE);
 	if (proc->op.op == 4)
 		proc->r[proc->op.p[2] - 1] = proc->r[proc->op.p[1] - 1]

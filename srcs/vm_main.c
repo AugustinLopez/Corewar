@@ -14,6 +14,36 @@
 #include "libft.h"
 #include <stdlib.h>
 
+
+void		load_process(t_vm *vm, t_process *proc)
+{
+	(void)vm;
+	if (proc->op.op == 1)
+		proc->cycle_to_wait = 10 - 1;
+	else if (proc->op.op == 2 || proc->op.op == 3)
+		proc->cycle_to_wait = 5 - 1;
+	else if (proc->op.op == 4 || proc->op.op == 5)
+		proc->cycle_to_wait = 10 - 1;
+	else if (6 <= proc->op.op && proc->op.op <= 8)
+		proc->cycle_to_wait = 6 - 1;
+	else if (proc->op.op == 9)
+		proc->cycle_to_wait = 20 - 1;
+	else if (proc->op.op == 10 || proc->op.op == 11)
+		proc->cycle_to_wait = 25 - 1;
+	else if (proc->op.op == 12)
+		proc->cycle_to_wait = 800 - 1;
+	else if (proc->op.op == 13) //here
+		proc->cycle_to_wait = 10 - 1;
+	else if (proc->op.op == 14)
+		proc->cycle_to_wait = 50 - 1;
+	else if (proc->op.op == 15)
+		proc->cycle_to_wait = 1000 - 1;
+	else if (proc->op.op == 16)
+		proc->cycle_to_wait = 2 - 1;
+	else
+		proc->next_pc = (proc->pc + 1) % MEM_SIZE;
+}
+
 int	analyze_process(t_vm *vm, t_process *proc)
 {
 	if (proc->cycle_to_wait)
@@ -22,25 +52,25 @@ int	analyze_process(t_vm *vm, t_process *proc)
 		return (SUCCESS);
 	}
 	if (proc->op.op == 9)
-		op_zjmp(proc);
+		op_zjmp(vm, proc);
 	else if (proc->op.op == 1)
 		op_live(vm, proc);
 	else if (proc->op.op == 2 || proc->op.op == 13)
-		op_ld_lld(proc);
+		op_ld_lld(vm, proc);
 	else if (proc->op.op == 3)
 		op_st(vm, proc);
 	else if (proc->op.op == 12 || proc->op.op == 15)
 		op_fork_lfork(vm, proc);
 	else if (proc->op.op == 4 || proc->op.op == 5)
-		op_arithmetic(proc);
+		op_arithmetic(vm, proc);
 	else if (6 <= proc->op.op && proc->op.op <= 8)
-		op_binary(proc);
+		op_binary(vm, proc);
 	else if (proc->op.op == 10 || proc->op.op == 14)
 		op_ldi_lldi(vm, proc);
 	else if (proc->op.op == 11)
 		op_sti(vm, proc);
 	else if (proc->op.op == 16)
-		op_aff(proc);
+		op_aff(vm, proc);
 	vm->ram[proc->pc].process = FALSE;
 	vm->ram[proc->next_pc].process = TRUE;
 	proc->pc = proc->next_pc;
@@ -54,6 +84,7 @@ int	proceed_cycle(t_vm *vm)
 	t_process *proc;
 
 	proc = vm->process;
+	++(vm->cycle_total);
 	while (proc)
 	{
 		(void)analyze_process(vm, proc);
@@ -65,14 +96,13 @@ int	proceed_cycle(t_vm *vm)
 		vm->ram[proc->pc].process = TRUE;
 		proc = proc->next;
 	}
-	++(vm->cycle_total);
 	//++(vm->cycle_since_check);
 	if (vm->cycle_to_die == 0)
 		return (0);
 	if (++vm->cycle_since_check >= vm->cycle_to_die)
 	{
-		ft_printf("%-5d: ", vm->cycle_to_die);
-	    ft_printf("%zu VS %zu\n", vm->live_since_check, vm->max_check);
+		//ft_printf("%-5d: ", vm->cycle_to_die);
+	    //ft_printf("%zu VS %zu\n", vm->live_since_check, vm->max_check);
 		proc = vm->process;
 		while (proc)
 		{
@@ -134,10 +164,11 @@ int	winner(t_vm *vm)
 	i = 0;
 	while (i < vm->player_total)
 	{
-		if (vm->player[i].id == vm->last_player_alive)
+		if (vm->player[i - 1].id == vm->last_player_alive)
 			break ;
-		++i;
+		i++;
 	}
+	//did not handle case where no one emit a live !
 	ft_printf("Contestant %d, \"%s\", has won !\n", i + 1, vm->player[i].name);
 	return (0);
 }
@@ -171,6 +202,7 @@ int	main(int argc, char **argv)
 	t_vm		vm;
 	char		*buff;
 	size_t		i = 0;
+	t_process	*proc;
 
 	(void)i;
 	(void)buff;
@@ -179,12 +211,19 @@ int	main(int argc, char **argv)
 	//corewar(&vm);
 	introduction(&vm);
 	i = 0;
-	while (i++ < 4400)
+	proc = vm.process;
+	while (proc)
+	{
+		(void)analyze_process(&vm, proc);
+		proc = proc->next;
+	}
+	while (i++ < 25800)
 		proceed_cycle(&vm);
+	dump_memory(&vm, 64);
 	while (ft_gnl(1, &buff, 0) > 0)
 	{
 		i = 0;
-		while (i++ < 50)
+		while (i++ < 1)
 		{
 			if (proceed_cycle(&vm) == 0)
 			{
@@ -202,7 +241,7 @@ int	main(int argc, char **argv)
 	free(buff);
 	buff = 0;
 	winner(&vm);
-	//dump_memory(&vm, 64);
+	dump_memory(&vm, 64);
 	//print_all_players(&vm);
 	//print_all_processes(&vm);*/
 	free_all_players(&vm);

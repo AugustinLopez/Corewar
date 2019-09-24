@@ -17,10 +17,11 @@ int		op_live(t_vm *vm, t_process *process)
 {
 	int	i;
 
-	i = 0;
+	process->op.p[0] = load_from_ram(vm, (process->pc + 1) % MEM_SIZE, 4);
 	++vm->live_since_check;
 	process->next_pc = (process->pc + 5) % MEM_SIZE;
 	process->alive = TRUE;
+	i = 0;
 	while (i < MAX_PLAYERS)
 	{
 		if (vm->player[i].id == process->op.p[0])
@@ -28,7 +29,6 @@ int		op_live(t_vm *vm, t_process *process)
 			++(vm->player[i].live_since_check);
 			++(vm->player[i].live_total);
 			(vm->player[i].live_last) = vm->cycle_total;
-			//process->alive = TRUE;
 			vm->last_player_alive = vm->player[i].id;
 			return (SUCCESS);
 		}

@@ -13,9 +13,9 @@
 #include "libft.h"
 #include "corewar.h"
 
-int	op_aff(t_process *proc)
+int	op_aff(t_vm *vm, t_process *proc)
 {
-	if (!(0 < (proc->op.p[0] >> 8) && (proc->op.p[0] >> 8) <= REG_NUMBER))
+	if (load_from_ocp(vm, proc, 1, 0) == FAILURE)
 		return (FAILURE);
 	if (!((proc->op.ocp & 0xf0) == 0x40))
 		return (FAILURE);

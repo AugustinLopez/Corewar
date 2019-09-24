@@ -15,35 +15,21 @@
 
 int		op_ldi_lldi(t_vm *vm, t_process *proc)
 {
-	int	tmp;
-	int	tmp2;
 	int	addr;
 
-	if (!(((proc->op.ocp & 0xFC) == 0x54) || ((proc->op.ocp & 0xFC) == 0x64)
-				|| ((proc->op.ocp & 0xFC) == 0x94)
-				|| ((proc->op.ocp & 0xFC) == 0xA4)
-				|| ((proc->op.ocp & 0xFC) == 0xD4)
-				|| ((proc->op.ocp & 0xFC) == 0xE4)))
-		return (FAILURE);
-	if (!(0 < proc->op.p[2] && proc->op.p[2] <= REG_NUMBER))
+	if (load_from_ocp(vm, proc, 3,
+			(proc->op.op == 14) ? OP_DIR : OP_IDX | OP_DIR )
+			|| !ft_strchr("\x54\x64\x94\xa4\xd4\xe4", (proc->op.ocp & 0xfc)))
 		return (FAILURE);
 	if ((proc->op.ocp & 0xC0) == 0x40)
-	{
-		if (!(0 < proc->op.p[0] && proc->op.p[0] <= REG_NUMBER))
-			return (FAILURE);
-		tmp = proc->r[proc->op.p[0] - 1];
-	}
-	else
-		tmp = (proc->op.op != 10 || (proc->op.ocp & 0xC0) == 0x80) ? proc->op.p[0] : proc->op.ind[0];
+		proc->op.p[0] = proc->r[proc->op.p[0] - 1];
+	else if ((proc->op.ocp & 0xc0) == 0xc0 && proc->op.op == 10)
+		proc->op.p[0] = proc->op.ind[0];
 	if ((proc->op.ocp & 0x30) == 0x10)
-	{
-		if (!(0 < proc->op.p[1] && proc->op.p[1] <= REG_NUMBER))
-			return (FAILURE);
-		tmp2 = proc->r[proc->op.p[1] - 1];
-	}
-	else
-		tmp2 = proc->op.p[1];
-	addr = proc->op.op == 10 ? proc->pc + (tmp + tmp2) % IDX_MOD : proc->pc + (tmp + tmp2);
+		proc->op.p[1] = proc->r[proc->op.p[1] - 1];
+	addr = proc->op.op == 10
+			? proc->pc + (proc->op.p[0] + proc->op.p[1]) % IDX_MOD
+			: proc->pc + (proc->op.p[0] + proc->op.p[1]);
 	if (addr < 0)
 		addr = MEM_SIZE + addr % MEM_SIZE;
 	proc->r[proc->op.p[2] - 1] = load_from_ram(vm, addr, 4);
