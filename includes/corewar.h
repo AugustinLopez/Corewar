@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 10:30:28 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/23 17:58:53 by bcarlier         ###   ########.fr       */
+/*   Updated: 2019/09/25 16:26:47 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,6 +156,7 @@ typedef struct			s_vm
 	size_t				process_index;
 	t_process			*process;
 	char				*strerr;
+	int					min_wait;
 	int					err;
 	int					last_player_alive;
 	uint8_t				player_total;
@@ -218,11 +219,12 @@ int						create_process_bis(t_vm *vm, size_t pc, int player_id, t_process *proc)
 void					free_all_processes(t_vm *vm);
 void					print_all_processes(t_vm *vm);
 t_process				*free_process(t_vm *vm, t_process *process);
+
 /*
 ** RAM
 */
 
-void					dump_memory(t_vm *vm, size_t x);
+void					dump_memory(t_vm *vm, size_t x, t_bool pretty);
 int						load_from_ram(t_vm *vm, size_t pc, int nbr);
 void					write_in_ram(t_vm *vm, t_process *proc, int addr,
 						int number);

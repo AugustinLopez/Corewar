@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/16 13:51:34 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/25 12:25:14 by bcarlier         ###   ########.fr       */
+/*   Updated: 2019/09/25 16:42:39 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int		op_live(t_vm *vm, t_process *process)
 		{
 			++(vm->player[i].live_since_check);
 			++(vm->player[i].live_total);
-			(vm->player[i].live_last) = vm->cycle_total;
+			(vm->player[i].live_last) = vm->cycle_total - 1;
 			vm->last_player_alive = vm->player[i].id;
 			return (SUCCESS);
 		}

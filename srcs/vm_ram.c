@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 14:53:07 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/25 10:24:25 by bcarlier         ###   ########.fr       */
+/*   Updated: 2019/09/25 16:19:03 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,26 +21,45 @@ void	print_player_info(t_vm *vm)
 	i = 0;
 	while (i < vm->player_total)
 	{
-		ft_printf("%s%sPlayer %u%s - ",
+		ft_printf("%s%sPlayer %u%s\n",
 			FT_UNDER, FT_BOLD, i + 1, FT_EOC);
-		ft_printf("%sID:%s %d - \n",
+		ft_printf("\t       %sID:%s  %d\n",
 			FT_UNDER, FT_EOC, (vm->player[i]).id);
-		ft_printf("%sName:%s %s- \n",
+		ft_printf("\t     %sName:%s  %s\n",
 			FT_UNDER, FT_EOC, (vm->player[i]).name);
-		ft_printf("\t%sLive last:%s\t %zu\n",
+		ft_printf("\t%s Live now:%s  %zu\n",
+			FT_UNDER, FT_EOC, (vm->player[i]).live_since_check);
+		ft_printf("\t%sLive last:%s  %zu\n",
 			FT_UNDER, FT_EOC, (vm->player[i]).live_last);
-		//ft_printf("\t%sLive now:%s\t %zu\n",
-		//	FT_UNDER, FT_EOC, (vm->player[i]).live_since_check);
-		ft_printf("\t%sLive total:%s\t %zu\n",
-			FT_UNDER, FT_EOC, (vm->player[i]).live_total);
-		ft_printf("\t%sAlive ?%s\t\t %s\n",
-			FT_UNDER, FT_EOC, (vm->player[i]).still_alive ? "Yes" : "No");
 		++i;
-	//	ft_putchar('\n');
 	}
 }
 
-void	dump_memory(t_vm *vm, size_t x)
+void	print_info(int cycle, size_t i, t_vm *vm)
+{
+	if (cycle == 0)
+	{
+		if (vm->ram[i].process == TRUE)
+			ft_putstr(FT_REV);
+		if (vm->ram[i].cycle_last > 0
+			&& vm->ram[i].cycle_last + 20 > vm->cycle_total)
+				ft_printf("%s%s", FT_BOLD, FT_DIM);
+		if (vm->ram[i].player_last == vm->player[0].id)
+			ft_putstr(FT_LGREEN);
+		else if (vm->ram[i].player_last == vm->player[1].id)
+			ft_putstr(FT_LBLUE);
+		else if (vm->ram[i].player_last == vm->player[2].id)
+			ft_putstr(FT_LRED);
+		else if (vm->ram[i].player_last == vm->player[3].id)
+			ft_putstr(FT_LYELLOW);
+		ft_printf("%02x%s", vm->ram[i].byte, FT_EOC);
+		return ;
+	}
+	ft_printf("%s%sCurrent process:%s %zu\n\n", FT_UNDER, FT_BOLD, FT_EOC, vm->process_total);
+	print_player_info(vm);
+}
+
+void	dump_memory(t_vm *vm, size_t x, t_bool pretty)
 {
 	size_t	i;
 
@@ -49,30 +68,18 @@ void	dump_memory(t_vm *vm, size_t x)
 	{
 		if (i % x == 0)
 			ft_printf("0x%.4x : ", i);
-		if (vm->ram[i].process == TRUE)
-			ft_putstr(FT_REV);
-		if (vm->ram[i].cycle_last > 0
-			&& vm->ram[i].cycle_last + 10 > vm->cycle_total)
-				ft_printf("%s%s", FT_BOLD, FT_DIM);
-		if (vm->ram[i].player_last == vm->player[0].id)
-			ft_putstr(FT_LRED);
-		else if (vm->ram[i].player_last == vm->player[1].id)
-			ft_putstr(FT_LBLUE);
-		else if (vm->ram[i].player_last == vm->player[2].id)
-			ft_putstr(FT_LGREEN);
-		else if (vm->ram[i].player_last == vm->player[3].id)
-			ft_putstr(FT_LYELLOW);
-		ft_printf("%02x%s", vm->ram[i].byte, FT_EOC);
-		//ft_printf("%02x", vm->ram[i].byte);
+		if (pretty == FALSE)
+			ft_printf("%02x", vm->ram[i].byte);
+		else
+			print_info(0, i, vm);
 		if (i % x == x - 1)
 			write(1, " \n", 2);
 		else
 			write(1, " ", 1);
 		++i;
 	}
-	//ft_printf("%d\n", vm->process_total);
-	print_player_info(vm);
-	//print_all_processes(vm);
+	if (pretty == TRUE)
+		print_info(1, 0, vm);
 }
 
 void	write_in_ram(t_vm *vm, t_process *proc, int addr, int number)
