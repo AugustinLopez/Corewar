@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 14:53:07 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/23 17:25:58 by bcarlier         ###   ########.fr       */
+/*   Updated: 2019/09/25 10:24:25 by bcarlier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ void	print_player_info(t_vm *vm)
 void	dump_memory(t_vm *vm, size_t x)
 {
 	size_t	i;
-	t_process	*proc;
 
 	i = 0;
 	while (i < MEM_SIZE)
@@ -64,13 +63,14 @@ void	dump_memory(t_vm *vm, size_t x)
 		else if (vm->ram[i].player_last == vm->player[3].id)
 			ft_putstr(FT_LYELLOW);
 		ft_printf("%02x%s", vm->ram[i].byte, FT_EOC);
-//		ft_printf("%02x", vm->ram[i].byte);
+		//ft_printf("%02x", vm->ram[i].byte);
 		if (i % x == x - 1)
 			write(1, " \n", 2);
 		else
 			write(1, " ", 1);
 		++i;
 	}
+	//ft_printf("%d\n", vm->process_total);
 	print_player_info(vm);
 	//print_all_processes(vm);
 }

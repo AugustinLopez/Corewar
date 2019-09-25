@@ -6,7 +6,7 @@
 /*   By: bcarlier <bcarlier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/18 16:37:25 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/09/23 18:19:09 by bcarlier         ###   ########.fr       */
+/*   Updated: 2019/09/25 10:26:42 by bcarlier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,11 @@ int		op_st(t_vm *vm, t_process *proc)
 
 	if (load_from_ocp(vm, proc, 2, OP_IDX) == FAILURE
 			|| !ft_strchr("\x70\x50", (proc->op.ocp & 0xf0)))
+	{
+		ft_printf("HOOOLALAAA\n");
 		return (FAILURE);
-	if ((proc->op.ocp & 0xf0) == 0x50)
+	}
+		if ((proc->op.ocp & 0xf0) == 0x50)
 		proc->r[proc->op.p[1] - 1] = proc->r[proc->op.p[0] - 1];
 	else
 	{

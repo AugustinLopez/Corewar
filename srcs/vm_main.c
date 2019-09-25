@@ -6,7 +6,7 @@
 /*   By: bcarlier <bcarlier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/09 19:02:24 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/09/23 18:22:17 by bcarlier         ###   ########.fr       */
+/*   Updated: 2019/09/25 12:29:26 by bcarlier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 
 void		load_process(t_vm *vm, t_process *proc)
 {
-	(void)vm;
+	proc->op.op = vm->ram[proc->pc].byte;
 	if (proc->op.op == 1)
 		proc->cycle_to_wait = 10 - 1;
 	else if (proc->op.op == 2 || proc->op.op == 3)
@@ -32,7 +32,7 @@ void		load_process(t_vm *vm, t_process *proc)
 		proc->cycle_to_wait = 25 - 1;
 	else if (proc->op.op == 12)
 		proc->cycle_to_wait = 800 - 1;
-	else if (proc->op.op == 13) //here
+	else if (proc->op.op == 13)
 		proc->cycle_to_wait = 10 - 1;
 	else if (proc->op.op == 14)
 		proc->cycle_to_wait = 50 - 1;
@@ -40,16 +40,25 @@ void		load_process(t_vm *vm, t_process *proc)
 		proc->cycle_to_wait = 1000 - 1;
 	else if (proc->op.op == 16)
 		proc->cycle_to_wait = 2 - 1;
-	else
+	else if (proc->cycle_to_wait == 0)
+	{
+		proc->op.op = 0;
 		proc->next_pc = (proc->pc + 1) % MEM_SIZE;
+	}
+	else
+		proc->op.op = 0;
+	if (vm->cycle_total == 0)
+		proc->cycle_to_wait++;
 }
 
 int	analyze_process(t_vm *vm, t_process *proc)
 {
+	if (proc->op.op == 0)
+		load_process(vm, proc);
 	if (proc->cycle_to_wait)
 	{
 		--(proc->cycle_to_wait);
-		return (SUCCESS);
+			return (SUCCESS);
 	}
 	if (proc->op.op == 9)
 		op_zjmp(vm, proc);
@@ -71,11 +80,10 @@ int	analyze_process(t_vm *vm, t_process *proc)
 		op_sti(vm, proc);
 	else if (proc->op.op == 16)
 		op_aff(vm, proc);
+	proc->op.op = 0;
 	vm->ram[proc->pc].process = FALSE;
 	vm->ram[proc->next_pc].process = TRUE;
 	proc->pc = proc->next_pc;
-	proc->op.op = vm->ram[proc->pc].byte;
-	load_process(vm, proc);
 	return (0);
 }
 
@@ -164,10 +172,12 @@ int	winner(t_vm *vm)
 	i = 0;
 	while (i < vm->player_total)
 	{
-		if (vm->player[i - 1].id == vm->last_player_alive)
+		if (vm->player[i].id == vm->last_player_alive)
 			break ;
 		i++;
 	}
+	if (i == vm->player_total)
+		i = i - 1;
 	//did not handle case where no one emit a live !
 	ft_printf("Contestant %d, \"%s\", has won !\n", i + 1, vm->player[i].name);
 	return (0);
@@ -182,7 +192,7 @@ int	corewar(t_vm *vm)
 	{
 		while (proceed_cycle(vm) == 1)
 			continue ;
-		ft_printf("%zu\n", vm->cycle_total);
+		//ft_printf("%zu\n", vm->cycle_total);
 	}
 	else
 	{
@@ -191,8 +201,12 @@ int	corewar(t_vm *vm)
 			if (proceed_cycle(vm) == 0)
 				break ;
 	}
+	if (vm->cycle_to_dump == 0)
+	{
+		winner(vm);
+		return (SUCCESS);
+	}
 	dump_memory(vm, 64);
-	winner(vm);
 	return (SUCCESS);
 }
 
@@ -208,6 +222,7 @@ int	main(int argc, char **argv)
 	(void)buff;
 	if (parser(&vm, argc, argv) == FAILURE)
 		return (-1);
+	(void)proc;
 	//corewar(&vm);
 	introduction(&vm);
 	i = 0;
@@ -217,7 +232,7 @@ int	main(int argc, char **argv)
 		(void)analyze_process(&vm, proc);
 		proc = proc->next;
 	}
-	while (i++ < 25800)
+	while (i++ < 8980)
 		proceed_cycle(&vm);
 	dump_memory(&vm, 64);
 	while (ft_gnl(1, &buff, 0) > 0)
@@ -243,7 +258,7 @@ int	main(int argc, char **argv)
 	winner(&vm);
 	dump_memory(&vm, 64);
 	//print_all_players(&vm);
-	//print_all_processes(&vm);*/
+	//print_all_processes(&vm);
 	free_all_players(&vm);
 	free_all_processes(&vm);
 	return (0);
