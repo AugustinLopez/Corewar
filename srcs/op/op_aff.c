@@ -6,7 +6,7 @@
 /*   By: bcarlier <bcarlier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/19 11:50:49 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/09/20 11:59:53 by bcarlier         ###   ########.fr       */
+/*   Updated: 2019/09/25 16:08:51 by bcarlier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,6 @@ int	op_aff(t_vm *vm, t_process *proc)
 		return (FAILURE);
 	if (!((proc->op.ocp & 0xf0) == 0x40))
 		return (FAILURE);
-	ft_printf("Aff : %c\n", proc->r[(proc->op.p[0] >> 8) - 1] % 256);
+	ft_printf("Aff : %c\n", proc->r[(proc->op.p[0]) - 1] % 256);
 	return (SUCCESS);
 }
