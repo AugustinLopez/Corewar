@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 14:53:07 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/23 13:49:46 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/25 15:04:29 by bcarlier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ t_process		*free_process(t_vm *vm, t_process *proc)
 {
 	t_process *tmp;
 
+	vm->process_total--;
 	if (proc)
 		vm->ram[proc->pc % MEM_SIZE].process = FALSE;
 	if (vm->process == proc)

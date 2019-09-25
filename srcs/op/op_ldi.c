@@ -6,7 +6,7 @@
 /*   By: bcarlier <bcarlier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/19 10:19:51 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/09/20 15:50:12 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/25 13:15:58 by bcarlier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int		op_ldi_lldi(t_vm *vm, t_process *proc)
 	int	addr;
 
 	if (load_from_ocp(vm, proc, 3,
-			(proc->op.op == 14) ? OP_DIR : OP_IDX | OP_DIR )
+			(proc->op.op == 14) ? OP_DIR : OP_IDX | OP_DIR ) == FAILURE
 			|| !ft_strchr("\x54\x64\x94\xa4\xd4\xe4", (proc->op.ocp & 0xfc)))
 		return (FAILURE);
 	if ((proc->op.ocp & 0xC0) == 0x40)

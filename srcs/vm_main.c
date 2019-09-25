@@ -6,7 +6,7 @@
 /*   By: bcarlier <bcarlier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/09 19:02:24 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/09/25 12:29:26 by bcarlier         ###   ########.fr       */
+/*   Updated: 2019/09/25 15:52:05 by bcarlier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void		load_process(t_vm *vm, t_process *proc)
 	}
 	else
 		proc->op.op = 0;
-	if (vm->cycle_total == 0)
+	if (vm->cycle_total == 1)
 		proc->cycle_to_wait++;
 }
 
@@ -91,23 +91,8 @@ int	proceed_cycle(t_vm *vm)
 {
 	t_process *proc;
 
-	proc = vm->process;
 	++(vm->cycle_total);
-	while (proc)
-	{
-		(void)analyze_process(vm, proc);
-		proc = proc->next;
-	}
-	proc = vm->process;
-	while (proc)
-	{
-		vm->ram[proc->pc].process = TRUE;
-		proc = proc->next;
-	}
-	//++(vm->cycle_since_check);
-	if (vm->cycle_to_die == 0)
-		return (0);
-	if (++vm->cycle_since_check >= vm->cycle_to_die)
+	if (vm->cycle_since_check++ >= vm->cycle_to_die - 1)
 	{
 		//ft_printf("%-5d: ", vm->cycle_to_die);
 	    //ft_printf("%zu VS %zu\n", vm->live_since_check, vm->max_check);
@@ -128,7 +113,6 @@ int	proceed_cycle(t_vm *vm)
 		{
 			if (vm->cycle_to_die <= CYCLE_DELTA)
 				vm->cycle_to_die = 0;
-			else
 			vm->cycle_to_die -= CYCLE_DELTA;
 			vm->max_check = 1;
 		}
@@ -137,6 +121,21 @@ int	proceed_cycle(t_vm *vm)
 		vm->cycle_since_check = 0;
 		vm->live_since_check = 0;
 	}
+	proc = vm->process;
+	while (proc)
+	{
+		(void)analyze_process(vm, proc);
+		proc = proc->next;
+	}
+	proc = vm->process;
+	while (proc)
+	{
+		vm->ram[proc->pc].process = TRUE;
+		proc = proc->next;
+	}
+	//++(vm->cycle_since_check);
+	if (vm->cycle_to_die == 0)
+		return (0);
 	return (1);
 }
 
@@ -192,7 +191,7 @@ int	corewar(t_vm *vm)
 	{
 		while (proceed_cycle(vm) == 1)
 			continue ;
-		//ft_printf("%zu\n", vm->cycle_total);
+		ft_printf("%zu\n", vm->cycle_total);
 	}
 	else
 	{
@@ -223,8 +222,8 @@ int	main(int argc, char **argv)
 	if (parser(&vm, argc, argv) == FAILURE)
 		return (-1);
 	(void)proc;
-	//corewar(&vm);
-	introduction(&vm);
+	corewar(&vm);
+	/*introduction(&vm);
 	i = 0;
 	proc = vm.process;
 	while (proc)
@@ -232,7 +231,7 @@ int	main(int argc, char **argv)
 		(void)analyze_process(&vm, proc);
 		proc = proc->next;
 	}
-	while (i++ < 8980)
+	while (i++ < 1500)
 		proceed_cycle(&vm);
 	dump_memory(&vm, 64);
 	while (ft_gnl(1, &buff, 0) > 0)
@@ -257,7 +256,7 @@ int	main(int argc, char **argv)
 	buff = 0;
 	winner(&vm);
 	dump_memory(&vm, 64);
-	//print_all_players(&vm);
+	//print_all_players(&vm);*/
 	//print_all_processes(&vm);
 	free_all_players(&vm);
 	free_all_processes(&vm);
