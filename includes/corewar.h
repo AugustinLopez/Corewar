@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 10:30:28 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/26 10:52:46 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/26 11:02:56 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,8 +186,8 @@ void					vm_setup(t_vm *vm, t_argument *arg);
 ** OP
 */
 
-//int						load_offset(t_process *proc, int nbr_arg, int direct);
-t_bool					load_from_ocp(t_vm *vm, t_process *proc, int nbr_arg, uint8_t flag);
+t_bool					load_from_ocp(t_vm *vm, t_process *proc, int nbr_arg,
+							uint8_t flag);
 void					load_process(t_vm *vm, t_process *proc);
 int						op_zjmp(t_vm *vm, t_process *proc);
 int						op_live(t_vm *vm, t_process *proc);
@@ -215,7 +215,8 @@ void					print_all_players(t_vm *vm);
 */
 
 int						create_process(t_vm *vm, size_t pc, int player_id);
-int						create_process_bis(t_vm *vm, size_t pc, int player_id, t_process *proc);
+int						create_process_bis(t_vm *vm, size_t pc, int player_id,
+							t_process *proc);
 void					free_all_processes(t_vm *vm);
 void					print_all_processes(t_vm *vm);
 t_process				*free_process(t_vm *vm, t_process *process);
