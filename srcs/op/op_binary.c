@@ -6,7 +6,7 @@
 /*   By: bcarlier <bcarlier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/19 12:27:17 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/09/26 10:55:31 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/26 18:01:55 by bcarlier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,19 @@
 
 int	op_binary(t_vm *vm, t_process *proc)
 {
-	if (load_from_ocp(vm, proc, 3, OP_IDX) == FAILURE
-			|| !ft_strchr("\x54\x64\x74\x94\xA4\xb4\xd4\xe4\xf4"
+	int	ret;
+
+	ret = SUCCESS;
+	if (load_from_ocp(vm, proc, 3, OP_IDX) == FAILURE)
+		ret = FAILURE;
+	if (!ft_strchr("\x54\x64\x74\x94\xA4\xb4\xd4\xe4\xf4"
 			, (proc->op.ocp & 0xfc)))
-		return (FAILURE);
+	{
+		proc->next_pc = (proc->next_pc + 1) % MEM_SIZE;
+		ret = FAILURE;
+	}
+	if (ret == FAILURE)
+		return (ret);
 	if ((proc->op.ocp & 0xC0) == 0x40)
 		proc->op.p[0] = proc->r[proc->op.p[0] - 1];
 	else if ((proc->op.ocp & 0xC0) == 0xC0)

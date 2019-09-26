@@ -6,7 +6,7 @@
 /*   By: bcarlier <bcarlier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/19 11:50:49 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/09/25 16:08:51 by bcarlier         ###   ########.fr       */
+/*   Updated: 2019/09/26 17:59:39 by bcarlier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,18 @@
 
 int	op_aff(t_vm *vm, t_process *proc)
 {
+	int	ret;
+
+	ret = SUCCESS;
 	if (load_from_ocp(vm, proc, 1, 0) == FAILURE)
-		return (FAILURE);
+		ret = FAILURE;
 	if (!((proc->op.ocp & 0xf0) == 0x40))
-		return (FAILURE);
+	{
+		proc->next_pc = (proc->next_pc + 1) % MEM_SIZE;
+		ret = FAILURE;
+	}
+	if (ret == FAILURE)
+		return (ret);
 	ft_printf("Aff : %c\n", proc->r[(proc->op.p[0]) - 1] % 256);
 	return (SUCCESS);
 }

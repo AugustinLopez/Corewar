@@ -6,7 +6,7 @@
 /*   By: bcarlier <bcarlier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/19 12:18:35 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/09/20 11:44:55 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/26 18:01:27 by bcarlier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,18 @@
 
 int	op_arithmetic(t_vm *vm, t_process *proc)
 {
-	if (load_from_ocp(vm, proc, 3, OP_IDX) == FAILURE
-			|| !((proc->op.ocp & 0xFC) == 0x54))
-		return (FAILURE);
+	int	ret;
+
+	ret = SUCCESS;
+	if (load_from_ocp(vm, proc, 3, OP_IDX) == FAILURE)
+		ret = FAILURE;
+	if (!((proc->op.ocp & 0xFC) == 0x54))
+	{
+		proc->next_pc = (proc->next_pc + 1) % MEM_SIZE;
+		ret = FAILURE;
+	}
+	if (ret == FAILURE)
+		return (ret);
 	if (proc->op.op == 4)
 		proc->r[proc->op.p[2] - 1] = proc->r[proc->op.p[1] - 1]
 			+ proc->r[proc->op.p[0] - 1];

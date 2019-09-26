@@ -6,7 +6,7 @@
 /*   By: bcarlier <bcarlier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/09 19:02:24 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/09/26 14:36:58 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/26 16:20:15 by bcarlier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int	corewar_loop(t_vm *vm, int *loop)
 	while (i++ < *loop)
 		if ((ret = gameloop(vm)) == 0)
 			break ;
-	ft_printf("%sCycle %zu%s:\n", FT_UNDER, vm->cycle_total, FT_EOC);
+	ft_printf("%sCycle %zu%s:\n", FT_UNDER, vm->cycle_total - 1, FT_EOC);
 	dump_memory(vm, 64, TRUE);
 	return (ret);
 }

@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/26 12:26:44 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/26 14:35:09 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/26 17:12:55 by bcarlier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,6 @@ void				load_process(t_vm *vm, t_process *proc)
 		proc->op.op = 0;
 		proc->next_pc = (proc->pc + 1) % MEM_SIZE;
 	}
-	if (vm->cycle_total == 1)
-		proc->cycle_to_wait++;
 }
 
 static inline int	analyze_process(t_vm *vm, t_process *proc)
@@ -86,8 +84,13 @@ int					gameloop(t_vm *vm)
 {
 	t_process	*proc;
 
+	if (vm->cycle_total == 0)
+	{
+		vm->cycle_total = 1;
+		return (1);
+	}
 	++(vm->cycle_total);
-	if (vm->cycle_since_check++ >= vm->cycle_to_die - 1)
+	if (++vm->cycle_since_check >= vm->cycle_to_die)
 		if (kill_process(vm) == 0)
 			return (0);
 	proc = vm->process;
@@ -97,8 +100,6 @@ int					gameloop(t_vm *vm)
 		proc = proc->next;
 	}
 	proc = vm->process;
-	if (vm->min_wait == 0)
-		vm->min_wait = 1001;
 	while (proc)
 	{
 		vm->ram[proc->pc].process = TRUE;

@@ -15,10 +15,11 @@ echo "...OUR created..."
 echo "...THEIR created..."
 if diff OUR THEIR > /dev/null; then
 	echo "No diff at end"
+	rm OUR THEIR
 else
 	echo "!!! Diff at end !!!"
 	echo "OUR is on top, THEIR is on the bottom"
 	diff OUR THEIR
+	rm OUR THEIR
 	exit
 fi
-rm OUR THEIR
