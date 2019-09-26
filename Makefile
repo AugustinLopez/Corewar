@@ -6,7 +6,7 @@
 #    By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/09/09 14:31:41 by aulopez           #+#    #+#              #
-#    Updated: 2019/09/23 14:31:59 by aulopez          ###   ########.fr        #
+#    Updated: 2019/09/26 11:00:40 by aulopez          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,6 +27,7 @@ SOURCE_VM=	vm_main \
 			vm_parser_file		\
 			vm_parser_file_2	\
 			vm_ram				\
+			vm_infodump			\
 			vm_process			\
 			vm_player			\
 			op_live				\
