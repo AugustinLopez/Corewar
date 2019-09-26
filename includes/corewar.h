@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 10:30:28 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/26 11:02:56 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/26 12:38:15 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,9 +186,7 @@ void					vm_setup(t_vm *vm, t_argument *arg);
 ** OP
 */
 
-t_bool					load_from_ocp(t_vm *vm, t_process *proc, int nbr_arg,
-							uint8_t flag);
-void					load_process(t_vm *vm, t_process *proc);
+
 int						op_zjmp(t_vm *vm, t_process *proc);
 int						op_live(t_vm *vm, t_process *proc);
 int						op_ld_lld(t_vm *vm, t_process *proc);
@@ -199,7 +197,6 @@ int						op_binary(t_vm *vm, t_process *proc);
 int						op_ldi_lldi(t_vm *vm, t_process *proc);
 int						op_aff(t_vm *vm, t_process *proc);
 int						op_sti(t_vm *vm, t_process *proc);
-int						analyze_process(t_vm *vm, t_process *proc);
 
 /*
 ** PLAYER
@@ -208,25 +205,41 @@ int						analyze_process(t_vm *vm, t_process *proc);
 int						init_player(t_vm *vm, int index, char *name,
 						char *comment);
 void					free_all_players(t_vm *vm);
-void					print_all_players(t_vm *vm);
+//void					print_all_players(t_vm *vm);
 
 /*
 ** PROCESS
 */
 
 int						create_process(t_vm *vm, size_t pc, int player_id);
-int						create_process_bis(t_vm *vm, size_t pc, int player_id,
-							t_process *proc);
+//int						create_process_bis(t_vm *vm, size_t pc, int player_id,
+//							t_process *proc);
 void					free_all_processes(t_vm *vm);
-void					print_all_processes(t_vm *vm);
+//void					print_all_processes(t_vm *vm);
 t_process				*free_process(t_vm *vm, t_process *process);
 
 /*
 ** RAM
 */
 
-void					dump_memory(t_vm *vm, size_t x, t_bool pretty);
 int						load_from_ram(t_vm *vm, size_t pc, int nbr);
 void					write_in_ram(t_vm *vm, t_process *proc, int addr,
 						int number);
+t_bool					load_from_ocp(t_vm *vm, t_process *proc, int nbr_arg,
+							uint8_t flag);
+
+/*
+** GAME
+*/
+
+void					load_process(t_vm *vm, t_process *proc);
+int						proceed_cycle(t_vm *vm);
+/*
+** INFO DUMP
+*/
+
+void					dump_memory(t_vm *vm, size_t x, t_bool pretty);
+int						print_winner(t_vm *vm);
+int						introduce_player(t_vm *vm);
+
 #endif

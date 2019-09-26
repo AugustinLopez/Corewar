@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 14:53:07 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/25 15:04:29 by bcarlier         ###   ########.fr       */
+/*   Updated: 2019/09/26 12:39:52 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "libft.h"
 #include <stdlib.h>
 
-static void	print_reg_content(t_process *tmp)
+static inline void	print_reg_content(t_process *tmp)
 {
 	uint8_t	i;
 
@@ -27,7 +27,7 @@ static void	print_reg_content(t_process *tmp)
 	}
 }
 
-void		print_all_processes(t_vm *vm)
+void				print_all_processes(t_vm *vm)
 {
 	t_process	*tmp;
 
@@ -53,7 +53,7 @@ void		print_all_processes(t_vm *vm)
 	}
 }
 
-void		free_all_processes(t_vm *vm)
+void				free_all_processes(t_vm *vm)
 {
 	t_process	*tmp;
 
@@ -66,7 +66,7 @@ void		free_all_processes(t_vm *vm)
 	}
 }
 
-t_process		*free_process(t_vm *vm, t_process *proc)
+t_process			*free_process(t_vm *vm, t_process *proc)
 {
 	t_process *tmp;
 
@@ -93,7 +93,7 @@ t_process		*free_process(t_vm *vm, t_process *proc)
 	}
 }
 
-int			create_process(t_vm *vm, size_t pc, int player_id)
+int					create_process(t_vm *vm, size_t pc, int player_id)
 {
 	t_process *tmp;
 
@@ -109,25 +109,5 @@ int			create_process(t_vm *vm, size_t pc, int player_id)
 	if (vm->process)
 		vm->process->prev = tmp;
 	vm->process = tmp;
-	return (SUCCESS);
-}
-
-int			create_process_bis(t_vm *vm, size_t pc, int player_id, t_process *proc)
-{
-	t_process *tmp;
-
-	if (!(tmp = (t_process *)malloc(sizeof(*tmp))))
-		return (FAILURE);
-	++vm->process_total;
-	ft_bzero(tmp, sizeof(*tmp));
-	tmp->pc = pc % MEM_SIZE;
-	tmp->next_pc = tmp->pc;
-	tmp->player_id = player_id;
-	tmp->process_id = ++vm->process_index;
-	tmp->next = proc->next;
-	if (tmp->next)
-		tmp->next->prev = tmp;
-	tmp->prev = proc;
-	proc->next = tmp;
 	return (SUCCESS);
 }

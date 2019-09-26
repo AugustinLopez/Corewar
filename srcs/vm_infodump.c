@@ -6,13 +6,56 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 14:53:07 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/26 10:58:53 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/26 12:38:58 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "corewar.h"
 #include "libft.h"
 #include <unistd.h>
+
+int					introduce_player(t_vm *vm)
+{
+	int	i;
+
+	ft_printf("Introducing contestants...\n");
+	i = 0;
+	while (i++ < vm->player_total)
+	{
+		ft_printf("* Player %d, ", i);
+		if (vm->player[i - 1].weight < 2)
+			ft_printf("weighing %d byte, ", vm->player[i - 1].weight);
+		else
+			ft_printf("weighing %d bytes, ", vm->player[i - 1].weight);
+		if ((vm->player[i - 1].name)[0])
+			ft_printf("\"%s\" ", vm->player[i - 1].name);
+		else
+			ft_printf("\"\" ");
+		if ((vm->player[i - 1].comment)[0])
+			ft_printf("(\"%s\") !\n", vm->player[i - 1].comment);
+		else
+			ft_printf("(\"\") !\n");
+	}
+	return (SUCCESS);
+}
+
+int					print_winner(t_vm *vm)
+{
+	int	i;
+
+	i = 0;
+	while (i < vm->player_total)
+	{
+		if (vm->player[i].id == vm->last_player_alive)
+			break ;
+		i++;
+	}
+	if (i == vm->player_total)
+		i = i - 1;
+	//did not handle case where no one emit a live !
+	ft_printf("Contestant %d, \"%s\", has won !\n", i + 1, vm->player[i].name);
+	return (0);
+}
 
 static inline void	print_player_info(t_vm *vm)
 {
