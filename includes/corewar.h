@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 10:30:28 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/26 12:38:15 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/26 14:38:52 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,10 @@
 # define OP_IDX 2
 # define OP_IND 4
 
+# define FLAG_VISU 1
+# define FLAG_MORE_INFO 2
+# define FLAG_LESS_INFO 4
+
 typedef uint8_t			t_bool;
 
 typedef struct			s_argument
@@ -63,6 +67,7 @@ typedef struct			s_argument
 	int					ac;
 	int					i;
 	int					err;
+	uint32_t			flag;
 	int					value[MAX_PLAYERS];
 	t_bool				n_option[MAX_PLAYERS];
 	t_bool				dump_option;
@@ -159,6 +164,7 @@ typedef struct			s_vm
 	int					min_wait;
 	int					err;
 	int					last_player_alive;
+	uint32_t			flag;
 	uint8_t				player_total;
 }						t_vm;
 
@@ -186,7 +192,6 @@ void					vm_setup(t_vm *vm, t_argument *arg);
 ** OP
 */
 
-
 int						op_zjmp(t_vm *vm, t_process *proc);
 int						op_live(t_vm *vm, t_process *proc);
 int						op_ld_lld(t_vm *vm, t_process *proc);
@@ -205,17 +210,13 @@ int						op_sti(t_vm *vm, t_process *proc);
 int						init_player(t_vm *vm, int index, char *name,
 						char *comment);
 void					free_all_players(t_vm *vm);
-//void					print_all_players(t_vm *vm);
 
 /*
 ** PROCESS
 */
 
 int						create_process(t_vm *vm, size_t pc, int player_id);
-//int						create_process_bis(t_vm *vm, size_t pc, int player_id,
-//							t_process *proc);
 void					free_all_processes(t_vm *vm);
-//void					print_all_processes(t_vm *vm);
 t_process				*free_process(t_vm *vm, t_process *process);
 
 /*
@@ -233,7 +234,7 @@ t_bool					load_from_ocp(t_vm *vm, t_process *proc, int nbr_arg,
 */
 
 void					load_process(t_vm *vm, t_process *proc);
-int						proceed_cycle(t_vm *vm);
+int						gameloop(t_vm *vm);
 /*
 ** INFO DUMP
 */

@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 14:53:07 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/26 12:38:58 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/26 14:37:27 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ int					print_winner(t_vm *vm)
 	}
 	if (i == vm->player_total)
 		i = i - 1;
-	//did not handle case where no one emit a live !
 	ft_printf("Contestant %d, \"%s\", has won !\n", i + 1, vm->player[i].name);
 	return (0);
 }

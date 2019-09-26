@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/16 11:43:54 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/26 10:53:40 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/26 13:48:45 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,4 +60,5 @@ void				vm_setup(t_vm *vm, t_argument *arg)
 	if (arg->dump_option == TRUE)
 		vm->cycle_to_dump = arg->dump_value;
 	vm->cycle_to_die = CYCLE_TO_DIE;
+	vm->flag = arg->flag;
 }

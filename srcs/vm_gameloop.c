@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/26 12:26:44 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/26 12:40:34 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/26 14:35:09 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ static inline int	kill_process(t_vm *vm)
 	return (1);
 }
 
-int					proceed_cycle(t_vm *vm)
+int					gameloop(t_vm *vm)
 {
 	t_process	*proc;
 

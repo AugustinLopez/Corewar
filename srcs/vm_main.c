@@ -6,7 +6,7 @@
 /*   By: bcarlier <bcarlier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/09 19:02:24 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/09/26 12:40:18 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/26 14:36:58 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,89 +14,94 @@
 #include "libft.h"
 #include <stdlib.h>
 
-int	corewar(t_vm *vm)
+int	standard_corewar_dump(t_vm *vm)
 {
 	size_t	cycle;
+	int		ret;
 
-	introduce_player(vm);
-	if (vm->cycle_to_dump == 0)
-	{
-		while (proceed_cycle(vm) == 1)
-			continue ;
-		ft_printf("%zu\n", vm->cycle_total);
-	}
-	else
-	{
-		cycle = 0;
-		while (cycle++ <= vm->cycle_to_dump)
-			if (proceed_cycle(vm) == 0)
-				break ;
-	}
-	if (vm->cycle_to_dump == 0)
-	{
-		print_winner(vm);
-		return (SUCCESS);
-	}
+	ret = 0;
+	cycle = 0;
+	while (cycle++ <= vm->cycle_to_dump)
+		if ((ret = gameloop(vm)) == 0)
+			break ;
 	dump_memory(vm, 64, FALSE);
+	if (ret == 0)
+	{
+		ft_printf("%s%sTotal number of cycle%s: %zu\n"
+				, FT_BOLD, FT_UNDER, FT_EOC, vm->cycle_total);
+		print_winner(vm);
+	}
+	return (SUCCESS);
+}
+
+int	standard_corewar(t_vm *vm)
+{
+	while (gameloop(vm) == 1)
+		continue ;
+	if (vm->flag & FLAG_MORE_INFO)
+		ft_printf("%s%sTotal number of cycle%s: %zu\n"
+				, FT_BOLD, FT_UNDER, FT_EOC, vm->cycle_total);
+	print_winner(vm);
+	return (SUCCESS);
+}
+
+int	corewar_loop(t_vm *vm, int *loop)
+{
+	char	*buff;
+	int		i;
+	int		ret;
+
+	ft_printf("\n%sCommand input >%s ", FT_ITALIC, FT_EOC);
+	if (ft_gnl(1, &buff, 0) <= 0)
+		return (-1);
+	if (*buff)
+	{
+		if (!ft_strcmp(buff, "over"))
+		{
+			free(buff);
+			return (-1);
+		}
+		*loop = ft_atoi(buff);
+		*loop = *loop <= 0 ? 1 : *loop;
+	}
+	free(buff);
+	i = 0;
+	while (i++ < *loop)
+		if ((ret = gameloop(vm)) == 0)
+			break ;
+	ft_printf("%sCycle %zu%s:\n", FT_UNDER, vm->cycle_total, FT_EOC);
+	dump_memory(vm, 64, TRUE);
+	return (ret);
+}
+
+int	visual_corewar(t_vm *vm)
+{
+	int		j;
+	int		ret;
+
+	j = 1;
+	dump_memory(vm, 64, TRUE);
+	while ((ret = corewar_loop(vm, &j)) == 1)
+		continue ;
+	if (ret == 0)
+		print_winner(vm);
 	return (SUCCESS);
 }
 
 int	main(int argc, char **argv)
 {
-	t_vm		vm;
-	char		*buff;
-	int			i;
-	int			j;
-	t_bool		over;
-	t_process	*proc;
+	t_vm vm;
 
-	(void)i;
-	(void)buff;
 	if (parser(&vm, argc, argv) == FAILURE)
 		return (-1);
-	(void)proc;
-	//corewar(&vm);
 	introduce_player(&vm);
-	i = 0;
-	proc = vm.process;
-	/*while (proc)
-	{
-		(void)analyze_process(&vm, proc);
-		proc = proc->next;
-	}*/
-	over = FALSE;
-	dump_memory(&vm, 64, TRUE);
-	j = 1;
-	while (ft_gnl(1, &buff, 0) > 0)
-	{
-		if (*buff)
-		{
-			j = ft_atoi(buff);
-			if (j <= 0)
-				j = 1;
-		}
-		i = 0;
-		while (i++ < j)
-		{
-			if (proceed_cycle(&vm) == 0)
-			{
-				over = TRUE;
-				break ;
-			}
-		}
-		ft_printf("%sCycle %zu%s:\n", FT_UNDER, vm.cycle_total, FT_EOC);
-		dump_memory(&vm, 64, TRUE);
-		free(buff);
-		buff = 0;
-		if (over == TRUE)
-			break ;
-	}
-	free(buff);
-	buff = 0;
-	print_winner(&vm);
-	dump_memory(&vm, 64, TRUE);
-	//print_all_players(&vm);*/
-	//print_all_processes(&vm);
+	if (vm.flag & FLAG_VISU)
+		visual_corewar(&vm);
+	else if (vm.cycle_to_dump != 0)
+		standard_corewar_dump(&vm);
+	else if (vm.cycle_to_dump == 0)
+		standard_corewar(&vm);
+	ft_gnl(-1, 0, -1);
 	free_all_players(&vm);
 	free_all_processes(&vm);
 	return (0);
