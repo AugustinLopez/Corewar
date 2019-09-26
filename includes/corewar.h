@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 10:30:28 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/25 16:26:47 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/26 10:52:46 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,7 +180,7 @@ size_t					arg_atozu(t_argument *arg, const char *src);
 
 int						file_parser(t_vm *vm, t_argument *arg);
 int						vm_set_error(t_vm *vm, int err, char *strerr);
-void					vm_set_null_id(t_vm *vm, t_argument *arg);
+void					vm_setup(t_vm *vm, t_argument *arg);
 
 /*
 ** OP

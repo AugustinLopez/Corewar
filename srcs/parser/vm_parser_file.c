@@ -6,7 +6,7 @@
 /*   By: bcarlier <bcarlier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/11 15:40:40 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/09/23 16:15:38 by bcarlier         ###   ########.fr       */
+/*   Updated: 2019/09/26 10:53:07 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,8 @@ static inline int	read_comment(t_argument *arg, t_vm *vm, int fd)
 	if (lseek(fd, DECAL_WEIGHT, SEEK_CUR) != i
 			|| read(fd, buffer, WEIGHT_LENGTH) != WEIGHT_LENGTH)
 		return (vm_set_error(vm, ERR_WEIGHT, arg->file[vm->player_total]));
-	vm->player[vm->player_total].weight = ((buffer[0] << 8) & 0xff00) | (buffer[1] & 0xff);
+	vm->player[vm->player_total].weight = ((buffer[0] << 8) & 0xff00)
+			| (buffer[1] & 0xff);
 	ft_bzero(buffer, sizeof(buffer));
 	if (read(fd, buffer, COMMENT_LENGTH) != COMMENT_LENGTH)
 		return (vm_set_error(vm, ERR_COMMENT, arg->file[vm->player_total]));
@@ -68,7 +69,7 @@ static inline int	read_file(t_argument *arg, t_vm *vm, int fd)
 		return (vm_set_error(vm, ERR_MAX_SIZE, arg->file[vm->player_total]));
 	else if (ret != vm->player[vm->player_total].weight)
 		return (vm_set_error(vm, ERR_HEADER, arg->file[vm->player_total]));
-		i = 0;
+	i = 0;
 	j = vm->player_total * MEM_SIZE / arg->nbr_player;
 	vm->ram[j].process = TRUE;
 	while (i < ret)
@@ -107,11 +108,7 @@ int					file_parser(t_vm *vm, t_argument *arg)
 {
 	size_t	pc;
 
-	ft_bzero(vm, sizeof(*vm));
-	vm_set_null_id(vm, arg);
-	if (arg->dump_option == TRUE)
-		vm->cycle_to_dump = arg->dump_value;
-	vm->cycle_to_die = CYCLE_TO_DIE;
+	vm_setup(vm, arg);
 	while (vm->player_total < arg->nbr_player)
 	{
 		vm->player[vm->player_total].id = arg->value[vm->player_total];

@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/16 11:28:10 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/23 15:45:44 by bcarlier         ###   ########.fr       */
+/*   Updated: 2019/09/26 10:48:25 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ static inline void	vm_error_message(t_vm *vm)
 		ft_dprintf(STDERR_FILENO, "Not enough memory\n");
 	else if (vm->err == ERR_HEADER)
 		ft_dprintf(STDERR_FILENO, "Program and header weights don't match\n");
-	ft_dprintf(STDERR_FILENO, "%d\n",  vm->err);
+	ft_dprintf(STDERR_FILENO, "%d\n", vm->err);
 }
 
 int					parser(t_vm *vm, int argc, char **argv)
