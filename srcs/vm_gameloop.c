@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/26 12:26:44 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/27 13:09:38 by bcarlier         ###   ########.fr       */
+/*   Updated: 2019/09/27 13:29:35 by bcarlier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,9 +70,12 @@ static inline int	kill_process(t_vm *vm)
 	}
 	if (vm->process == NULL)
 		return (0);
-	if (vm->live_since_check >= NBR_LIVE || vm->max_check > MAX_CHECKS - 1)
+	if (vm->live_since_check >= NBR_LIVE || vm->max_check > MAX_CHECKS)
+	{
 		vm->cycle_to_die -= (vm->cycle_to_die <= CYCLE_DELTA)
 				? vm->cycle_to_die : CYCLE_DELTA;
+		vm->max_check = 0;
+	}
 	else
 		vm->max_check++;
 	vm->cycle_since_check = 0;
