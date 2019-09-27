@@ -10,7 +10,7 @@ i=$2 ##Carrefull 0 won't work here
 #	echo "Usage : ./diff_dump.sh dump_step_value dump_start_value champion1.cor champion2.cor"
 #	exit
 #fi
-while [ $i -lt 100000 ]
+while [ $i -lt 10000000 ]
 do
 	./corewar -dump $i $3 $4 $5 $6> OUR
 	./resources/executable/corewar -d $i $3 $4 $5 $6 > THEIR
