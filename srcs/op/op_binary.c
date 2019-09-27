@@ -6,7 +6,7 @@
 /*   By: bcarlier <bcarlier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/19 12:27:17 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/09/26 18:01:55 by bcarlier         ###   ########.fr       */
+/*   Updated: 2019/09/27 12:59:59 by bcarlier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	op_binary(t_vm *vm, t_process *proc)
 	if (!ft_strchr("\x54\x64\x74\x94\xA4\xb4\xd4\xe4\xf4"
 			, (proc->op.ocp & 0xfc)))
 	{
-		proc->next_pc = (proc->next_pc + 1) % MEM_SIZE;
+		//proc->next_pc = (proc->next_pc + 1) % MEM_SIZE;
 		ret = FAILURE;
 	}
 	if (ret == FAILURE)

@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/26 12:26:44 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/26 17:12:55 by bcarlier         ###   ########.fr       */
+/*   Updated: 2019/09/27 13:09:38 by bcarlier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,15 +90,15 @@ int					gameloop(t_vm *vm)
 		return (1);
 	}
 	++(vm->cycle_total);
-	if (++vm->cycle_since_check >= vm->cycle_to_die)
-		if (kill_process(vm) == 0)
-			return (0);
 	proc = vm->process;
 	while (proc)
 	{
 		(void)analyze_process(vm, proc);
 		proc = proc->next;
 	}
+	if (++vm->cycle_since_check >= vm->cycle_to_die)
+		if (kill_process(vm) == 0)
+			return (0);
 	proc = vm->process;
 	while (proc)
 	{

@@ -11,7 +11,7 @@ then
 fi
 ./corewar $1 $2 > OUR
 echo "...OUR created..."
-./resources/corewar $1 $2 > THEIR
+./resources/executable/corewar $1 $2 > THEIR
 echo "...THEIR created..."
 if diff OUR THEIR > /dev/null; then
 	echo "No diff at end"

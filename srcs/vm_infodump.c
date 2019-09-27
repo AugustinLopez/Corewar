@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 14:53:07 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/26 16:57:20 by bcarlier         ###   ########.fr       */
+/*   Updated: 2019/09/27 13:17:17 by bcarlier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,13 +97,14 @@ static inline void	print_info(int cycle, size_t i, t_vm *vm)
 		ft_printf("%02x%s", vm->ram[i].byte, FT_EOC);
 		return ;
 	}
-	ft_printf("%s%sCurrent process:%s %zu\n\n"
+	ft_printf("%s%sCurrent process:%s %zu\n"
 			, FT_UNDER, FT_BOLD, FT_EOC, vm->process_total);
-	ft_printf("%s%sCycle to die:%s %zu\n\n"
+	ft_printf("%s%sCycle to die:%s %zu\n"
 			, FT_UNDER, FT_BOLD, FT_EOC, vm->cycle_to_die);
 	ft_printf("%s%sCycle since last check:%s %zu\n\n"
 			, FT_UNDER, FT_BOLD, FT_EOC, vm->cycle_since_check);
-	print_player_info(vm);
+	if (!(vm->flag & FLAG_LESS_INFO))
+		print_player_info(vm);
 }
 
 void				dump_memory(t_vm *vm, size_t x, t_bool pretty)

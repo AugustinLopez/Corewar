@@ -13,7 +13,7 @@ i=$2 ##Carrefull 0 won't work here
 while [ $i -lt 100000 ]
 do
 	./corewar -dump $i $3 $4 $5 $6> OUR
-	./resources/corewar -d $i $3 $4 $5 $6 > THEIR
+	./resources/executable/corewar -d $i $3 $4 $5 $6 > THEIR
 	if diff OUR THEIR > /dev/null; then
 		echo "No diff, dump $i"
 	else

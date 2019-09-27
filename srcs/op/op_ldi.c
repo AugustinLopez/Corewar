@@ -6,7 +6,7 @@
 /*   By: bcarlier <bcarlier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/19 10:19:51 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/09/26 18:00:54 by bcarlier         ###   ########.fr       */
+/*   Updated: 2019/09/27 12:58:53 by bcarlier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int		op_ldi_lldi(t_vm *vm, t_process *proc)
 		ret = FAILURE;
 	if (!ft_strchr("\x54\x64\x94\xa4\xd4\xe4", (proc->op.ocp & 0xfc)))
 	{
-		proc->next_pc = (proc->next_pc + 1) % MEM_SIZE;
+		//proc->next_pc = (proc->next_pc + 1) % MEM_SIZE;
 		ret = FAILURE;
 	}
 	if (ret == FAILURE)

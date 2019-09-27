@@ -6,7 +6,7 @@
 /*   By: bcarlier <bcarlier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/19 11:03:27 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/09/26 18:00:26 by bcarlier         ###   ########.fr       */
+/*   Updated: 2019/09/27 12:59:37 by bcarlier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ int		op_sti(t_vm *vm, t_process *proc)
 	if (load_from_ocp(vm, proc, 3, OP_DIR | OP_IDX) == FAILURE)
 		ret = FAILURE;
 	if (!ft_strchr("\x54\x64\x74\x58\x68\x78", (proc->op.ocp & 0xfc)))
-	{		
-		proc->next_pc = (proc->next_pc + 1) % MEM_SIZE;
+	{
+		//proc->next_pc = (proc->next_pc + 1) % MEM_SIZE;
 		ret = FAILURE;
 	}
 	if (ret == FAILURE)

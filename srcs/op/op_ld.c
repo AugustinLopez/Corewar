@@ -6,7 +6,7 @@
 /*   By: bcarlier <bcarlier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/18 14:41:33 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/09/26 17:58:33 by bcarlier         ###   ########.fr       */
+/*   Updated: 2019/09/27 13:01:33 by bcarlier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int		op_ld_lld(t_vm *vm, t_process *proc)
 		ret = FAILURE;
 	if (!ft_strchr("\xd0\x90", (proc->op.ocp & 0xf0)))
 	{
-		proc->next_pc = (proc->next_pc + 1) % MEM_SIZE;
+		//proc->next_pc = (proc->next_pc + 1) % MEM_SIZE;
 		ret = FAILURE;
 	}
 	if (ret == FAILURE)
