@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/26 12:26:44 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/27 15:03:15 by bcarlier         ###   ########.fr       */
+/*   Updated: 2019/09/27 17:11:36 by bcarlier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,5 @@ int					gameloop(t_vm *vm)
 		vm->ram[proc->pc].process = TRUE;
 		proc = proc->next;
 	}
-	if (vm->cycle_to_die == 0)
-		return (0);
 	return (1);
 }
