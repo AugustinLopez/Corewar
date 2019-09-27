@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/16 13:51:34 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/25 16:42:39 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/27 16:19:44 by bcarlier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int		op_live(t_vm *vm, t_process *process)
 	process->next_pc = (process->pc + 5) % MEM_SIZE;
 	process->alive = TRUE;
 	i = 0;
-	while (i < MAX_PLAYERS)
+	while (i < vm->player_total - 1)
 	{
 		if (vm->player[i].id == process->op.p[0])
 		{
@@ -30,6 +30,8 @@ int		op_live(t_vm *vm, t_process *process)
 			++(vm->player[i].live_total);
 			(vm->player[i].live_last) = vm->cycle_total - 1;
 			vm->last_player_alive = vm->player[i].id;
+			/*ft_printf("%sP - %zu%s > Player (\"%s\") is alive\n",
+					FT_BOLD, process->process_id, FT_EOC, vm->player[i].name);*/
 			return (SUCCESS);
 		}
 		++i;
