@@ -20,8 +20,9 @@ do
 		echo "!!! Diff at dump $i !!!"
 		echo "OUR is on top, THEIR is on the bottom"
 		diff OUR THEIR
+		rm OUR THEIR
 		exit
 	fi
-	rm OUR THEIR
 	i=$((i + $1))
 done
+rm OUR THEIR

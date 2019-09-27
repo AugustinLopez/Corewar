@@ -6,7 +6,7 @@
 /*   By: bcarlier <bcarlier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/18 14:41:33 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/09/23 16:47:44 by bcarlier         ###   ########.fr       */
+/*   Updated: 2019/09/26 17:58:33 by bcarlier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,19 @@
 
 int		op_ld_lld(t_vm *vm, t_process *proc)
 {
-	uint8_t	flag;
+	int	ret;
 
-	flag = (proc->op.op == 2) ? OP_IDX : OP_DIR | OP_IND;
-	if (load_from_ocp(vm, proc, 2, flag) == FAILURE
-			|| !ft_strchr("\xd0\x90", (proc->op.ocp & 0xf0)))
-		return (FAILURE);
+	ret = SUCCESS;
+	if (load_from_ocp(vm, proc, 2, (proc->op.op == 2) ? OP_IDX : OP_IND)
+			 == FAILURE)
+		ret = FAILURE;
+	if (!ft_strchr("\xd0\x90", (proc->op.ocp & 0xf0)))
+	{
+		proc->next_pc = (proc->next_pc + 1) % MEM_SIZE;
+		ret = FAILURE;
+	}
+	if (ret == FAILURE)
+		return (ret);
 	proc->r[proc->op.p[1] - 1] = ((proc->op.ocp & 0xf0) == 0xd0)
 			? proc->op.ind[0] : proc->op.p[0];
 	proc->carry = proc->r[proc->op.p[1] - 1] == 0 ? 1 : 0;

@@ -1,4 +1,4 @@
-.name "Test aff"
+.name "Test aff and the carry modif"
 .comment ""
 
 test_1:
@@ -14,19 +14,22 @@ aff r5
 zjmp %100
 
 test_2:
-# Should not jump cause carry value is 0, aff don't modify carry
-ld 0, r2
+# Should not jump because carry value is 0, aff don't modify carry
+# Should retrieve the "l" and display it
+ld -17, r2
+st r2, 500
 aff r2
 zjmp %100
 
 test_2:
-# Should not jump cause carry value is 0, aff don't modify carry
-ld -556, r2
-st r2, -557
+# Should not jump because carry value is 0, aff don't modify carry
+# Should retrieve the "o" and display it
+ld -40, r2
+st r2, 500
 aff r2
 zjmp %100
 
 test_4:
-# Should jump cause carry value is 1, add modify carry to 1
+# Should jump now because add modified carry to 1
 add r6, r6, r6
 zjmp %1000
