@@ -6,7 +6,7 @@
 /*   By: bcarlier <bcarlier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/19 11:03:27 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/09/27 12:59:37 by bcarlier         ###   ########.fr       */
+/*   Updated: 2019/09/30 11:09:44 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,18 +16,10 @@
 int		op_sti(t_vm *vm, t_process *proc)
 {
 	int	addr;
-	int	ret;
 
-	ret = SUCCESS;
-	if (load_from_ocp(vm, proc, 3, OP_DIR | OP_IDX) == FAILURE)
-		ret = FAILURE;
-	if (!ft_strchr("\x54\x64\x74\x58\x68\x78", (proc->op.ocp & 0xfc)))
-	{
-		//proc->next_pc = (proc->next_pc + 1) % MEM_SIZE;
-		ret = FAILURE;
-	}
-	if (ret == FAILURE)
-		return (ret);
+	if (load_from_ocp(vm, proc, 3, OP_DIR | OP_IDX) == FAILURE
+		|| !ft_strchr("\x54\x64\x74\x58\x68\x78", (proc->op.ocp & 0xfc)))
+		return (FAILURE);
 	if ((proc->op.ocp & 0x30) == 0x10)
 		proc->op.p[1] = proc->r[(proc->op.p[1] - 1)];
 	else if ((proc->op.ocp & 0x30) == 0x30)

@@ -6,7 +6,7 @@
 /*   By: bcarlier <bcarlier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/09 19:02:24 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/09/26 16:20:15 by bcarlier         ###   ########.fr       */
+/*   Updated: 2019/09/30 11:17:07 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	standard_corewar_dump(t_vm *vm)
 	while (cycle++ <= vm->cycle_to_dump)
 		if ((ret = gameloop(vm)) == 0)
 			break ;
-	dump_memory(vm, 64, FALSE);
+	dump_memory(vm, vm->flag & FLAG_LIKE_PDF ? 32 : 64, FALSE);
 	if (ret == 0)
 	{
 		ft_printf("%s%sTotal number of cycle%s: %zu\n"

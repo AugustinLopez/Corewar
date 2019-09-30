@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 10:30:28 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/26 14:38:52 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/30 11:13:48 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,10 @@
 # define OP_IDX 2
 # define OP_IND 4
 
-# define FLAG_VISU 1
-# define FLAG_MORE_INFO 2
-# define FLAG_LESS_INFO 4
+# define FLAG_VISU		1
+# define FLAG_MORE_INFO	2
+# define FLAG_LESS_INFO	4
+# define FLAG_LIKE_PDF	8
 
 typedef uint8_t			t_bool;
 
