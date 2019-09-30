@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 14:53:07 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/30 13:21:34 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/30 14:21:50 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ static inline void	print_info(int cycle, size_t i, t_vm *vm)
 void				dump_memory(t_vm *vm, size_t x, t_bool pretty)
 {
 	size_t	i;
-	
+
 	i = 0;
 	while (i < MEM_SIZE)
 	{

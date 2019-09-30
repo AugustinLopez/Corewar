@@ -6,7 +6,7 @@
 /*   By: bcarlier <bcarlier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/09 19:02:24 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/09/30 13:21:47 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/30 14:21:38 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ static inline int	visual_corewar(t_vm *vm)
 	return (SUCCESS);
 }
 
-int	main(int argc, char **argv)
+int					main(int argc, char **argv)
 {
 	t_vm vm;
 
