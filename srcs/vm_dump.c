@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 14:53:07 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/30 11:15:50 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/30 13:21:34 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,14 +102,13 @@ static inline void	print_info(int cycle, size_t i, t_vm *vm)
 			, FT_UNDER, FT_BOLD, FT_EOC, vm->cycle_to_die);
 	ft_printf("%s%sCycle since last check:%s %zu\n\n"
 			, FT_UNDER, FT_BOLD, FT_EOC, vm->cycle_since_check);
-	if (!(vm->flag & FLAG_LESS_INFO))
-		print_player_info(vm);
+	print_player_info(vm);
 }
 
 void				dump_memory(t_vm *vm, size_t x, t_bool pretty)
 {
 	size_t	i;
-
+	
 	i = 0;
 	while (i < MEM_SIZE)
 	{

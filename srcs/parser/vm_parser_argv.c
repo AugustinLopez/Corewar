@@ -6,7 +6,7 @@
 /*   By: bcarlier <bcarlier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/09 19:02:24 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/09/30 11:14:36 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/30 13:13:04 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,10 +84,6 @@ static inline int	argv_parser_iterate(t_argument *arg)
 			ret = parse_n(arg, &(arg->i));
 		else if (!ft_strcmp(arg->av[(arg->i)], "-v"))
 			arg->flag |= FLAG_VISU;
-		else if (!ft_strcmp(arg->av[(arg->i)], "-m"))
-			arg->flag |= FLAG_MORE_INFO;
-		else if (!ft_strcmp(arg->av[(arg->i)], "-l"))
-			arg->flag |= FLAG_LESS_INFO;
 		else if (!ft_strcmp(arg->av[(arg->i)], "-s"))
 			arg->flag |= FLAG_LIKE_PDF;
 		else if ((s = ft_strrstr(arg->av[(arg->i)], FILE_EXT)))

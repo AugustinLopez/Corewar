@@ -6,7 +6,7 @@
 /*   By: bcarlier <bcarlier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/09 19:02:24 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/09/30 11:17:07 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/30 13:21:47 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,38 +14,42 @@
 #include "libft.h"
 #include <stdlib.h>
 
-int	standard_corewar_dump(t_vm *vm)
+static inline int	standard_corewar_dump(t_vm *vm)
 {
 	size_t	cycle;
 	int		ret;
+	int		size;
 
+	size = (vm->flag & FLAG_LIKE_PDF) ? 32 : 64;
 	ret = 0;
 	cycle = 0;
 	while (cycle++ <= vm->cycle_to_dump)
 		if ((ret = gameloop(vm)) == 0)
 			break ;
-	dump_memory(vm, vm->flag & FLAG_LIKE_PDF ? 32 : 64, FALSE);
 	if (ret == 0)
 	{
-		ft_printf("%s%sTotal number of cycle%s: %zu\n"
-				, FT_BOLD, FT_UNDER, FT_EOC, vm->cycle_total);
+		if (vm->flag & FLAG_LIKE_PDF)
+			ft_printf("%s%sTotal number of cycle%s: %zu\n"
+					, FT_BOLD, FT_UNDER, FT_EOC, vm->cycle_total);
 		print_winner(vm);
 	}
+	else
+		dump_memory(vm, size, FALSE);
 	return (SUCCESS);
 }
 
-int	standard_corewar(t_vm *vm)
+static inline int	standard_corewar(t_vm *vm)
 {
 	while (gameloop(vm) == 1)
 		continue ;
-	if (vm->flag & FLAG_MORE_INFO)
+	if (!(vm->flag & FLAG_LIKE_PDF))
 		ft_printf("%s%sTotal number of cycle%s: %zu\n"
 				, FT_BOLD, FT_UNDER, FT_EOC, vm->cycle_total);
 	print_winner(vm);
 	return (SUCCESS);
 }
 
-int	corewar_loop(t_vm *vm, int *loop)
+static inline int	corewar_loop(t_vm *vm, int *loop)
 {
 	char	*buff;
 	int		i;
@@ -74,7 +78,7 @@ int	corewar_loop(t_vm *vm, int *loop)
 	return (ret);
 }
 
-int	visual_corewar(t_vm *vm)
+static inline int	visual_corewar(t_vm *vm)
 {
 	int		j;
 	int		ret;
@@ -97,10 +101,10 @@ int	main(int argc, char **argv)
 	introduce_player(&vm);
 	if (vm.flag & FLAG_VISU)
 		visual_corewar(&vm);
-	else if (vm.cycle_to_dump != 0)
-		standard_corewar_dump(&vm);
 	else if (vm.cycle_to_dump == 0)
 		standard_corewar(&vm);
+	else if (vm.cycle_to_dump != 0)
+		standard_corewar_dump(&vm);
 	ft_gnl(-1, 0, -1);
 	free_all_players(&vm);
 	free_all_processes(&vm);

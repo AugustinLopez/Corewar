@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 10:30:28 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/30 11:13:48 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/30 13:13:38 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,7 @@
 # define OP_IND 4
 
 # define FLAG_VISU		1
-# define FLAG_MORE_INFO	2
-# define FLAG_LESS_INFO	4
-# define FLAG_LIKE_PDF	8
+# define FLAG_LIKE_PDF	2
 
 typedef uint8_t			t_bool;
 
@@ -137,7 +135,6 @@ typedef struct			s_player
 	char				*comment;
 	int					id;
 	int					weight;
-	t_bool				still_alive;
 }						t_player;
 
 /*
@@ -162,29 +159,22 @@ typedef struct			s_vm
 	size_t				process_index;
 	t_process			*process;
 	char				*strerr;
-	int					min_wait;
 	int					err;
 	int					last_player_alive;
 	uint32_t			flag;
 	uint8_t				player_total;
 }						t_vm;
 
-int						parser(t_vm *vm, int argc, char **argv);
-
 /*
-** ARGV_PARSER
+** PARSER
 */
 
+int						parser(t_vm *vm, int argc, char **argv);
 int						argv_parser(t_argument *arg, int argc, char **argv);
 int						handle_duplicate_id(t_argument *arg);
 int						arg_set_error(t_argument *arg, int err, int ac_err);
 int						arg_atoi(t_argument *arg, const char *src);
 size_t					arg_atozu(t_argument *arg, const char *src);
-
-/*
-** FILE_PARSER
-*/
-
 int						file_parser(t_vm *vm, t_argument *arg);
 int						vm_set_error(t_vm *vm, int err, char *strerr);
 void					vm_setup(t_vm *vm, t_argument *arg);
@@ -237,7 +227,7 @@ t_bool					load_from_ocp(t_vm *vm, t_process *proc, int nbr_arg,
 void					load_process(t_vm *vm, t_process *proc);
 int						gameloop(t_vm *vm);
 /*
-** INFO DUMP
+** DUMP
 */
 
 void					dump_memory(t_vm *vm, size_t x, t_bool pretty);
