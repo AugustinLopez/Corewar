@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 10:30:28 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/30 13:13:38 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/30 13:48:06 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@
 
 # define FLAG_VISU		1
 # define FLAG_LIKE_PDF	2
+# define FLAG_BONUS		4
 
 typedef uint8_t			t_bool;
 
@@ -193,6 +194,9 @@ int						op_binary(t_vm *vm, t_process *proc);
 int						op_ldi_lldi(t_vm *vm, t_process *proc);
 int						op_aff(t_vm *vm, t_process *proc);
 int						op_sti(t_vm *vm, t_process *proc);
+int						op_arithmetic2(t_vm *vm, t_process *proc);
+int						op_binary2(t_vm *vm, t_process *proc);
+int						op_carry(t_vm *vm, t_process *proc);
 
 /*
 ** PLAYER

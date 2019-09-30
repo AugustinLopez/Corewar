@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/27 12:28:22 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/30 12:59:59 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/30 14:17:53 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,6 @@ int	op_arithmetic2(t_vm *vm, t_process *proc)
 
 int	op_binary2(t_vm *vm, t_process *proc)
 {
-	int	ret;
-
-	ret = SUCCESS;
 	if (load_from_ocp(vm, proc, 3, OP_IDX) == FAILURE
 		|| !ft_strchr("\x54\x64\x74\x94\xA4\xb4\xd4\xe4\xf4"
 		, (proc->op.ocp & 0xfc)))
@@ -49,11 +46,13 @@ int	op_binary2(t_vm *vm, t_process *proc)
 		proc->op.p[1] = proc->r[proc->op.p[1] - 1];
 	else if ((proc->op.ocp & 0x30) == 0x30)
 		proc->op.p[1] = proc->op.ind[1];
+	if (proc->op.p[1] < 0)
+		return (FAILURE);
 	if (proc->op.p[1] >= 31)
 		proc->r[proc->op.p[2] - 1] = 0;
-	else if (proc->op.p[1] < 0 && proc->op.op == 20)
+	else if (proc->op.p[1] > 0 && proc->op.op == 20)
 		proc->r[proc->op.p[2] - 1] = proc->op.p[0] >> proc->op.p[1];
-	if (proc->op.p[1] < 0)
+	else if (proc->op.p[1] > 0)
 		proc->r[proc->op.p[2] - 1] = proc->op.p[0] << proc->op.p[1];
 	proc->carry = proc->r[proc->op.p[2] - 1] == 0 ? 1 : 0;
 	return (SUCCESS);

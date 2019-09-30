@@ -6,7 +6,7 @@
 #    By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/09/09 14:31:41 by aulopez           #+#    #+#              #
-#    Updated: 2019/09/30 11:05:17 by aulopez          ###   ########.fr        #
+#    Updated: 2019/09/30 13:46:31 by aulopez          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,7 +40,8 @@ SOURCE_VM=	vm_main				\
 			op_binary			\
 			op_sti				\
 			op_aff				\
-			op_st
+			op_st				\
+			op_bonus
 LIBFT=$(PATH_LIB)libft.a
 
 # --- 2.Path/Object ------------------------------------------------------------
