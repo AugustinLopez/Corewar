@@ -1,28 +1,25 @@
-#Executer avec la boucle de la fonction corewar dans le main.
-#Supprimer l'affichage des couleurs, des process et des joueurs
+if ((("$#" < 4 )) || (( "$#" > 6 )))
+then
+	echo "Usage: sh diff_dump.sh [DUMP_STEP] [DUMP_START] [champion1.cor] [champion2.cor] ... (up to four champions)"
+	exit
+fi
 
-OUR=0
-THEIR=0
-DIFF=0
-i=$2 ##Carrefull 0 won't work here
-#if [ "$#" -ne "5" ]
-#then
-#	echo "Usage : ./diff_dump.sh dump_step_value dump_start_value champion1.cor champion2.cor"
-#	exit
-#fi
+OUR_DUMP=0
+THEIR_DUMP=0
+i=$2
 while [ $i -lt 10000000 ]
 do
-	./corewar -dump $i $3 $4 $5 $6> OUR
-	./resources/executable/corewar -d $i $3 $4 $5 $6 > THEIR
-	if diff OUR THEIR > /dev/null; then
-		echo "No diff, dump $i"
+	../../corewar -dump $i $3 $4 $5 $6 > OUR_DUMP
+	./corewar -d $i $3 $4 $5 $6 > THEIR_DUMP
+	if diff OUR_DUMP THEIR_DUMP > /dev/null; then
+		echo "No diff, dump is |$i|"
 	else
-		echo "!!! Diff at dump $i !!!"
-		echo "OUR is on top, THEIR is on the bottom"
-		diff OUR THEIR
-		rm OUR THEIR
+		echo "\nDiff at dump |$i| !"
+		echo "OUR_DUMP is on top, THEIR_DUMP is on bottom\n"
+		diff OUR_DUMP THEIR_DUMP
+		rm OUR_DUMP THEIR_DUMP
 		exit
 	fi
 	i=$((i + $1))
 done
-rm OUR THEIR
+rm OUR_DUMP THEIR_DUMP
