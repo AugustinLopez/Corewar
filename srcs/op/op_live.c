@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/16 13:51:34 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/27 17:24:11 by bcarlier         ###   ########.fr       */
+/*   Updated: 2019/09/30 11:17:58 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,9 @@ int		op_live(t_vm *vm, t_process *process)
 			++(vm->player[i].live_total);
 			(vm->player[i].live_last) = vm->cycle_total - 1;
 			vm->last_player_alive = vm->player[i].id;
-			/*ft_printf("%sP - %zu%s > Player (\"%s\") is alive\n",
-					FT_BOLD, process->process_id, FT_EOC, vm->player[i].name);*/
+			if (vm->flag & FLAG_LIKE_PDF)
+				ft_printf("%sP - %zu%s > Player (\"%s\") is alive\n", FT_BOLD
+						, process->process_id, FT_EOC, vm->player[i].name);
 			return (SUCCESS);
 		}
 		++i;

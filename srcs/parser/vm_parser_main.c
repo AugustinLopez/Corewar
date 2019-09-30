@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/16 11:28:10 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/26 10:48:25 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/09/30 11:25:50 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,10 @@
 
 static inline void	print_usage(void)
 {
-	ft_printf("%susage%s: ./corewar [%s-dump%s %snbr_cycles%s] ",
-			FT_UNDER, FT_EOC, FT_BOLD, FT_EOC, FT_UNDER, FT_EOC);
+	ft_printf("%susage%s: ./corewar [%s-s -m -l -v%s] ",
+			FT_UNDER, FT_EOC, FT_BOLD, FT_EOC);
+	ft_printf("[%s-dump/-d%s %snbr_cycles%s] ",
+			FT_BOLD, FT_EOC, FT_UNDER, FT_EOC);
 	ft_printf("[[%s-n%s %snumber%s] champion1.cor] ...\n",
 			FT_BOLD, FT_EOC, FT_UNDER, FT_EOC);
 }

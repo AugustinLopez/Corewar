@@ -6,7 +6,7 @@
 /*   By: bcarlier <bcarlier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/19 10:19:51 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/09/27 12:58:53 by bcarlier         ###   ########.fr       */
+/*   Updated: 2019/09/30 11:08:43 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,18 +16,10 @@
 int		op_ldi_lldi(t_vm *vm, t_process *proc)
 {
 	int	addr;
-	int	ret;
 
-	ret = SUCCESS;
-	if (load_from_ocp(vm, proc, 3, OP_DIR | OP_IDX) == FAILURE)
-		ret = FAILURE;
-	if (!ft_strchr("\x54\x64\x94\xa4\xd4\xe4", (proc->op.ocp & 0xfc)))
-	{
-		//proc->next_pc = (proc->next_pc + 1) % MEM_SIZE;
-		ret = FAILURE;
-	}
-	if (ret == FAILURE)
-		return (ret);
+	if (load_from_ocp(vm, proc, 3, OP_DIR | OP_IDX) == FAILURE
+			|| !ft_strchr("\x54\x64\x94\xa4\xd4\xe4", (proc->op.ocp & 0xfc)))
+		return (FAILURE);
 	if ((proc->op.ocp & 0xC0) == 0x40)
 		proc->op.p[0] = proc->r[proc->op.p[0] - 1];
 	else if ((proc->op.ocp & 0xc0) == 0xc0)
