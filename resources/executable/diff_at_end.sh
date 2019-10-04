@@ -1,3 +1,6 @@
+# Bebug script to compare the output after both programs ran. 
+# There should be no diff.
+
 if ((("$#" < 2 )) || (( "$#" > 4 )))
 then
 	echo "Usage: sh diff_at_end.sh [champion1.cor] [champion2.cor] ... (up to four champions)"

@@ -1,3 +1,6 @@
+# Bebug script to compare the output of the two vm from DUMP_START and for each DUMP_STEP after that.
+# There should be no diff.
+
 if ((("$#" < 4 )) || (( "$#" > 6 )))
 then
 	echo "Usage: sh diff_dump.sh [DUMP_STEP] [DUMP_START] [champion1.cor] [champion2.cor] ... (up to four champions)"
