@@ -6,7 +6,7 @@
 /*   By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/16 11:28:10 by aulopez           #+#    #+#             */
-/*   Updated: 2019/09/30 13:41:00 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/10/09 18:27:17 by bcarlier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,23 +56,22 @@ static inline void	arg_error_message(t_argument *arg)
 
 static inline void	vm_error_message(t_vm *vm)
 {
-	ft_dprintf(STDERR_FILENO, "Error: file '%s':\n", vm->strerr);
+	ft_dprintf(STDERR_FILENO, "Error: File '%s':\n", vm->strerr);
 	if (vm->err == ERR_OPEN)
 		ft_dprintf(STDERR_FILENO, "Could not open file.\n");
 	else if (vm->err == ERR_CLOSE)
 		ft_dprintf(STDERR_FILENO, "Could not close file.\n");
 	else if (vm->err == ERR_NAME || vm->err == ERR_COMMENT
 			|| vm->err == ERR_CODE || vm->err == ERR_WEIGHT)
-		ft_dprintf(STDERR_FILENO, "File is either unreadable or too short\n");
+		ft_dprintf(STDERR_FILENO, "File is either unreadable or too short.\n");
 	else if (vm->err == ERR_MAGIC)
-		ft_dprintf(STDERR_FILENO, ".cor identifier missing\n");
+		ft_dprintf(STDERR_FILENO, ".cor identifier missing.\n");
 	else if (vm->err == ERR_MAX_SIZE)
-		ft_dprintf(STDERR_FILENO, "Code is too large\n");
+		ft_dprintf(STDERR_FILENO, "Code is too large.\n");
 	else if (vm->err == ERR_MEMORY)
-		ft_dprintf(STDERR_FILENO, "Not enough memory\n");
+		ft_dprintf(STDERR_FILENO, "Not enough memory.\n");
 	else if (vm->err == ERR_HEADER)
-		ft_dprintf(STDERR_FILENO, "Program and header weights don't match\n");
-	ft_dprintf(STDERR_FILENO, "%d\n", vm->err);
+		ft_dprintf(STDERR_FILENO, "Program and header weights don't match.\n");
 }
 
 int					parser(t_vm *vm, int argc, char **argv)
@@ -98,6 +97,6 @@ int					parser(t_vm *vm, int argc, char **argv)
 	else
 		return (SUCCESS);
 	if (vm->err)
-		ft_dprintf(STDERR_FILENO, "\n(Errno: %d)\n", vm->err);
+		ft_dprintf(STDERR_FILENO, "(Errno: %d)\n", vm->err);
 	return (FAILURE);
 }
