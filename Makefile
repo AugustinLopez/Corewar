@@ -6,7 +6,7 @@
 #    By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/09/09 14:31:41 by aulopez           #+#    #+#              #
-#    Updated: 2019/09/30 13:46:31 by aulopez          ###   ########.fr        #
+#    Updated: 2019/10/10 15:54:36 by bcarlier         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,7 +41,27 @@ SOURCE_VM=	vm_main				\
 			op_sti				\
 			op_aff				\
 			op_st				\
-			op_bonus
+			op_bonus			\
+			ft_atol				\
+			ft_atol_base		\
+			ft_cpos				\
+			ft_free_strtab		\
+			ft_isblank			\
+			ft_isint			\
+			ft_islong			\
+			ft_ismxdigit		\
+			ft_ismxlong			\
+			ft_isspace			\
+			ft_joincstr			\
+			ft_lconvert_base	\
+			ft_ltoa				\
+			ft_lutoa_base		\
+			ft_str_is_mxdigit	\
+			ft_str_is_numeric	\
+			ft_strjfree			\
+			ft_strsubfree		\
+			ft_strtrimfree
+
 LIBFT=$(PATH_LIB)libft.a
 
 # --- 2.Path/Object ------------------------------------------------------------
@@ -49,7 +69,7 @@ LIBFT=$(PATH_LIB)libft.a
 PATH_HDR=./includes/
 PATH_LIB=./libft/
 PATH_OBJ=./.object/
-VPATH=srcs:srcs/parser:srcs/op
+VPATH=srcs:srcs/parser:srcs/op:srcs/mde-laga
 
 OBJ_ASM=$(SOURCE_ASM:%=$(PATH_OBJ)%.o)
 OBJ_VM=$(SOURCE_VM:%=$(PATH_OBJ)%.o)
