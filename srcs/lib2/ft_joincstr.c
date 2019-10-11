@@ -1,25 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_cpos.c                                          :+:      :+:    :+:   */
+/*   ft_joincstr.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mde-laga <mde-laga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/19 17:40:50 by mde-laga          #+#    #+#             */
-/*   Updated: 2019/09/19 17:45:53 by mde-laga         ###   ########.fr       */
+/*   Created: 2019/10/07 16:59:49 by mde-laga          #+#    #+#             */
+/*   Updated: 2019/10/07 17:02:44 by mde-laga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "mde-laga.h"
+#include "asm.h"
 
-int		ft_cpos(char *str, char c)
+char	*ft_joincstr(char c, char const *s2)
 {
-	int		pos;
-	char	*ch;
+	int		i;
+	char	*str;
 
-	ch = ft_strchr(str, c);
-	if (!ch)
-		return (-1);
-	pos = ch - str;
-	return (pos);
+	if (!c || !s2)
+		return (NULL);
+	if (!(str = (char*)malloc(sizeof(*str) * (ft_strlen(s2) + 2))))
+		return (NULL);
+	i = -1;
+	str[++i] = c;
+	while (*s2)
+		str[++i] = *s2++;
+	str[++i] = '\0';
+	return (str);
 }

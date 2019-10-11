@@ -6,7 +6,7 @@
 #    By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/09/09 14:31:41 by aulopez           #+#    #+#              #
-#    Updated: 2019/10/10 15:54:36 by bcarlier         ###   ########.fr        #
+#    Updated: 2019/10/11 15:33:57 by bcarlier         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,42 @@ CC_EXE=gcc $(FLAGS) -I$(PATH_HDR) -L$(PATH_LIB)
 
 # --- 1.Source/Header ----------------------------------------------------------
 
-SOURCE_ASM=asm_main
+SOURCE_ASM=	asm					\
+			write_cor			\
+			ft_checkparam		\
+			ft_free				\
+			ft_getcode			\
+			ft_getheader		\
+			ft_init_s			\
+			ft_isparam			\
+			ft_read				\
+			op					\
+			tools_code			\
+			tools_is			\
+			tools_lst			\
+			write_param			\
+			ft_atol				\
+			ft_atol_base		\
+			ft_cpos				\
+			ft_free_strtab		\
+			ft_isblank			\
+			ft_isint			\
+			ft_islong			\
+			ft_ismxdigit		\
+			ft_ismxlong			\
+			ft_isspace			\
+			ft_joincstr			\
+			ft_lconvert_base	\
+			ft_ltoa				\
+			ft_lutoa_base		\
+			ft_str_is_mxdigit	\
+			ft_str_is_numeric	\
+			ft_strjfree			\
+			ft_strsubfree		\
+			ft_strtrimfree		\
+			ft_strnjoin			\
+			ft_reverse_bytes
+
 SOURCE_VM=	vm_main				\
 			vm_ram				\
 			vm_dump				\
@@ -41,26 +76,7 @@ SOURCE_VM=	vm_main				\
 			op_sti				\
 			op_aff				\
 			op_st				\
-			op_bonus			\
-			ft_atol				\
-			ft_atol_base		\
-			ft_cpos				\
-			ft_free_strtab		\
-			ft_isblank			\
-			ft_isint			\
-			ft_islong			\
-			ft_ismxdigit		\
-			ft_ismxlong			\
-			ft_isspace			\
-			ft_joincstr			\
-			ft_lconvert_base	\
-			ft_ltoa				\
-			ft_lutoa_base		\
-			ft_str_is_mxdigit	\
-			ft_str_is_numeric	\
-			ft_strjfree			\
-			ft_strsubfree		\
-			ft_strtrimfree
+			op_bonus
 
 LIBFT=$(PATH_LIB)libft.a
 
@@ -69,7 +85,7 @@ LIBFT=$(PATH_LIB)libft.a
 PATH_HDR=./includes/
 PATH_LIB=./libft/
 PATH_OBJ=./.object/
-VPATH=srcs:srcs/parser:srcs/op:srcs/mde-laga
+VPATH=srcs:srcs/parser:srcs/op:srcs/lib2:srcs/assembly:
 
 OBJ_ASM=$(SOURCE_ASM:%=$(PATH_OBJ)%.o)
 OBJ_VM=$(SOURCE_VM:%=$(PATH_OBJ)%.o)
@@ -78,7 +94,7 @@ DEPS=$(OBJ_VM:%.o=%.d)
 
 # --- 4.Rules ------------------------------------------------------------------
 
-all: $(LIBFT) $(NAME_VM)
+all: $(LIBFT) $(NAME_ASM) $(NAME_VM)
 
 $(NAME_ASM): $(OBJ_ASM)
 	-@printf " ===> Creating $(NAME_ASM)\n"
@@ -102,7 +118,7 @@ clean:
 	@make clean -C $(PATH_LIB) >> /dev/null
 
 fclean: clean
-	-@printf " ===> Removing $(NAME_ASM)\n"
+	-@printf " ===> Removing $(NAME_ASM) $(NAME_VM)\n"
 	@rm -f $(NAME_ASM) $(NAME_VM)
 	@make fclean -C $(PATH_LIB) >> /dev/null
 

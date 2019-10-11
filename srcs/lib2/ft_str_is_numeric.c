@@ -1,18 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_ismxdigit.c                                     :+:      :+:    :+:   */
+/*   ft_str_is_numeric.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mde-laga <mde-laga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/03 17:39:29 by mde-laga          #+#    #+#             */
-/*   Updated: 2019/10/03 17:39:44 by mde-laga         ###   ########.fr       */
+/*   Created: 2018/11/20 14:36:48 by mde-laga          #+#    #+#             */
+/*   Updated: 2019/04/30 15:40:49 by mde-laga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "mde-laga.h"
+#include "asm.h"
 
-int		ft_ismxdigit(int c)
+int		ft_str_is_numeric(char *str)
 {
-	return ((c >= '0' && c <= '9') || (c >= 'A' && c <= 'F') ? 1 : 0);
+	int i;
+
+	i = -1;
+	if (!str[0])
+		return (0);
+	while (str[++i])
+		if (ft_isdigit(str[i]) == 0)
+			return (0);
+	return (1);
 }

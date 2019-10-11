@@ -1,19 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isspace.c                                       :+:      :+:    :+:   */
+/*   ft_cpos.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mde-laga <mde-laga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/11/20 14:16:08 by mde-laga          #+#    #+#             */
-/*   Updated: 2019/02/28 15:28:12 by mde-laga         ###   ########.fr       */
+/*   Created: 2019/09/19 17:40:50 by mde-laga          #+#    #+#             */
+/*   Updated: 2019/09/19 17:45:53 by mde-laga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "mde-laga.h"
+#include "asm.h"
 
-int		ft_isspace(int c)
+int		ft_cpos(char *str, char c)
 {
-	return (c == '\t' || c == '\n' || c == '\v' || c == '\f' || c == '\r'
-			|| c == ' ' ? 1 : 0);
+	int		pos;
+	char	*ch;
+
+	ch = ft_strchr(str, c);
+	if (!ch)
+		return (-1);
+	pos = ch - str;
+	return (pos);
 }

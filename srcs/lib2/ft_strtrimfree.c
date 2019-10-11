@@ -1,37 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_atol.c                                          :+:      :+:    :+:   */
+/*   ft_strtrimfree.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mde-laga <mde-laga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/02/28 11:10:12 by mde-laga          #+#    #+#             */
-/*   Updated: 2019/02/28 15:28:12 by mde-laga         ###   ########.fr       */
+/*   Created: 2018/11/16 14:12:11 by mde-laga          #+#    #+#             */
+/*   Updated: 2019/09/22 11:58:14 by mde-laga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "mde-laga.h"
+#include "asm.h"
 
-long	ft_atol(const char *str)
+char	*ft_strtrimfree(char *s)
 {
 	int		i;
-	int		neg;
-	long	nb;
+	int		len;
+	char	*s2;
 
+	if (s == NULL)
+		return (NULL);
+	len = ft_strlen(s);
 	i = 0;
-	neg = 0;
-	while (str[i] == '\t' || str[i] == '\n' || str[i] == '\v' || str[i] == '\f'
-			|| str[i] == '\r' || str[i] == ' ')
-		i++;
-	if (str[i] == '-')
+	while (s[len - 1] == ' ' || s[len - 1] == '\n' || s[len - 1] == '\t')
+		len--;
+	while (s[i] == ' ' || s[i] == '\n' || s[i] == '\t')
 	{
-		neg = 1;
 		i++;
+		len--;
 	}
-	if (str[i] == '+' && neg == 0)
-		i++;
-	nb = 0;
-	while (str[i] >= '0' && str[i] <= '9')
-		nb = nb * 10 + str[i++] - '0';
-	return (neg == 0 ? nb : -nb);
+	if (len < 0)
+		len = 0;
+	s2 = ft_strsub(s, i, len);
+	free(s);
+	return (s2);
 }

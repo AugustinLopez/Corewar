@@ -1,30 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_joincstr.c                                      :+:      :+:    :+:   */
+/*   ft_atol.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mde-laga <mde-laga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/07 16:59:49 by mde-laga          #+#    #+#             */
-/*   Updated: 2019/10/07 17:02:44 by mde-laga         ###   ########.fr       */
+/*   Created: 2019/02/28 11:10:12 by mde-laga          #+#    #+#             */
+/*   Updated: 2019/02/28 15:28:12 by mde-laga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "mde-laga.h"
+#include "asm.h"
 
-char	*ft_joincstr(char c, char const *s2)
+long	ft_atol(const char *str)
 {
 	int		i;
-	char	*str;
+	int		neg;
+	long	nb;
 
-	if (!c || !s2)
-		return (NULL);
-	if (!(str = (char*)malloc(sizeof(*str) * (ft_strlen(s2) + 2))))
-		return (NULL);
-	i = -1;
-	str[++i] = c;
-	while (*s2)
-		str[++i] = *s2++;
-	str[++i] = '\0';
-	return (str);
+	i = 0;
+	neg = 0;
+	while (str[i] == '\t' || str[i] == '\n' || str[i] == '\v' || str[i] == '\f'
+			|| str[i] == '\r' || str[i] == ' ')
+		i++;
+	if (str[i] == '-')
+	{
+		neg = 1;
+		i++;
+	}
+	if (str[i] == '+' && neg == 0)
+		i++;
+	nb = 0;
+	while (str[i] >= '0' && str[i] <= '9')
+		nb = nb * 10 + str[i++] - '0';
+	return (neg == 0 ? nb : -nb);
 }

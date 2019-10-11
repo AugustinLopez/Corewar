@@ -1,23 +1,47 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_free_strtab.c                                   :+:      :+:    :+:   */
+/*   ft_strjfree.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mde-laga <mde-laga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/24 17:35:24 by mde-laga          #+#    #+#             */
-/*   Updated: 2019/10/10 15:53:18 by bcarlier         ###   ########.fr       */
+/*   Created: 2019/03/01 10:10:12 by mde-laga          #+#    #+#             */
+/*   Updated: 2019/03/01 11:18:34 by mde-laga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "mde-laga.h"
+#include "asm.h"
 
-void		ft_free_strtab(char **str)
+static int	ft_free(char *s1, char *s2)
 {
-	int i;
+	if (s1 != NULL)
+	{
+		free(s1);
+		s1 = NULL;
+	}
+	if (s2 != NULL)
+	{
+		free(s2);
+		s2 = NULL;
+	}
+	return (0);
+}
 
-	i = -1;
-	while (str[++i])
-		free(str[i]);
-	free(str);
+char		*ft_strjfree(char *s1, char *s2)
+{
+	char	*str;
+
+	if (s1 == NULL)
+	{
+		if ((str = ft_strdup(s2)) == 0)
+			return (0);
+		return (str);
+	}
+	else
+	{
+		if ((str = ft_strjoin(s1, s2)) == 0)
+			return (0);
+		ft_free(s1, s2);
+		return (str);
+	}
 }

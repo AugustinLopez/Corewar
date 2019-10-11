@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "mde-laga.h"
+#include "asm.h"
 
 static char	*ft_ltoa_base(long nbr, char *base, char *str, int size)
 {
