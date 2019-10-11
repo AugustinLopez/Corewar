@@ -6,7 +6,7 @@
 /*   By: mde-laga <mde-laga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/23 13:53:31 by mde-laga          #+#    #+#             */
-/*   Updated: 2019/10/11 18:17:34 by mde-laga         ###   ########.fr       */
+/*   Updated: 2019/10/11 18:37:50 by mde-laga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,11 +83,9 @@ int			ft_islab(char *str)
 
 int			ft_isop(char *str, int i, t_struct *s)
 {
-	int		op;
 	int		j;
 	int		k;
 
-	op = 0;
 	j = -1;
 	while (!ft_isblank(str[i + ++j]))
 	{
