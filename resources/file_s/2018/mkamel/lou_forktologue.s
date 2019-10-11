@@ -143,4 +143,3 @@ ghost_writer:
 	st		r15, 367
 	sub		r16, r16, r16
 	zjmp	%285
-	
