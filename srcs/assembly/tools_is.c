@@ -6,7 +6,7 @@
 /*   By: mde-laga <mde-laga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/23 13:53:31 by mde-laga          #+#    #+#             */
-/*   Updated: 2019/10/11 16:50:12 by mde-laga         ###   ########.fr       */
+/*   Updated: 2019/10/11 16:52:36 by mde-laga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ int			ft_isop(char *str, int i, t_struct *s)
 	j = -1;
 	while (!ft_isblank(str[i + ++j]))
 	{
-		if (str[i + j] == '%')
+		if (str[i + j] == DIRECT_CHAR)
 			break ;
 		if (!ft_isalpha(str[i + j]))
 			return (0);
