@@ -6,7 +6,7 @@
 /*   By: mde-laga <mde-laga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/23 12:16:57 by mde-laga          #+#    #+#             */
-/*   Updated: 2019/10/11 13:39:25 by mde-laga         ###   ########.fr       */
+/*   Updated: 2019/10/11 17:26:31 by mde-laga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ static void		ft_getop(t_struct *s, int i)
 void			ft_getcode(t_struct *s)
 {
 	int		i;
+	int		lab;
 
 	while (s->rd)
 	{
@@ -84,8 +85,10 @@ void			ft_getcode(t_struct *s)
 			i = 0;
 			while (s->rd->data[i] && ft_isblank(s->rd->data[i]))
 				i++;
-			if (ft_islab(s->rd->data + i))
+			if ((lab = ft_islab(s->rd->data + i)) == 1)
 				i = ft_getlab(s, i);
+			else if (lab == -1)
+				ft_error(s, INV_LABCHAR, 0);
 			while (s->rd->data[i] && ft_isblank(s->rd->data[i]))
 				i++;
 			if (s->rd->data[i] && s->rd->data[i] != COM_CHAR)
@@ -94,5 +97,5 @@ void			ft_getcode(t_struct *s)
 		}
 	}
 	if (!s->oplist)
-		ft_error(s, EMPTY_CODE, 0);
+		ft_error(s, EMPTY_CODE, -1);
 }

@@ -6,7 +6,7 @@
 /*   By: mde-laga <mde-laga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/23 12:16:40 by mde-laga          #+#    #+#             */
-/*   Updated: 2019/10/11 13:52:16 by mde-laga         ###   ########.fr       */
+/*   Updated: 2019/10/11 17:29:38 by mde-laga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ char		**ft_getparam(t_struct *s, int i)
 	if (tmp[0] == ',' || tmp[ft_strlen(tmp) - 1] == ',')
 	{
 		free(tmp);
-		ft_error(s, "Test", 0);
+		ft_error(s, "Extraneous separator", 0);
 	}
 	free(tmp);
 	param = ft_strsplit(s->rd->data + i, SEPARATOR_CHAR);

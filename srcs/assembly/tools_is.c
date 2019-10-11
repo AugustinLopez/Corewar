@@ -6,7 +6,7 @@
 /*   By: mde-laga <mde-laga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/23 13:53:31 by mde-laga          #+#    #+#             */
-/*   Updated: 2019/10/11 16:52:36 by mde-laga         ###   ########.fr       */
+/*   Updated: 2019/10/11 18:17:34 by mde-laga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,13 @@ int			ft_islab(char *str)
 	i = -1;
 	while (++i < lim)
 		if (!ft_islabchar(str[i]))
-			return (0);
+		{
+			if (ft_isblank(str[i]) || str[i] == DIRECT_CHAR || str[i] == '-'
+				|| str[i] == SEPARATOR_CHAR)
+				return (0);
+			else
+				return (-1);
+		}
 	return (1);
 }
 
@@ -85,7 +91,7 @@ int			ft_isop(char *str, int i, t_struct *s)
 	j = -1;
 	while (!ft_isblank(str[i + ++j]))
 	{
-		if (str[i + j] == DIRECT_CHAR)
+		if (str[i + j] == DIRECT_CHAR || str[i + j] == '-')
 			break ;
 		if (!ft_isalpha(str[i + j]))
 			return (0);

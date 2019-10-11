@@ -6,7 +6,7 @@
 /*   By: mde-laga <mde-laga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/18 10:59:13 by mde-laga          #+#    #+#             */
-/*   Updated: 2019/10/11 15:36:21 by bcarlier         ###   ########.fr       */
+/*   Updated: 2019/10/11 18:22:57 by mde-laga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,22 +39,11 @@ static void	ft_checkfile(int ac, char **av)
 static void	ft_getrd(t_struct *s, int ac, char **av)
 {
 	int			fd;
-	char		c;
 
 	if ((fd = open(av[ac - 1], O_RDONLY)) == -1)
 		ft_error(s, OPEN_ERR, 0);
-	lseek(fd, -1, SEEK_END);
-	read(fd, &c, 1);
-	lseek(fd, 0, SEEK_SET);
-	if (c != '\n')
-	{
-		close(fd);
-		ft_error(NULL, WREND, -1);
-	}
 	if (!(s->rd = ft_read(s, fd, 1)))
 		ft_error(s, EMPTY_FILE, 0);
-	if (s->rderr)
-		ft_error(s, INV_F, -1);
 	close(fd);
 }
 

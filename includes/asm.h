@@ -6,7 +6,7 @@
 /*   By: mde-laga <mde-laga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/18 10:56:16 by mde-laga          #+#    #+#             */
-/*   Updated: 2019/10/11 15:23:04 by bcarlier         ###   ########.fr       */
+/*   Updated: 2019/10/11 18:24:28 by mde-laga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,26 +21,27 @@
 # include <stdint.h>
 # include <unistd.h>
 
-# define USAGE		"Usage: ./asm [-b] <file.s>"
-# define MALL_ERR	"Malloc error"
-# define OPEN_ERR	"Can't open file"
-# define WREND		"Missing terminating '\\n'"
-# define EMPTY_FILE	"File is empty"
-# define INV_F		"File is invalid"
-# define NOT_NC		"Not a name nor a comment"
-# define DUP_N		"Duplicate name"
-# define DUP_C		"Duplicate comment"
-# define LONG_N		"Name too long"
-# define LONG_C		"Comment too long"
-# define INFO_ERR	"Invalid information format"
-# define EMPTY_N	"Name is empty"
-# define EMPTY_C	"Comment is empty"
-# define INV_OP		"Invalid operation"
-# define INV_NB_PAR	"Invalid param number for op"
-# define INV_PAR	"Invalid parameter"
-# define PAR_OP		"Invalid param for op"
-# define EMPTY_CODE	"Empty code"
-# define SIZE_ERR	"Program size exceeds VM size"
+# define USAGE			"Usage: ./asm [-b] <file.s>"
+# define MALL_ERR		"Malloc error"
+# define OPEN_ERR		"Can't open file"
+# define WREND			"Missing terminating '\\n'"
+# define EMPTY_FILE		"File is empty"
+# define INV_F			"File is invalid"
+# define NOT_NC			"Not a name nor a comment"
+# define DUP_N			"Duplicate name"
+# define DUP_C			"Duplicate comment"
+# define LONG_N			"Name too long"
+# define LONG_C			"Comment too long"
+# define INFO_ERR		"Invalid information format"
+# define EMPTY_N		"Name is empty"
+# define EMPTY_C		"Comment is empty"
+# define INV_LABCHAR	"Label contains invalid character"
+# define INV_OP			"Invalid operation"
+# define INV_NB_PAR		"Invalid param number for op"
+# define INV_PAR		"Invalid parameter"
+# define PAR_OP			"Invalid param for op"
+# define EMPTY_CODE		"Empty code"
+# define SIZE_ERR		"Program size exceeds VM size"
 
 typedef	struct		s_rd
 {
@@ -131,29 +132,30 @@ int					is_four_dir(int opc);
 
 extern t_op			g_optab[];
 
-int				ft_isblank(int c);
-int				ft_isint(char *str);
-int				ft_islong(char *str);
-int				ft_ismxdigit(int c);
-int				ft_ismxlong(char *str);
-int				ft_isspace(int c);
-int				ft_str_is_mxdigit(char *str);
-int				ft_str_is_numeric(char *str);
+int					ft_isblank(int c);
+int					ft_isint(char *str);
+int					ft_islong(char *str);
+int					ft_ismxdigit(int c);
+int					ft_ismxlong(char *str);
+int					ft_isspace(int c);
+int					ft_str_is_mxdigit(char *str);
+int					ft_str_is_numeric(char *str);
 
-long			ft_atol_base(char *str, char *base);
-long			ft_atol(const char *str);
-char			*ft_ltoa(int64_t nb);
-char			*ft_lutoa_base(uint64_t value, int base, int cas);
-char			*ft_lconvert_base(char *nbr, char *base_from, char *base_to);
+long				ft_atol_base(char *str, char *base);
+long				ft_atol(const char *str);
+char				*ft_ltoa(int64_t nb);
+char				*ft_lutoa_base(uint64_t value, int base, int cas);
+char				*ft_lconvert_base(char *nbr, char *base_from, char *base_to);
 
-int				ft_cpos(char *str, char c);
-char			*ft_joincstr(char c, char const *s2);
+int					ft_cpos(char *str, char c);
+char				*ft_joincstr(char c, char const *s2);
 
-void			ft_free_strtab(char **str);
-char			*ft_strjfree(char *s1, char *s2);
-char			*ft_strsubfree(char *s, unsigned int start, size_t len);
-char			*ft_strtrimfree(char *s);
+void				ft_free_strtab(char **str);
+char				*ft_strjfree(char *s1, char *s2);
+char				*ft_strsubfree(char *s, unsigned int start, size_t len);
+char				*ft_strtrimfree(char *s);
 
-char			*ft_strnjoin(char const *s1, char const *s2, size_t n);
-unsigned int	ft_reverse_bytes(unsigned int nb);
+char				*ft_strnjoin(char const *s1, char const *s2, size_t n);
+unsigned int		ft_reverse_bytes(unsigned int nb);
+
 #endif
