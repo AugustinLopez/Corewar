@@ -6,7 +6,7 @@
 /*   By: mde-laga <mde-laga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/18 10:56:16 by mde-laga          #+#    #+#             */
-/*   Updated: 2019/10/11 18:24:28 by mde-laga         ###   ########.fr       */
+/*   Updated: 2019/10/14 18:02:30 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,7 +145,8 @@ long				ft_atol_base(char *str, char *base);
 long				ft_atol(const char *str);
 char				*ft_ltoa(int64_t nb);
 char				*ft_lutoa_base(uint64_t value, int base, int cas);
-char				*ft_lconvert_base(char *nbr, char *base_from, char *base_to);
+char				*ft_lconvert_base(char *nbr, char *base_from,
+						char *base_to);
 
 int					ft_cpos(char *str, char c);
 char				*ft_joincstr(char c, char const *s2);

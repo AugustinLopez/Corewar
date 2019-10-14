@@ -6,7 +6,7 @@
 #    By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/09/09 14:31:41 by aulopez           #+#    #+#              #
-#    Updated: 2019/10/14 17:42:06 by aulopez          ###   ########.fr        #
+#    Updated: 2019/10/14 18:10:28 by aulopez          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -85,7 +85,7 @@ LIBFT=$(PATH_LIB)libft.a
 PATH_HDR=./includes/
 PATH_LIB=./libft/
 PATH_OBJ=./.object/
-VPATH=srcs:srcs/parser:srcs/op:srcs/lib2:srcs/assembly:
+VPATH=srcs:srcs/parser:srcs/op:srcs/minilib:srcs/assembly:
 
 OBJ_ASM=$(SOURCE_ASM:%=$(PATH_OBJ)%.o)
 OBJ_VM=$(SOURCE_VM:%=$(PATH_OBJ)%.o)
