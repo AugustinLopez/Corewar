@@ -6,7 +6,7 @@
 #    By: aulopez <aulopez@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/09/09 14:31:41 by aulopez           #+#    #+#              #
-#    Updated: 2019/10/14 17:33:37 by aulopez          ###   ########.fr        #
+#    Updated: 2019/10/14 17:42:06 by aulopez          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -109,7 +109,7 @@ $(LIBFT):
 	@make -C $(PATH_LIB)
 
 $(PATH_OBJ)%.o:%.c
-	-@printf " >O $(FLAGS) $*\n"
+	-@printf " >O $(FLAGS) -MMD -MP $*\n"
 	@$(CC_OBJ) $< -o $@
 
 clean:

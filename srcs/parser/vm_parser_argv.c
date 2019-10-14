@@ -6,7 +6,7 @@
 /*   By: bcarlier <bcarlier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/09 19:02:24 by bcarlier          #+#    #+#             */
-/*   Updated: 2019/09/30 13:48:21 by aulopez          ###   ########.fr       */
+/*   Updated: 2019/10/14 17:46:59 by aulopez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,19 +69,18 @@ static inline int	parse_n(t_argument *arg, int *i)
 	return (SUCCESS);
 }
 
-static inline int	argv_parser_iterate(t_argument *arg)
+static inline int	argv_parser_iterate(t_argument *arg, int *ret)
 {
 	char	*s;
-	int		ret;
 
 	arg->i = 0;
 	while (++(arg->i) < arg->ac)
 	{
 		if (!ft_strcmp(arg->av[(arg->i)], "-dump")
 				|| !ft_strcmp(arg->av[(arg->i)], "-d"))
-			ret = parse_dump(arg, &(arg->i));
+			*ret = parse_dump(arg, &(arg->i));
 		else if (!ft_strcmp(arg->av[(arg->i)], "-n"))
-			ret = parse_n(arg, &(arg->i));
+			*ret = parse_n(arg, &(arg->i));
 		else if (!ft_strcmp(arg->av[(arg->i)], "-V"))
 			arg->flag |= FLAG_VISU;
 		else if (!ft_strcmp(arg->av[(arg->i)], "-S"))
@@ -89,10 +88,10 @@ static inline int	argv_parser_iterate(t_argument *arg)
 		else if (!ft_strcmp(arg->av[(arg->i)], "-B"))
 			arg->flag |= FLAG_BONUS;
 		else if ((s = ft_strrstr(arg->av[(arg->i)], FILE_EXT)))
-			ret = parse_cor(arg, s, &(arg->i));
+			*ret = parse_cor(arg, s, &(arg->i));
 		else
-			ret = arg_set_error(arg, ERR_INVALID, arg->i);
-		if (ret == FAILURE)
+			*ret = arg_set_error(arg, ERR_INVALID, arg->i);
+		if (*ret == FAILURE)
 			return (FAILURE);
 	}
 	return (SUCCESS);
@@ -100,12 +99,15 @@ static inline int	argv_parser_iterate(t_argument *arg)
 
 int					argv_parser(t_argument *arg, int argc, char **argv)
 {
+	int	ret;
+
 	ft_bzero(arg, sizeof(*arg));
 	arg->ac = argc;
 	arg->av = argv;
 	arg->dump_option = FALSE;
 	ft_memset(&(arg->n_option), FALSE, sizeof(arg->n_option));
-	if (argv_parser_iterate(arg) == SUCCESS
+	ret = SUCCESS;
+	if (argv_parser_iterate(arg, &ret) == SUCCESS
 			&& handle_duplicate_id(arg) == FALSE
 			&& arg->nbr_player >= 2)
 		return (SUCCESS);
